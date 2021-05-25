@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   settings: {
     parser: '@typescript-eslint/parser',
   },
@@ -24,7 +24,6 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'react/react-in-jsx-scope': 0,
-    'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
     'react/prop-types': 0,
     'react/jsx-props-no-spreading': 0,
     'react/destructuring-assignment': 0,

@@ -23,7 +23,8 @@
     "eslint": "eslint --cache '**/*.{js,jsx,ts,tsx}' --quiet; exit 0;",
     "eslint:fix": "eslint --cache '**/*.{js,jsx,ts,tsx}' --quiet --fix; exit 0;",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx}'",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
