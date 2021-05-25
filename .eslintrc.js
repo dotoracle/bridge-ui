@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   settings: {
     parser: '@typescript-eslint/parser',
   },
@@ -8,6 +8,7 @@ export default {
   },
   extends: [
     'prettier',
+    'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
   ],
@@ -28,10 +29,20 @@ export default {
     'react/jsx-props-no-spreading': 0,
     'react/destructuring-assignment': 0,
     'react/no-multi-comp': 0,
-    'semi': ['warn', 'never', { 'beforeStatementContinuationChars': 'always' }],
+    semi: ['warn', 'never', { beforeStatementContinuationChars: 'always' }],
     'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
     'prefer-destructuring': ['warn', { object: true, array: false }],
     'no-underscore-dangle': 0,
     'no-constant-condition': ['error', { checkLoops: false }],
+    // Prettier
+    'prettier/prettier': [
+      'warn',
+      {
+        trailingComma: 'all',
+        semi: false,
+        singleQuote: true,
+        printWidth: 120,
+      },
+    ],
   },
 }
