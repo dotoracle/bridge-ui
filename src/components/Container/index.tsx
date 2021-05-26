@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const StyledContainer = styled.div`
   padding: 0 15px;
@@ -9,10 +9,10 @@ const StyledContainer = styled.div`
   > div {
     height: 100%;
   }
-`;
+`
 
-const Container: React.FC = (props) => {
-  return <StyledContainer>{props.children}</StyledContainer>;
-};
+const Container: React.FC = props => {
+  return <StyledContainer>{props.children}</StyledContainer>
+}
 
-export default Container;
+export default Container
