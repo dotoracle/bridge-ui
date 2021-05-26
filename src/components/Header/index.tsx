@@ -1,16 +1,24 @@
-import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo } from '@elastic/eui'
+import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo, EuiFlexGroup } from '@elastic/eui'
 import styled from 'styled-components'
-
-import Container from '../Container'
+import DesktopNav from './DesktopNav'
 import LogoPNG from '../../assets/images/logo.png'
 
-const StyledHeder = styled(EuiHeader)`
+const StyledContainer = styled(EuiFlexGroup)`
+  padding: 0 15px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1280px;
+
+  > div {
+    height: 100%;
+  }
+`
+const StyledHeader = styled(EuiHeader)`
   height: 80px;
   border-bottom: none;
   box-shadow: none;
   background-color: ${props => props.theme.headerBg};
 `
-
 const StyledLogo = styled(EuiHeaderLogo)`
   padding: 0;
 
@@ -22,13 +30,16 @@ const StyledLogo = styled(EuiHeaderLogo)`
 
 const Header: React.FC = () => {
   return (
-    <StyledHeder position="fixed">
-      <Container>
+    <StyledHeader position="fixed">
+      <StyledContainer justifyContent="spaceBetween">
         <EuiHeaderSectionItem border="none">
           <StyledLogo href="/" iconType={LogoPNG} iconTitle="DotOracle" />
         </EuiHeaderSectionItem>
-      </Container>
-    </StyledHeder>
+        <EuiHeaderSectionItem border="none">
+          <DesktopNav />
+        </EuiHeaderSectionItem>
+      </StyledContainer>
+    </StyledHeader>
   )
 }
 
