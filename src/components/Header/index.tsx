@@ -1,18 +1,19 @@
-import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo } from '@elastic/eui'
-import styled from 'styled-components'
+import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo } from "@elastic/eui";
+import styled from "styled-components";
 
-import Container from '../Container'
-import LogoSVG from '../../assets/images/logo.svg'
+import Container from "../Container";
+import LogoSVG from "../../assets/images/logo.svg";
 
 const StyledHeder = styled(EuiHeader)`
   height: 80px;
   border-bottom: none;
   box-shadow: none;
-`
+  background-color: ${(props) => props.theme.headerBg};
+`;
 
 const StyledLogo = styled(EuiHeaderLogo)`
   width: 80px;
-`
+`;
 
 const Header: React.FC = () => {
   return (
@@ -23,7 +24,7 @@ const Header: React.FC = () => {
         </EuiHeaderSectionItem>
       </Container>
     </StyledHeder>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
