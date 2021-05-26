@@ -1,16 +1,28 @@
 import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo } from '@elastic/eui'
+import styled from 'styled-components'
+
 import Container from '../Container'
 import LogoSVG from '../../assets/images/logo.svg'
 
+const StyledHeder = styled(EuiHeader)`
+  height: 80px;
+  border-bottom: none;
+  box-shadow: none;
+`
+
+const StyledLogo = styled(EuiHeaderLogo)`
+  width: 80px;
+`
+
 const Header: React.FC = () => {
   return (
-    <EuiHeader position="fixed">
+    <StyledHeder position="fixed">
       <Container>
         <EuiHeaderSectionItem border="none">
-          <EuiHeaderLogo href="/" iconType={LogoSVG} iconTitle="DotOracle" />
+          <StyledLogo href="/" iconType={LogoSVG} iconTitle="DotOracle" />
         </EuiHeaderSectionItem>
       </Container>
-    </EuiHeader>
+    </StyledHeder>
   )
 }
 
