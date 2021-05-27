@@ -1,6 +1,7 @@
-import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo, EuiFlexGroup, EuiShowFor } from '@elastic/eui'
+import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo, EuiFlexGroup } from '@elastic/eui'
 import styled from 'styled-components'
 import DesktopNav from './DesktopNav'
+import MobileNav from './MobileNav'
 import AccountButton from '../AccountButton'
 import LogoPNG from '../../assets/images/logo.png'
 import LogoMobilePNG from '../../assets/images/logo-mobile.png'
@@ -46,17 +47,17 @@ const LogoMobile = styled(EuiHeaderLogo)`
 
 const Header: React.FC = () => {
   return (
-    <StyledHeader position="fixed">
+    <StyledHeader>
       <StyledContainer justifyContent="spaceBetween">
         <EuiHeaderSectionItem border="none">
           <LogoDekstop href="/" iconType={LogoPNG} iconTitle="DotOracle" />
           <LogoMobile href="/" iconType={LogoMobilePNG} iconTitle="DotOracle" />
         </EuiHeaderSectionItem>
+
         <EuiHeaderSectionItem border="none">
-          <EuiShowFor sizes={['m', 'l', 'xl']}>
-            <DesktopNav />
-          </EuiShowFor>
+          <DesktopNav />
           <AccountButton />
+          <MobileNav />
         </EuiHeaderSectionItem>
       </StyledContainer>
     </StyledHeader>

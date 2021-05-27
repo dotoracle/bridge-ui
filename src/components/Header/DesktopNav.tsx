@@ -1,4 +1,4 @@
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui'
+import { EuiFlexGroup, EuiFlexItem, EuiShowFor } from '@elastic/eui'
 import styled from 'styled-components'
 import NAV_ITEMS from './items'
 
@@ -50,14 +50,16 @@ const SubText = styled.span`
 
 const DesktopNav: React.FC = () => {
   return (
-    <EuiFlexGroup gutterSize="none" justifyContent="flexEnd">
-      {NAV_ITEMS.map(navItem => (
-        <MenuItem key={navItem.label} grow={false}>
-          <Link href={navItem.href ?? '#'}>{navItem.label}</Link>
-          {navItem.subLabel && <SubText>{navItem.subLabel}</SubText>}
-        </MenuItem>
-      ))}
-    </EuiFlexGroup>
+    <EuiShowFor sizes={['m', 'l', 'xl']}>
+      <EuiFlexGroup gutterSize="none" justifyContent="flexEnd">
+        {NAV_ITEMS.map(navItem => (
+          <MenuItem key={navItem.label} grow={false}>
+            <Link href={navItem.href ?? '#'}>{navItem.label}</Link>
+            {navItem.subLabel && <SubText>{navItem.subLabel}</SubText>}
+          </MenuItem>
+        ))}
+      </EuiFlexGroup>
+    </EuiShowFor>
   )
 }
 
