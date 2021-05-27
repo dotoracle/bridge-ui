@@ -2,6 +2,35 @@ import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui'
 import styled from 'styled-components'
 import NAV_ITEMS from './items'
 
+const MenuItem = styled(EuiFlexItem)`
+  padding: 0 20px;
+`
+
+const Link = styled.a`
+  position: relative;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #fff;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    transition: all 400ms ease;
+    background-color: ${props => props.theme.primary};
+  }
+
+  &:hover {
+    color: ${props => props.theme.primary};
+
+    &::before {
+      width: 100%;
+    }
+  }
+`
 const SubText = styled.span`
   position: absolute;
   left: 0;
@@ -15,12 +44,12 @@ const SubText = styled.span`
 
 const DesktopNav: React.FC = () => {
   return (
-    <EuiFlexGroup gutterSize="xl" justifyContent="flexEnd">
+    <EuiFlexGroup gutterSize="none" justifyContent="flexEnd">
       {NAV_ITEMS.map(navItem => (
-        <EuiFlexItem key={navItem.label} grow={false}>
-          <a href={navItem.href ?? '#'}>{navItem.label}</a>
+        <MenuItem key={navItem.label} grow={false}>
+          <Link href={navItem.href ?? '#'}>{navItem.label}</Link>
           {navItem.subLabel && <SubText>{navItem.subLabel}</SubText>}
-        </EuiFlexItem>
+        </MenuItem>
       ))}
     </EuiFlexGroup>
   )
