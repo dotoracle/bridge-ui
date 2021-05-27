@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import NAV_ITEMS from './items'
 
 const MenuItem = styled(EuiFlexItem)`
+  position: relative;
   padding: 0 20px;
 `
 
@@ -32,14 +33,19 @@ const Link = styled.a`
   }
 `
 const SubText = styled.span`
+  padding: 5px;
+  border-radius: 3px;
   position: absolute;
-  left: 0;
-  bottom: 10px;
-  width: 100%;
-  font-size: 9px;
+  right: 0;
+  top: -25px;
+  width: fit-content;
+  font-size: 7px;
+  font-weight: 600;
   text-align: center;
+  letter-spacing: 0.05rem;
   text-transform: uppercase;
-  color: primary;
+  color: #fff;
+  background-color: ${props => props.theme.primary};
 `
 
 const DesktopNav: React.FC = () => {

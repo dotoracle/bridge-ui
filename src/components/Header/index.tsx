@@ -1,6 +1,7 @@
 import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo, EuiFlexGroup } from '@elastic/eui'
 import styled from 'styled-components'
 import DesktopNav from './DesktopNav'
+import AccountButton from '../AccountButton'
 import LogoPNG from '../../assets/images/logo.png'
 
 const StyledContainer = styled(EuiFlexGroup)`
@@ -8,10 +9,6 @@ const StyledContainer = styled(EuiFlexGroup)`
   margin: 0 auto;
   width: 100%;
   max-width: 1280px;
-
-  > div {
-    height: 100%;
-  }
 `
 const StyledHeader = styled(EuiHeader)`
   height: 80px;
@@ -37,6 +34,7 @@ const Header: React.FC = () => {
         </EuiHeaderSectionItem>
         <EuiHeaderSectionItem border="none">
           <DesktopNav />
+          <AccountButton />
         </EuiHeaderSectionItem>
       </StyledContainer>
     </StyledHeader>
