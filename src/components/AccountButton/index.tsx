@@ -12,9 +12,7 @@ const StyledButton = styled(EuiButton)`
 `
 
 const AccountButton: React.FC = () => {
-  return (
-    <StyledButton fill>Connect Wallet</StyledButton>
-  )
+  return <StyledButton fill>Connect Wallet</StyledButton>
 }
 
 export default AccountButton

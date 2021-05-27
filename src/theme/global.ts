@@ -10,7 +10,8 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 700;
     text-transform: uppercase;
 
-    &:hover {
+    &:hover,
+    &:focus {
       transform: none !important;
       text-decoration: none !important;
     }
@@ -18,7 +19,8 @@ const GlobalStyle = createGlobalStyle`
     &.euiButton--primary {
       border-color: ${props => props.theme.primary};
 
-      &:hover {
+      &:hover,
+      &:focus {
         border-color: ${props => props.theme.secondary};
       }
     }
@@ -26,7 +28,8 @@ const GlobalStyle = createGlobalStyle`
     &.euiButton--primary.euiButton--fill {
       background-color: ${props => props.theme.primary};
 
-      &:hover {
+      &:hover,
+      &:focus {
         background-color: ${props => props.theme.secondary};
         border-color: ${props => props.theme.secondary};
       }
