@@ -11,7 +11,7 @@ const StyledButton = styled(EuiButton)`
   }
 `
 
-const AccountButton: React.FC = () => {
+const AccountButton = (): JSX.Element => {
   return <StyledButton fill>Connect Wallet</StyledButton>
 }
 

@@ -1,4 +1,4 @@
-import { EuiFlexGroup } from '@elastic/eui'
+import { EuiFlexGroup, EuiFlexGroupProps } from '@elastic/eui'
 import styled from 'styled-components'
 
 const StyledContainer = styled(EuiFlexGroup)`
@@ -13,7 +13,7 @@ const StyledContainer = styled(EuiFlexGroup)`
   }
 `
 
-const Container: React.FC = props => {
+const Container = (props: EuiFlexGroupProps): JSX.Element => {
   return <StyledContainer>{props.children}</StyledContainer>
 }
 

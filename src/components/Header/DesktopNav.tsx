@@ -48,7 +48,7 @@ const SubText = styled.span`
   background-color: ${props => props.theme.primary};
 `
 
-const DesktopNav: React.FC = () => {
+const DesktopNav = (): JSX.Element => {
   return (
     <EuiShowFor sizes={['m', 'l', 'xl']}>
       <EuiFlexGroup gutterSize="none" justifyContent="flexEnd">
