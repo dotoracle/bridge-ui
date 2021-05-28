@@ -5,9 +5,12 @@ import styled from 'styled-components'
 
 const StyledFooter = styled.div`
   padding-top: 1rem;
-  padding-bottom: 1rem;
   background-color: ${props => props.theme.footerBg};
   color: #fff;
+
+  @media (min-width: 768px) {
+    padding-bottom: 0.875rem;
+  }
 `
 const SocialLinks = styled.ul`
   @media (min-width: 768px) {
