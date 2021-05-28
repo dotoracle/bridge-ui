@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import theme from './index'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -17,21 +18,21 @@ const GlobalStyle = createGlobalStyle`
     }
 
     &.euiButton--primary {
-      border-color: ${props => props.theme.primary};
+      border-color: ${theme.primary};
 
       &:hover,
       &:focus {
-        border-color: ${props => props.theme.secondary};
+        border-color: ${theme.secondary};
       }
     }
 
     &.euiButton--primary.euiButton--fill {
-      background-color: ${props => props.theme.primary};
+      background-color: ${theme.primary};
 
       &:hover,
       &:focus {
-        background-color: ${props => props.theme.secondary};
-        border-color: ${props => props.theme.secondary};
+        background-color: ${theme.secondary};
+        border-color: ${theme.secondary};
       }
     }
   }

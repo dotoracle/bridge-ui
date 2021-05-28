@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'MarketSans';
+    src: url('MarketSans-SemiBold.eot');
+    src: url('MarketSans-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('MarketSans-SemiBold.woff2') format('woff2'),
+        url('MarketSans-SemiBold.woff') format('woff'),
+        url('MarketSans-SemiBold.ttf') format('truetype'),
+        url('MarketSans-SemiBold.svg#MarketSans-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}

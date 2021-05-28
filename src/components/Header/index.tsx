@@ -15,7 +15,7 @@ const StyledContainer = styled(EuiFlexGroup)`
 const StyledHeader = styled(EuiHeader)`
   min-height: 80px;
   border-bottom: none;
-  box-shadow: none;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
   background-color: ${props => props.theme.headerBg};
 `
 const LogoDekstop = styled(EuiHeaderLogo)`
