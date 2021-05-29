@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import { EuiTextAlign } from '@elastic/eui'
 import GlobalStyle from './theme/global'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import TokenSelect from './components/TokenSelect'
 import PageBackgroundPNG from './assets/images/page-bg.png'
-import '@elastic/eui/dist/eui_theme_light.css'
+import '@elastic/eui/dist/eui_theme_dark.css'
 import './assets/fonts/stylesheet.css'
 
 const PageContainer = styled.div`
@@ -85,7 +85,15 @@ const TitleShadow = styled.span`
     font-size: 90px;
   }
 `
-
+const SwapDiv = styled.div`
+  margin: 3rem auto 0;
+  border-radius: 40px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 50rem;
+  background-color: #0f0f1e;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+`
 const App = (): JSX.Element => {
   return (
     <>
@@ -97,6 +105,9 @@ const App = (): JSX.Element => {
           <Title>Cross-chain bridge</Title>
           <TitleShadow>Cross-chain bridge</TitleShadow>
         </TitleWrapper>
+        <SwapDiv>
+          <TokenSelect />
+        </SwapDiv>
       </PageContainer>
       <Footer />
     </>

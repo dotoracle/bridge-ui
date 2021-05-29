@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': ['warn'],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/ban-ts-comment': 0,
     // React
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
