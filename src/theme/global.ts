@@ -6,6 +6,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Montserrat', sans-serif;
   }
 
+  .euiModalHeader__title {
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
   .euiButton {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -27,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     &.euiButton--primary.euiButton--fill {
+      color: #fff;
       background-color: ${theme.primary};
 
       &:hover,
@@ -35,6 +41,10 @@ const GlobalStyle = createGlobalStyle`
         border-color: ${theme.secondary};
       }
     }
+  }
+
+  .euiFieldSearch:focus {
+    background-image: linear-gradient(to top, ${theme.primary}, ${theme.primary} 2px, #0000 2px, #0000 100%);
   }
 `
 

@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { EuiButton, EuiModal, EuiOutsideClickDetector } from '@elastic/eui'
-// @ts-ignore
-import { EuiWindowEvent } from '@elastic/eui/lib/services'
+import { EuiButton } from '@elastic/eui'
 import styled from 'styled-components'
+import TokenSearchModal from '../TokenSearchModal'
 
 const Label = styled.label`
   display: block;
@@ -38,12 +37,7 @@ const TokenSelect = (): JSX.Element => {
       <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>
         Select Token
       </SelectButton>
-      {isModalVisible && (
-        <EuiOutsideClickDetector onOutsideClick={closeModal}>
-          <EuiModal onClose={closeModal}>Modal</EuiModal>
-        </EuiOutsideClickDetector>
-      )}
-      <EuiWindowEvent event="keydown" handler={closeModal} />
+      {isModalVisible && <TokenSearchModal closeModal={closeModal} />}
     </>
   )
 }
