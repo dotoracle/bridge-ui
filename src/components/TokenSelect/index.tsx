@@ -35,7 +35,7 @@ const TokenSelect = (): JSX.Element => {
     <>
       <Label>Assets</Label>
       <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>
-        Select Token
+        Select a Token
       </SelectButton>
       {isModalVisible && <TokenSearchModal closeModal={closeModal} />}
     </>

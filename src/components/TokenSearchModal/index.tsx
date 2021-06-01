@@ -22,7 +22,7 @@ const TokenSearchModal = (props: ITokenSearchModalProps): JSX.Element => {
         <EuiModal onClose={closeModal} initialFocus="[name=search-token]" style={{ width: '420px' }}>
           <EuiModalHeader>
             <EuiModalHeaderTitle>
-              <h1>Select Token</h1>
+              <h1>Select a token</h1>
             </EuiModalHeaderTitle>
           </EuiModalHeader>
 
