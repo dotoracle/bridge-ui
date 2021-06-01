@@ -13,7 +13,7 @@ interface ITokenSearchModalProps {
   closeModal: () => void
 }
 
-const TokenSearchModal = (props: ITokenSearchModalProps): JSX.Element => {
+const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
 
   return (
@@ -36,4 +36,4 @@ const TokenSearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   )
 }
 
-export default TokenSearchModal
+export default SearchModal

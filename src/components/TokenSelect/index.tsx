@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { EuiButton } from '@elastic/eui'
 import styled from 'styled-components'
-import TokenSearchModal from '../TokenSearchModal'
+import SearchModal from '../SearchModal'
 
 const Label = styled.label`
   display: block;
@@ -37,7 +37,7 @@ const TokenSelect = (): JSX.Element => {
       <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>
         Select a Token
       </SelectButton>
-      {isModalVisible && <TokenSearchModal closeModal={closeModal} />}
+      {isModalVisible && <SearchModal closeModal={closeModal} />}
     </>
   )
 }
