@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import GlobalStyle from './theme/global'
+import Web3ReactManager from './components/Web3ReactManager'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import TokenSelect from './components/TokenSelect'
@@ -96,21 +97,23 @@ const SwapDiv = styled.div`
 `
 const App = (): JSX.Element => {
   return (
-    <>
-      <GlobalStyle />
-      <Header />
-      <PageContainer>
-        <SubHeading>Dot Oracle</SubHeading>
-        <TitleWrapper>
-          <Title>Cross-chain bridge</Title>
-          <TitleShadow>Cross-chain bridge</TitleShadow>
-        </TitleWrapper>
-        <SwapDiv>
-          <TokenSelect />
-        </SwapDiv>
-      </PageContainer>
-      <Footer />
-    </>
+    <Web3ReactManager>
+      <>
+        <GlobalStyle />
+        <Header />
+        <PageContainer>
+          <SubHeading>Dot Oracle</SubHeading>
+          <TitleWrapper>
+            <Title>Cross-chain bridge</Title>
+            <TitleShadow>Cross-chain bridge</TitleShadow>
+          </TitleWrapper>
+          <SwapDiv>
+            <TokenSelect />
+          </SwapDiv>
+        </PageContainer>
+        <Footer />
+      </>
+    </Web3ReactManager>
   )
 }
 
