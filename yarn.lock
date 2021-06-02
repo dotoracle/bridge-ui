@@ -1610,7 +1610,7 @@
     "@ethersproject/logger" "^5.3.0"
     "@ethersproject/properties" "^5.3.0"
 
-"@ethersproject/address@^5.0.2", "@ethersproject/address@^5.0.4", "@ethersproject/address@^5.3.0":
+"@ethersproject/address@^5.0.4", "@ethersproject/address@^5.3.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/address/-/address-5.3.0.tgz#e53b69eacebf332e8175de814c5e6507d6932518"
   integrity sha512-29TgjzEBK+gUEUAOfWCG7s9IxLNLCqvr+oDSk6L9TXD0VLvZJKhJV479tKQqheVA81OeGxfpdxYtUVH8hqlCvA==
@@ -2850,18 +2850,6 @@
   dependencies:
     "@typescript-eslint/types" "4.25.0"
     eslint-visitor-keys "^2.0.0"
-
-"@uniswap/sdk-core@^3.0.0-alpha.3":
-  version "3.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@uniswap/sdk-core/-/sdk-core-3.0.0-alpha.3.tgz#a742b430a9587fe48384aa5007706d225497c875"
-  integrity sha512-SS6fFbFZT2s/oq1dCdbqLGppVszfL1dkP8uQOIgXm9qecH9Vt70zTwQU73bLP2VskFZcpkN5inTAwSZiZSs5wA==
-  dependencies:
-    "@ethersproject/address" "^5.0.2"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.4"
-    tiny-invariant "^1.1.0"
-    toformat "^2.0.0"
 
 "@walletconnect/browser-utils@^1.4.1":
   version "1.4.1"
@@ -5551,11 +5539,6 @@ decamelize@^1.1.0, decamelize@^1.1.2, decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
-
-decimal.js-light@^2.5.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/decimal.js-light/-/decimal.js-light-2.5.1.tgz#134fd32508f19e208f4fb2f8dac0d2626a867934"
-  integrity sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==
 
 decimal.js@^10.2.0:
   version "10.2.1"
@@ -9468,11 +9451,6 @@ js-yaml@^3.13.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
-
-jsbi@^3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.1.4.tgz#9654dd02207a66a4911b4e4bb74265bc2cbc9dd0"
-  integrity sha512-52QRRFSsi9impURE8ZUbzAMCLjPm4THO7H2fcuIvaaeFTbSysvkodbQQXIVsNgq/ypDbq6dJiuGKL0vZ/i9hUg==
 
 jsbn@~0.1.0:
   version "0.1.1"
@@ -14838,7 +14816,7 @@ tiny-emitter@^2.0.0:
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
-tiny-invariant@^1.0.6, tiny-invariant@^1.1.0:
+tiny-invariant@^1.0.6:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.1.0.tgz#634c5f8efdc27714b7f386c35e6760991d230875"
   integrity sha512-ytxQvrb1cPc9WBEI/HSeYYoGD0kWnGEOR8RY6KomWLBVhqz0RgTwVO9dLrGz7dC+nN9llyI7OKAgRq8Vq4ZBSw==
@@ -14906,11 +14884,6 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
-
-toformat@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/toformat/-/toformat-2.0.0.tgz#7a043fd2dfbe9021a4e36e508835ba32056739d8"
-  integrity sha512-03SWBVop6nU8bpyZCx7SodpYznbZF5R4ljwNLBcTQzKOD9xuihRo/psX58llS1BMFhhAI08H3luot5GoXJz2pQ==
 
 toidentifier@1.0.0:
   version "1.0.0"
