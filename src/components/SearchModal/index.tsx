@@ -1,3 +1,4 @@
+import { useCallback, useState, useRef, useMemo } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -8,9 +9,15 @@ import {
 } from '@elastic/eui'
 // @ts-ignore
 import { EuiWindowEvent } from '@elastic/eui/lib/services'
+import { isAddress } from 'web3-utils'
+import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import styled from 'styled-components'
+import Token from '../../type/Token'
+import { filterTokens } from './filtering'
+import { useDebounce } from '../../hooks'
 import TokenList from './TokenList'
+import tokens from '../../tokens/tokenlist.json'
 
 const BreakLine = styled.div`
   margin-top: 15px;
@@ -32,6 +39,34 @@ interface ITokenSearchModalProps {
 
 const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const debouncedQuery = useDebounce(searchQuery, 200)
+
+  // if they input an address, use it
+  const isAddressSearch = isAddress(debouncedQuery)
+
+  //  const searchToken = useToken(debouncedQuery)
+  const filteredTokens: Token[] = useMemo(() => {
+    return filterTokens(tokens, debouncedQuery)
+  }, [tokens, debouncedQuery])
+
+  console.log(filteredTokens)
+
+  const onEscKeydown = (e: React.KeyboardEvent) => {
+    if (e.key === '27') {
+      closeModal()
+    }
+  }
+
+  // refs for fixed size lists
+  const fixedList = useRef<FixedSizeList>()
+
+  const handleInput = useCallback(event => {
+    const input = event.target.value
+    const checksummedInput = isAddress(input)
+    setSearchQuery(checksummedInput || input)
+    fixedList.current?.scrollTo(0)
+  }, [])
 
   return (
     <>
@@ -44,15 +79,20 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
           </EuiModalHeader>
 
           <ModalBody>
-            <EuiFieldSearch name="search-token" placeholder="Search name or paste address" />
+            <EuiFieldSearch
+              name="search-token"
+              value={searchQuery}
+              placeholder="Search name or paste address"
+              onChange={handleInput}
+            />
             <BreakLine />
             <AutoSizer defaultHeight={280} disableWidth>
-              {({ height }) => <TokenList height={height} />}
+              {({ height }) => <TokenList height={height} tokenList={filteredTokens} fixedListRef={fixedList} />}
             </AutoSizer>
           </ModalBody>
         </EuiModal>
       </EuiOutsideClickDetector>
-      <EuiWindowEvent event="keydown" handler={closeModal} />
+      <EuiWindowEvent event="keydown" handler={onEscKeydown} />
     </>
   )
 }

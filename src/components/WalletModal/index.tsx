@@ -106,6 +106,12 @@ const WalletModal = (props: IWalletModalProps): JSX.Element => {
     closeModal()
   }
 
+  const onEscKeydown = (e: React.KeyboardEvent) => {
+    if (e.key === '27') {
+      closeModal()
+    }
+  }
+
   return (
     <>
       <EuiOutsideClickDetector onOutsideClick={closeModal}>
@@ -124,7 +130,7 @@ const WalletModal = (props: IWalletModalProps): JSX.Element => {
           </EuiModalBody>
         </EuiModal>
       </EuiOutsideClickDetector>
-      <EuiWindowEvent event="keydown" handler={closeModal} />
+      <EuiWindowEvent event="keydown" handler={onEscKeydown} />
     </>
   )
 }
