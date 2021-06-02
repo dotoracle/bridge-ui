@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { EuiButton } from '@elastic/eui'
 import styled from 'styled-components'
 import WalletModal from '../WalletModal'
+import { useActiveWeb3React } from '../../hooks'
 
 const StyledButton = styled(EuiButton)`
   @media (min-width: 992px) {
@@ -14,6 +15,9 @@ const StyledButton = styled(EuiButton)`
 `
 
 const AccountButton = (): JSX.Element => {
+  const { account, chainId } = useActiveWeb3React()
+  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
+
   const [showWalletModal, setShowWalletModal] = useState(false)
 
   const closeModal = () => setShowWalletModal(false)
@@ -21,8 +25,18 @@ const AccountButton = (): JSX.Element => {
 
   return (
     <>
-      <StyledButton fill onClick={showModal}>Connect Wallet</StyledButton>
-      {showWalletModal && <WalletModal closeModal={closeModal} />}
+      {account ? (
+        <StyledButton fill onClick={showModal}>
+          {accountEllipsis}
+        </StyledButton>
+      ) : (
+        <>
+          <StyledButton fill onClick={showModal}>
+            Connect Wallet
+          </StyledButton>
+          {showWalletModal && <WalletModal closeModal={closeModal} />}
+        </>
+      )}
     </>
   )
 }

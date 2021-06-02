@@ -70,9 +70,12 @@ const WalletModal = (props: IWalletModalProps): JSX.Element => {
         window.localStorage.setItem(connectorLocalStorageKey, connectorID)
 
         if (error instanceof UnsupportedChainIdError) {
-          toast.error(<ToastMessage color="danger" headerText="Wrong network" bodyText="Please check your chain id." />, {
-            toastId: connectorID,
-          })
+          toast.error(
+            <ToastMessage color="danger" headerText="Wrong network" bodyText="Please check your chain id." />,
+            {
+              toastId: connectorID,
+            },
+          )
         } else if (error instanceof NoEthereumProviderError) {
           toast.error(<ToastMessage color="danger" headerText="No provider was found" />, {
             toastId: connectorID,

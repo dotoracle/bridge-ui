@@ -6,7 +6,6 @@ export const nodes = [process.env.REACT_APP_RPC_URL_1, process.env.REACT_APP_RPC
 
 const getRpcUrl = () => {
   const randomIndex = Math.floor(Math.random() * nodes.length)
-  console.log(nodes)
   return nodes[randomIndex]
 }
 
@@ -23,7 +22,7 @@ if (typeof NETWORK_URL === 'undefined') {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [56, 97],
+  supportedChainIds: [1, 42, 56, 97],
 })
 
 export const walletconnect = new WalletConnectConnector({
