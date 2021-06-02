@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { EuiButton } from '@elastic/eui'
 import styled from 'styled-components'
+import WalletModal from '../WalletModal'
 
 const StyledButton = styled(EuiButton)`
   @media (min-width: 992px) {
@@ -12,7 +14,17 @@ const StyledButton = styled(EuiButton)`
 `
 
 const AccountButton = (): JSX.Element => {
-  return <StyledButton fill>Connect Wallet</StyledButton>
+  const [showWalletModal, setShowWalletModal] = useState(false)
+
+  const closeModal = () => setShowWalletModal(false)
+  const showModal = () => setShowWalletModal(true)
+
+  return (
+    <>
+      <StyledButton fill onClick={showModal}>Connect Wallet</StyledButton>
+      {showWalletModal && <WalletModal closeModal={closeModal} />}
+    </>
+  )
 }
 
 export default AccountButton
