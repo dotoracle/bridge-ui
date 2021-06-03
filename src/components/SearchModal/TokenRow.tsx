@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Token from '../../type/Token'
 import UnknownSVG from '../../assets/images/unknown.svg'
+import { useTokenBalance, useActiveWeb3React } from '../../hooks'
 
 const Row = styled.div`
   display: grid;
@@ -33,6 +34,9 @@ const TokenName = styled.span`
   font-size: 12px;
   color: #6c7284;
 `
+const Balance = styled.span`
+  text-align: right;
+`
 
 interface ITokenRow {
   token: Token
@@ -42,6 +46,9 @@ interface ITokenRow {
 
 const TokenRow = (props: ITokenRow): JSX.Element => {
   const { token, isSelected, onSelect } = props
+  const { account } = useActiveWeb3React()
+  const tokenBalance = useTokenBalance(token.address, account)
+
   return (
     <Row onClick={() => (isSelected ? null : onSelect())} className={isSelected ? 'disabled' : ''}>
       <TokenLogo src={token.logoURI ? token.logoURI : UnknownSVG} alt={token.name} />
@@ -49,7 +56,8 @@ const TokenRow = (props: ITokenRow): JSX.Element => {
         <p>{token.symbol}</p>
         <TokenName>{token.name}</TokenName>
       </div>
-      <span>0</span>
+      <div>&nbsp;</div>
+      <Balance>{tokenBalance}</Balance>
     </Row>
   )
 }
