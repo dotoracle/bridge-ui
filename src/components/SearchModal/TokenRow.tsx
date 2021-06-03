@@ -19,7 +19,7 @@ const Row = styled.div`
 
   &.disabled {
     cursor: initial;
-    opacity: 0.4;
+    opacity: 0.3;
   }
 `
 const TokenLogo = styled.img`

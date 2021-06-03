@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useMemo } from 'react'
+import { useCallback, useState, useRef, useMemo, useContext } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -18,6 +18,7 @@ import { filterTokens } from './filtering'
 import { useDebounce, useToken } from '../../hooks'
 import TokenList from './TokenList'
 import TokenRow from './TokenRow'
+import BridgeAppContext from '../../context/BridgeAppContext'
 import tokens from '../../tokens/tokenlist.json'
 
 const BreakLine = styled.div`
@@ -43,6 +44,7 @@ interface ITokenSearchModalProps {
 
 const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
+  const { token: selectedToken, setToken } = useContext(BridgeAppContext)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
   const searchToken = useToken(isAddress(debouncedQuery) ? debouncedQuery : undefined)
@@ -72,6 +74,13 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
     closeModal()
   }
 
+  const handleSelectSearchToken = () => {
+    if (searchToken) {
+      setToken(searchToken)
+      closeModal()
+    }
+  }
+
   return (
     <>
       <EuiOutsideClickDetector onOutsideClick={closeModal}>
@@ -92,7 +101,11 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
             />
             <BreakLine />
             {searchToken ? (
-              <TokenRow token={searchToken} isSelected={true} onSelect={handleSelect} />
+              <TokenRow
+                token={searchToken}
+                isSelected={selectedToken?.address === searchToken.address}
+                onSelect={handleSelectSearchToken}
+              />
             ) : filteredTokens.length > 0 ? (
               <AutoSizer defaultHeight={280} disableWidth>
                 {({ height }) => (
