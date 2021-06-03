@@ -49,6 +49,7 @@ const TokenRow = (props: ITokenRow): JSX.Element => {
         <p>{token.symbol}</p>
         <TokenName>{token.name}</TokenName>
       </div>
+      <span>0</span>
     </Row>
   )
 }

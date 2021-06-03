@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Ethereum Mainnet",
+    "chainId": 1,
+    "isTestnet": false
+  },
+  {
+    "name": "Kovan",
+    "chainId": 42,
+    "isTestnet": true
+  }
+]
