@@ -15,8 +15,9 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import styled from 'styled-components'
 import Token from '../../type/Token'
 import { filterTokens } from './filtering'
-import { useDebounce } from '../../hooks'
+import { useDebounce, useToken } from '../../hooks'
 import TokenList from './TokenList'
+import TokenRow from './TokenRow'
 import tokens from '../../tokens/tokenlist.json'
 
 const BreakLine = styled.div`
@@ -41,16 +42,12 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
+  const searchToken = useToken(isAddress(debouncedQuery) ? debouncedQuery : undefined)
 
-  // if they input an address, use it
-  const isAddressSearch = isAddress(debouncedQuery)
-
-  //  const searchToken = useToken(debouncedQuery)
   const filteredTokens: Token[] = useMemo(() => {
     return filterTokens(tokens, debouncedQuery)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokens, debouncedQuery])
-
-  console.log(filteredTokens)
 
   const onEscKeydown = (e: React.KeyboardEvent) => {
     if (e.key === '27') {
@@ -63,7 +60,7 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
 
   const handleInput = useCallback(event => {
     const input = event.target.value
-    const checksummedInput = isAddress(input)
+    const checksummedInput = isAddress(input) ? input : false
     setSearchQuery(checksummedInput || input)
     fixedList.current?.scrollTo(0)
   }, [])
@@ -82,13 +79,18 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
             <EuiFieldSearch
               name="search-token"
               value={searchQuery}
+              autoComplete="off"
               placeholder="Search name or paste address"
               onChange={handleInput}
             />
             <BreakLine />
-            <AutoSizer defaultHeight={280} disableWidth>
-              {({ height }) => <TokenList height={height} tokenList={filteredTokens} fixedListRef={fixedList} />}
-            </AutoSizer>
+            {searchToken ? (
+              <TokenRow token={searchToken} isSelected={true} />
+            ) : (
+              <AutoSizer defaultHeight={280} disableWidth>
+                {({ height }) => <TokenList height={height} tokenList={filteredTokens} fixedListRef={fixedList} />}
+              </AutoSizer>
+            )}
           </ModalBody>
         </EuiModal>
       </EuiOutsideClickDetector>

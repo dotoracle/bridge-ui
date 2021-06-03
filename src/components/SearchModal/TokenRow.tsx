@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Token from '../../type/Token'
+import UnknownSVG from '../../assets/images/unknown.svg'
 
 const Row = styled.div`
   display: grid;
@@ -16,13 +17,11 @@ const Row = styled.div`
     background-color: #2c2f36;
   }
 `
-
 const TokenLogo = styled.img`
   width: 24px;
   height: 24px;
   border-radius: 100%;
 `
-
 const TokenName = styled.span`
   display: block;
   margin-top: 10px;
@@ -40,7 +39,7 @@ const TokenRow = (props: ITokenRow) => {
 
   return (
     <Row>
-      <TokenLogo src={token.logoURI} alt={token.name} />
+      <TokenLogo src={token.logoURI ? token.logoURI : UnknownSVG} alt={token.name} />
       <div>
         <p>{token.symbol}</p>
         <TokenName>{token.name}</TokenName>

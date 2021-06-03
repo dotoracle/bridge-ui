@@ -31,6 +31,7 @@ const TokenList = (props: ITokenListProps): JSX.Element => {
 
   return (
     <FixedSizeList
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={fixedListRef as any}
       height={height}
       width="100%"
