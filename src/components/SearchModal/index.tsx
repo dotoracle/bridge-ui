@@ -25,13 +25,16 @@ const BreakLine = styled.div`
   margin-bottom: 15px;
   border-top: 1px solid #333;
 `
-
 const ModalBody = styled(EuiModalBody)`
   min-height: 370px;
 
   .euiModalBody__overflow {
     overflow: hidden;
   }
+`
+const NoResultsFound = styled.p`
+  text-align: center;
+  color: #6c7284;
 `
 
 interface ITokenSearchModalProps {
@@ -86,10 +89,12 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
             <BreakLine />
             {searchToken ? (
               <TokenRow token={searchToken} isSelected={true} />
-            ) : (
+            ) : filteredTokens.length > 0 ? (
               <AutoSizer defaultHeight={280} disableWidth>
                 {({ height }) => <TokenList height={height} tokenList={filteredTokens} fixedListRef={fixedList} />}
               </AutoSizer>
+            ) : (
+              <NoResultsFound>No results found.</NoResultsFound>
             )}
           </ModalBody>
         </EuiModal>
