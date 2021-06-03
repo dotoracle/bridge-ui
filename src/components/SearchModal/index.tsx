@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useMemo, useContext } from 'react'
+import { useCallback, useState, useRef, useMemo, useContext, useEffect } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -6,6 +6,7 @@ import {
   EuiModalHeaderTitle,
   EuiModalBody,
   EuiFieldSearch,
+  EuiLoadingSpinner,
 } from '@elastic/eui'
 // @ts-ignore
 import { EuiWindowEvent } from '@elastic/eui/lib/services'
@@ -15,11 +16,11 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import styled from 'styled-components'
 import Token from '../../type/Token'
 import { filterTokens } from './filtering'
-import { useDebounce, useToken } from '../../hooks'
+import { useDebounce, useToken, useActiveWeb3React } from '../../hooks'
+import { getTokensFromConfig } from '../../utils'
 import TokenList from './TokenList'
 import TokenRow from './TokenRow'
 import BridgeAppContext from '../../context/BridgeAppContext'
-import tokens from '../../tokens/tokenlist.json'
 
 const BreakLine = styled.div`
   margin-top: 15px;
@@ -45,14 +46,37 @@ interface ITokenSearchModalProps {
 const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
   const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
+
+  const { library, chainId, account } = useActiveWeb3React()
+  const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
+  const [tokenList, setTokenList] = useState<Token[]>([])
+  const [isFetching, setFetching] = useState(false)
+
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
   const searchToken = useToken(isAddress(debouncedQuery) ? debouncedQuery : undefined)
 
-  const filteredTokens: Token[] = useMemo(() => {
-    return filterTokens(tokens, debouncedQuery)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setFetching(true)
+        setTokenList(await getTokensFromConfig(networkId))
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setFetching(false)
+      }
+    }
+
+    fetchData()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokens, debouncedQuery])
+  }, [library, chainId, account])
+
+  const filteredTokens: Token[] = useMemo(() => {
+    return filterTokens(tokenList, debouncedQuery)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tokenList, debouncedQuery])
 
   const onEscKeydown = (e: React.KeyboardEvent) => {
     if (e.key === '27') {
@@ -100,26 +124,34 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
               onChange={handleInput}
             />
             <BreakLine />
-            {searchToken ? (
-              <TokenRow
-                token={searchToken}
-                isSelected={selectedToken?.address === searchToken.address}
-                onSelect={handleSelectSearchToken}
-              />
-            ) : filteredTokens.length > 0 ? (
-              <AutoSizer defaultHeight={280} disableWidth>
-                {({ height }) => (
-                  <TokenList
-                    height={height}
-                    tokenList={filteredTokens}
-                    fixedListRef={fixedList}
-                    onTokenSelect={handleSelect}
-                  />
-                )}
-              </AutoSizer>
-            ) : (
-              <NoResultsFound>No results found.</NoResultsFound>
-            )}
+            <>
+              {isFetching ? (
+                <EuiLoadingSpinner />
+              ) : (
+                <>
+                  {searchToken ? (
+                    <TokenRow
+                      token={searchToken}
+                      isSelected={selectedToken?.address === searchToken.address}
+                      onSelect={handleSelectSearchToken}
+                    />
+                  ) : filteredTokens.length > 0 ? (
+                    <AutoSizer defaultHeight={280} disableWidth>
+                      {({ height }) => (
+                        <TokenList
+                          height={height}
+                          tokenList={filteredTokens}
+                          fixedListRef={fixedList}
+                          onTokenSelect={handleSelect}
+                        />
+                      )}
+                    </AutoSizer>
+                  ) : (
+                    <NoResultsFound>No results found.</NoResultsFound>
+                  )}
+                </>
+              )}
+            </>
           </ModalBody>
         </EuiModal>
       </EuiOutsideClickDetector>
