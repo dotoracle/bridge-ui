@@ -68,6 +68,10 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
     fixedList.current?.scrollTo(0)
   }, [])
 
+  const handleSelect = () => {
+    closeModal()
+  }
+
   return (
     <>
       <EuiOutsideClickDetector onOutsideClick={closeModal}>
@@ -88,10 +92,17 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
             />
             <BreakLine />
             {searchToken ? (
-              <TokenRow token={searchToken} isSelected={true} />
+              <TokenRow token={searchToken} isSelected={true} onSelect={handleSelect} />
             ) : filteredTokens.length > 0 ? (
               <AutoSizer defaultHeight={280} disableWidth>
-                {({ height }) => <TokenList height={height} tokenList={filteredTokens} fixedListRef={fixedList} />}
+                {({ height }) => (
+                  <TokenList
+                    height={height}
+                    tokenList={filteredTokens}
+                    fixedListRef={fixedList}
+                    onTokenSelect={handleSelect}
+                  />
+                )}
               </AutoSizer>
             ) : (
               <NoResultsFound>No results found.</NoResultsFound>

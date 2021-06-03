@@ -1,14 +1,13 @@
 import { createContext } from 'react'
 import Token from '../type/Token'
-import tokens from '../tokens/tokenlist.json'
 
 type BridgeAppContextType = {
-  token: Token
+  token: Token | undefined
   setToken: (value: Token) => void
 }
 
 const BridgeAppContext = createContext<BridgeAppContextType>({
-  token: tokens[0],
+  token: undefined,
   setToken: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 export default BridgeAppContext

@@ -8,11 +8,12 @@ interface ITokenListProps {
   height: number
   tokenList: Token[]
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
+  onTokenSelect: (token: Token) => void
 }
 
 const TokenList = (props: ITokenListProps): JSX.Element => {
-  const { height, tokenList, fixedListRef } = props
-  const { token: selectedToken } = useContext(BridgeAppContext)
+  const { height, tokenList, fixedListRef, onTokenSelect } = props
+  const { token: selectedToken, setToken } = useContext(BridgeAppContext)
 
   const itemKey = useCallback((index: number, data: Token[]) => {
     const token = data[index]
@@ -22,12 +23,20 @@ const TokenList = (props: ITokenListProps): JSX.Element => {
   const Row = useCallback(
     ({ data, index }) => {
       const token: Token = data[index]
-      const isSelected = Boolean(token && selectedToken && token.address === selectedToken.address)
 
-      return <TokenRow token={token} isSelected={isSelected} />
+      const isSelected = Boolean(token && selectedToken && token.address === selectedToken.address)
+      const handleSelect = () => {
+        if (token) {
+          onTokenSelect(token)
+          setToken(token)
+        }
+      }
+
+      return <TokenRow token={token} isSelected={isSelected} onSelect={handleSelect} />
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedToken],
-  ) // eslint-disable-line react-hooks/exhaustive-deps
+  )
 
   return (
     <FixedSizeList

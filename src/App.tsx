@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import { useState } from 'react'
+import BridgeAppContext from './context/BridgeAppContext'
+import Token from './type/Token'
 import GlobalStyle from './theme/global'
 import Web3ReactManager from './components/Web3ReactManager'
 import Header from './components/Header'
@@ -87,9 +90,11 @@ const TitleShadow = styled.span`
   }
 `
 const App = (): JSX.Element => {
+  const [token, setToken] = useState<Token>()
+
   return (
     <Web3ReactManager>
-      <>
+      <BridgeAppContext.Provider value={{ token, setToken }}>
         <GlobalStyle />
         <Header />
         <PageContainer>
@@ -102,7 +107,7 @@ const App = (): JSX.Element => {
           <SwapForm />
         </PageContainer>
         <Footer />
-      </>
+      </BridgeAppContext.Provider>
     </Web3ReactManager>
   )
 }

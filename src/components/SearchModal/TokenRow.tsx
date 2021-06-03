@@ -16,6 +16,11 @@ const Row = styled.div`
   &:hover {
     background-color: #2c2f36;
   }
+
+  &.disabled {
+    cursor: initial;
+    opacity: 0.4;
+  }
 `
 const TokenLogo = styled.img`
   width: 24px;
@@ -32,13 +37,13 @@ const TokenName = styled.span`
 interface ITokenRow {
   token: Token
   isSelected: boolean
+  onSelect: () => void
 }
 
-const TokenRow = (props: ITokenRow) => {
-  const { token, isSelected } = props
-
+const TokenRow = (props: ITokenRow): JSX.Element => {
+  const { token, isSelected, onSelect } = props
   return (
-    <Row>
+    <Row onClick={() => (isSelected ? null : onSelect())} className={isSelected ? 'disabled' : ''}>
       <TokenLogo src={token.logoURI ? token.logoURI : UnknownSVG} alt={token.name} />
       <div>
         <p>{token.symbol}</p>
