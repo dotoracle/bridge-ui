@@ -90,11 +90,11 @@ const TitleShadow = styled.span`
   }
 `
 const App = (): JSX.Element => {
-  const [token, setToken] = useState<Token>()
+  const [selectedToken, setSelectedToken] = useState<Token>()
 
   return (
     <Web3ReactManager>
-      <BridgeAppContext.Provider value={{ token, setToken }}>
+      <BridgeAppContext.Provider value={{ selectedToken, setSelectedToken }}>
         <GlobalStyle />
         <Header />
         <PageContainer>

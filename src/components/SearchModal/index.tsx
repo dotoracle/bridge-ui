@@ -44,7 +44,7 @@ interface ITokenSearchModalProps {
 
 const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
-  const { token: selectedToken, setToken } = useContext(BridgeAppContext)
+  const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
   const searchToken = useToken(isAddress(debouncedQuery) ? debouncedQuery : undefined)
@@ -76,7 +76,7 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
 
   const handleSelectSearchToken = () => {
     if (searchToken) {
-      setToken(searchToken)
+      setSelectedToken(searchToken)
       closeModal()
     }
   }

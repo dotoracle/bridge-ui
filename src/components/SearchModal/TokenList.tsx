@@ -13,7 +13,7 @@ interface ITokenListProps {
 
 const TokenList = (props: ITokenListProps): JSX.Element => {
   const { height, tokenList, fixedListRef, onTokenSelect } = props
-  const { token: selectedToken, setToken } = useContext(BridgeAppContext)
+  const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
 
   const itemKey = useCallback((index: number, data: Token[]) => {
     const token = data[index]
@@ -28,7 +28,7 @@ const TokenList = (props: ITokenListProps): JSX.Element => {
       const handleSelect = () => {
         if (token) {
           onTokenSelect(token)
-          setToken(token)
+          setSelectedToken(token)
         }
       }
 
