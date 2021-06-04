@@ -18,20 +18,18 @@ export const useAllNetworks = (library?: any): Network[] => {
   }, [networks]) // eslint-disable-line react-hooks/exhaustive-deps
 }
 
-export const useAllNetworksWithFilter = (filter: boolean, isTestnet?: boolean, library?: any): Network[] => {
+export const useAllNetworksWithFilter = (isTestnet?: boolean, library?: any): Network[] => {
   const networks = useAllNetworks(library)
 
   return useMemo(() => {
-    if (filter) {
-      return isTestnet ? networks.filter(n => n.isTestnet) : networks.filter(n => !n.isTestnet)
-    }
+    return isTestnet ? networks.filter(n => n.isTestnet) : networks.filter(n => !n.isTestnet)
 
     return networks
-  }, [filter, isTestnet, networks])
+  }, [isTestnet, networks])
 }
 
 export const useOtherNetworks = (network?: Network, library?: any): Network[] => {
-  const networks = useAllNetworksWithFilter(true, network ? network.isTestnet : false, library)
+  const networks = useAllNetworksWithFilter(network ? network.isTestnet : false, library)
 
   return useMemo(() => {
     const chainId = network ? network.chainId : process.env.REACT_APP_CHAIN_ID

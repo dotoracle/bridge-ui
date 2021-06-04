@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { EuiPopover, EuiButtonIcon } from '@elastic/eui'
 import styled from 'styled-components'
 import Network from '../../type/Network'
+import NetworkList from './NetworkList'
 import UnknownSVG from '../../assets/images/unknown.svg'
 
 const NetworkWrapper = styled.div`
@@ -82,7 +83,7 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
                 isOpen={isPopoverOpen}
                 closePopover={() => setIsPopoverOpen(false)}
               >
-                <p>Popover content that&rsquo;s wider than the default width</p>
+                <NetworkList selectedNetwork={network} />
               </EuiPopover>
             )}
           </NetworkLogo>

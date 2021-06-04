@@ -40,9 +40,9 @@ const StyledLabel = styled.label`
 
 const SwapForm = (): JSX.Element => {
   const { account, chainId, library } = useActiveWeb3React()
-  const networkFrom = useNetworkInfo(chainId, library)
-  const otherNetworks = useOtherNetworks(networkFrom, library)
-  const networkTo = otherNetworks[0]
+  const sourceNetwork = useNetworkInfo(chainId, library)
+  const otherNetworks = useOtherNetworks(sourceNetwork, library)
+  const targetNetwork = otherNetworks[0]
 
   return (
     <SwapWrapper>
@@ -50,8 +50,8 @@ const SwapForm = (): JSX.Element => {
       <NetworkWrapper>
         <NetworkItem>
           <StyledLabel>From</StyledLabel>
-          {typeof networkFrom !== 'undefined' && (
-            <NetworkBox network={networkFrom} showDropdown={account ? false : true} />
+          {typeof sourceNetwork !== 'undefined' && (
+            <NetworkBox network={sourceNetwork} showDropdown={account ? false : true} />
           )}
         </NetworkItem>
 
@@ -61,7 +61,7 @@ const SwapForm = (): JSX.Element => {
 
         <NetworkItem>
           <StyledLabel>To</StyledLabel>
-          {typeof networkTo !== 'undefined' && <NetworkBox network={networkTo} showDropdown={true} />}
+          {typeof targetNetwork !== 'undefined' && <NetworkBox network={targetNetwork} showDropdown={true} />}
         </NetworkItem>
       </NetworkWrapper>
     </SwapWrapper>
