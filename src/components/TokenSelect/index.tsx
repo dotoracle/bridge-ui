@@ -49,8 +49,8 @@ const TokenSelect = (): JSX.Element => {
       <Label>Assets</Label>
       {selectedToken ? (
         <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>
-          <TokenLogo src={selectedToken.logoURI ? selectedToken.logoURI : UnknownSVG} alt={selectedToken.name} />
-          {selectedToken.name}
+          <TokenLogo src={selectedToken.logoURI ? selectedToken.logoURI : UnknownSVG} alt={selectedToken.symbol} />
+          {selectedToken.symbol}
         </SelectButton>
       ) : (
         <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Ethereum Mainnet",
+    "chainId": 1,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
+    "isTestnet": false
+  },
+  {
+    "name": "Kovan Test Network",
+    "chainId": 42,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
+    "isTestnet": true
+  }
+]
