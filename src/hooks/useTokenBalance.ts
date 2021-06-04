@@ -8,7 +8,7 @@ const useTokenBalance = (tokenAddress: string, account?: string | null | undefin
   try {
     useEffect(() => {
       const fetchData = async () => {
-        const _balance = await tokenContract?.methods.balanceOf(account).call()
+        const _balance = account ? await tokenContract?.methods.balanceOf(account).call() : -1
         setBalance(_balance)
       }
 

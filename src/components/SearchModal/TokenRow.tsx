@@ -57,7 +57,7 @@ const TokenRow = (props: ITokenRow): JSX.Element => {
         <TokenName>{token.name}</TokenName>
       </div>
       <div>&nbsp;</div>
-      <Balance>{tokenBalance}</Balance>
+      {tokenBalance >= 0 ? <Balance>{tokenBalance}</Balance> : <Balance>&nbsp;</Balance>}
     </Row>
   )
 }
