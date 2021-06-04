@@ -1,3 +1,4 @@
+import { EuiIcon } from '@elastic/eui'
 import styled from 'styled-components'
 import Network from '../../type/Network'
 import { useActiveWeb3React, useAllNetworksWithFilter, useNetworkInfo } from '../../hooks'
@@ -9,6 +10,7 @@ const NetworkListWrapper = styled.div`
 const NetworkRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #333;
@@ -19,18 +21,26 @@ const NetworkRow = styled.div`
     border: 0;
   }
 
-  &.is-selected {
+  &.is-disabled {
     opacity: 0.5;
     cursor: initial;
   }
 `
 const NetworkLogo = styled.img`
+  display: inline-block;
+  vertical-align: middle;
   width: 24px;
   height: 24px;
   margin-right: 0.5rem;
 `
 const NetworkName = styled.span`
-  font-size: 0.875rem;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0.8rem;
+`
+const CheckIcon = styled(EuiIcon)`
+  color: ${props => props.theme.primary};
+  margin-left: 0.75rem;
 `
 
 interface INetworkList {
@@ -55,8 +65,11 @@ const NetworkList = (props: INetworkList): JSX.Element => {
             className={selectedNetwork.chainId === network.chainId ? 'is-selected' : ''}
             onClick={onSelectNetwork}
           >
-            <NetworkLogo src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
-            <NetworkName>{network.name}</NetworkName>
+            <div>
+              <NetworkLogo src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
+              <NetworkName>{network.name}</NetworkName>
+            </div>
+            {selectedNetwork.chainId === network.chainId && <CheckIcon type="check" color="red" />}
           </NetworkRow>
         )
       })}
