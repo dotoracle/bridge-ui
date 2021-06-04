@@ -92,13 +92,20 @@ const TitleShadow = styled.span`
 `
 const App = (): JSX.Element => {
   const [selectedToken, setSelectedToken] = useState<Token>()
-  const [fromNetwork, setFromNetwork] = useState<Network>()
-  const [toNetwork, setToNetwork] = useState<Network>()
+  const [sourceNetwork, setSourceNetwork] = useState<Network>()
+  const [targetNetwork, setTargetNetwork] = useState<Network>()
 
   return (
     <Web3ReactManager>
       <BridgeAppContext.Provider
-        value={{ selectedToken, setSelectedToken, fromNetwork, setFromNetwork, toNetwork, setToNetwork }}
+        value={{
+          selectedToken,
+          setSelectedToken,
+          sourceNetwork,
+          setSourceNetwork,
+          targetNetwork,
+          setTargetNetwork,
+        }}
       >
         <GlobalStyle />
         <Header />

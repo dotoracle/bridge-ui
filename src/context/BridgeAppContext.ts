@@ -6,18 +6,18 @@ import Network from '../type/Network'
 type BridgeAppContextType = {
   selectedToken: Token | undefined
   setSelectedToken: (value: Token) => void
-  fromNetwork: Network | undefined
-  setFromNetwork: (value: Network) => void
-  toNetwork: Network | undefined
-  setToNetwork: (value: Network) => void
+  sourceNetwork: Network | undefined
+  setSourceNetwork: (value: Network) => void
+  targetNetwork: Network | undefined
+  setTargetNetwork: (value: Network) => void
 }
 
 const BridgeAppContext = createContext<BridgeAppContextType>({
   selectedToken: undefined,
   setSelectedToken: () => {},
-  fromNetwork: undefined,
-  setFromNetwork: () => {},
-  toNetwork: undefined,
-  setToNetwork: () => {},
+  sourceNetwork: undefined,
+  setSourceNetwork: () => {},
+  targetNetwork: undefined,
+  setTargetNetwork: () => {},
 })
 export default BridgeAppContext

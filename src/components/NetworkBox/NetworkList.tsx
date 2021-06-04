@@ -44,6 +44,8 @@ const NetworkList = (props: INetworkList): JSX.Element => {
 
   const networks = useAllNetworksWithFilter(currentNetwork?.isTestnet, library)
 
+  const onSelectNetwork = () => {}
+
   return (
     <NetworkListWrapper>
       {networks.map(network => {
@@ -51,6 +53,7 @@ const NetworkList = (props: INetworkList): JSX.Element => {
           <NetworkRow
             key={network.chainId}
             className={selectedNetwork.chainId === network.chainId ? 'is-selected' : ''}
+            onClick={onSelectNetwork}
           >
             <NetworkLogo src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
             <NetworkName>{network.name}</NetworkName>
