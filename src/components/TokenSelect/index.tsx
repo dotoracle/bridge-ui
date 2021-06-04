@@ -21,6 +21,7 @@ const SelectButton = styled(EuiButton)`
   border: 0;
   color: #fff;
   background-color: #32323c;
+  margin-bottom: 2rem;
 
   .euiButtonContent {
     justify-content: space-between;
