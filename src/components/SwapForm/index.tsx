@@ -13,7 +13,7 @@ const SwapWrapper = styled.div`
   background-color: #0f0f1e;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
 
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     width: 100%;
   }
 `

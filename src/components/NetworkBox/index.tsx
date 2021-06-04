@@ -10,13 +10,9 @@ const NetworkWrapper = styled.div`
   justify-content: space-between;
   padding: 1rem;
   background-color: #32323c;
-  background: linear-gradient(180deg, #e2007a 0%, #32323c 100%);
+  background: linear-gradient(135deg, #e2007a 0%, #32323c 100%);
   border-radius: 0.5rem;
   min-height: 7.5rem;
-
-  @media (min-width: 768px) {
-    align-items: center;
-  }
 `
 const NetworkLogo = styled.div`
   display: flex;
@@ -46,6 +42,18 @@ const NetworkName = styled.p`
     font-size: 0.875rem;
   }
 `
+const NetworkButton = styled(EuiButtonIcon)`
+  &.euiButtonIcon--fill {
+    background-color: #fff;
+    border-color: #fff;
+
+    &:hover,
+    &:focus {
+      background-color: ${props => props.theme.primary} !important;
+      border-color: ${props => props.theme.primary} !important;
+    }
+  }
+`
 
 interface INetworkBoxProps {
   network: Network
@@ -65,7 +73,8 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
             {showDropdown && (
               <EuiPopover
                 button={
-                  <EuiButtonIcon
+                  <NetworkButton
+                    display="fill"
                     iconType="arrowDown"
                     onClick={() => setIsPopoverOpen(_isPopoverOpen => !_isPopoverOpen)}
                   />
