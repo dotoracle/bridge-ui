@@ -1,6 +1,8 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
+import BridgeAppContext from '../../context/BridgeAppContext'
 import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hooks'
 import ArrowSVG from '../../assets/images/arrow-right.svg'
 
@@ -40,9 +42,13 @@ const StyledLabel = styled.label`
 
 const SwapForm = (): JSX.Element => {
   const { account, chainId, library } = useActiveWeb3React()
-  const sourceNetwork = useNetworkInfo(chainId, library)
+  const { sourceNetwork: sourceNetworkContext, targetNetwork: targetNetworkContext } = useContext(BridgeAppContext)
+
+  const sourceNetworkHook = useNetworkInfo(chainId, library)
+  const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
+
   const otherNetworks = useOtherNetworks(sourceNetwork, library)
-  const targetNetwork = otherNetworks[0]
+  const targetNetwork = targetNetworkContext ? targetNetworkContext : otherNetworks[0]
 
   return (
     <SwapWrapper>
@@ -50,9 +56,12 @@ const SwapForm = (): JSX.Element => {
       <NetworkWrapper>
         <NetworkItem>
           <StyledLabel>From</StyledLabel>
-          {typeof sourceNetwork !== 'undefined' && (
-            <NetworkBox network={sourceNetwork} showDropdown={account ? false : true} />
-          )}
+          <NetworkBox
+            selectedNetwork={sourceNetwork}
+            otherNetwork={targetNetwork}
+            showDropdown={account ? false : true}
+            side="SOURCE"
+          />
         </NetworkItem>
 
         <div style={{ alignSelf: 'center', marginTop: '2rem' }}>
@@ -61,7 +70,7 @@ const SwapForm = (): JSX.Element => {
 
         <NetworkItem>
           <StyledLabel>To</StyledLabel>
-          {typeof targetNetwork !== 'undefined' && <NetworkBox network={targetNetwork} showDropdown={true} />}
+          <NetworkBox selectedNetwork={targetNetwork} otherNetwork={sourceNetwork} showDropdown={true} side="TARGET" />
         </NetworkItem>
       </NetworkWrapper>
     </SwapWrapper>

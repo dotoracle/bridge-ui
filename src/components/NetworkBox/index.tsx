@@ -57,20 +57,22 @@ const NetworkButton = styled(EuiButtonIcon)`
 `
 
 interface INetworkBoxProps {
-  network: Network
+  selectedNetwork: Network | undefined
+  otherNetwork: Network | undefined
   showDropdown: boolean
+  side: 'SOURCE' | 'TARGET'
 }
 
 const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
-  const { network, showDropdown } = props
+  const { selectedNetwork, otherNetwork, showDropdown, side } = props
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   return (
     <NetworkWrapper>
-      {network && (
+      {selectedNetwork && otherNetwork && (
         <>
           <NetworkLogo>
-            <img src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
+            <img src={selectedNetwork.logoURI ? selectedNetwork.logoURI : UnknownSVG} alt={selectedNetwork.name} />
             {showDropdown && (
               <EuiPopover
                 button={
@@ -83,12 +85,12 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
                 isOpen={isPopoverOpen}
                 closePopover={() => setIsPopoverOpen(false)}
               >
-                <NetworkList selectedNetwork={network} />
+                <NetworkList selectedNetwork={selectedNetwork} otherNetwork={otherNetwork} />
               </EuiPopover>
             )}
           </NetworkLogo>
           <ChooseNetwork>
-            <NetworkName>{network.name}</NetworkName>
+            <NetworkName>{selectedNetwork.name}</NetworkName>
           </ChooseNetwork>
         </>
       )}
