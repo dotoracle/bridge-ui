@@ -49,13 +49,9 @@ const NetworkRow = (props: INetworkRowProps): JSX.Element => {
   const { network, isSelected, isDisabled, onSelect } = props
 
   return (
-    <Row className={isDisabled ? 'is-disabled' : ''}>
+    <Row className={isDisabled ? 'is-disabled' : ''} onClick={() => (isSelected || isDisabled ? null : onSelect())}>
       <div>
-        <NetworkLogo
-          src={network.logoURI ? network.logoURI : UnknownSVG}
-          alt={network.name}
-          onClick={() => (isSelected || isDisabled ? null : onSelect())}
-        />
+        <NetworkLogo src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
         <NetworkName>{network.name}</NetworkName>
       </div>
       {isSelected && <CheckIcon type="check" />}

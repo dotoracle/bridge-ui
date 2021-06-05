@@ -11,7 +11,7 @@ const NetworkWrapper = styled.div`
   justify-content: space-between;
   padding: 1rem;
   background-color: #32323c;
-  background: linear-gradient(135deg, #e2007a 0%, #32323c 100%);
+  background: linear-gradient(-45deg, #e2007a 0%, #32323c 100%);
   border-radius: 0.5rem;
   min-height: 7.5rem;
 `
@@ -67,6 +67,10 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
   const { selectedNetwork, otherNetwork, showDropdown, side } = props
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
+  const onNetworkSelect = () => {
+    setIsPopoverOpen(false)
+  }
+
   return (
     <NetworkWrapper>
       {selectedNetwork && otherNetwork && (
@@ -79,13 +83,19 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
                   <NetworkButton
                     display="fill"
                     iconType="arrowDown"
+                    aria-label="Select Network"
                     onClick={() => setIsPopoverOpen(_isPopoverOpen => !_isPopoverOpen)}
                   />
                 }
                 isOpen={isPopoverOpen}
                 closePopover={() => setIsPopoverOpen(false)}
               >
-                <NetworkList selectedNetwork={selectedNetwork} otherNetwork={otherNetwork} />
+                <NetworkList
+                  selectedNetwork={selectedNetwork}
+                  otherNetwork={otherNetwork}
+                  side={side}
+                  onNetworkSelect={onNetworkSelect}
+                />
               </EuiPopover>
             )}
           </NetworkLogo>
