@@ -24,11 +24,13 @@ const GlobalStyle = createGlobalStyle`
     }
 
     &.euiButton--primary {
+      color: ${theme.primary};
       border-color: ${theme.primary};
 
       &:hover,
       &:focus {
         border-color: ${theme.secondary};
+        background-color: ${theme.secondary}1a;
       }
     }
 
@@ -44,6 +46,7 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .euiFieldText:focus,
   .euiFieldSearch:focus {
     background-image: linear-gradient(to top, ${theme.primary}, ${theme.primary} 2px, #0000 2px, #0000 100%);
   }

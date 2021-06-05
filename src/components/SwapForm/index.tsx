@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import styled from 'styled-components'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
+import AmountInput from '../AmountInput'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hooks'
 import ArrowSVG from '../../assets/images/arrow-right.svg'
@@ -19,9 +20,10 @@ const SwapWrapper = styled.div`
     width: 100%;
   }
 `
-const NetworkWrapper = styled.div`
+const FormRow = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2rem;
 `
 const NetworkItem = styled.div`
   flex: 1 1 0;
@@ -52,8 +54,12 @@ const SwapForm = (): JSX.Element => {
 
   return (
     <SwapWrapper>
-      <TokenSelect />
-      <NetworkWrapper>
+
+      <FormRow>
+        <TokenSelect />
+      </FormRow>
+
+      <FormRow>
         <NetworkItem>
           <StyledLabel>From</StyledLabel>
           <NetworkBox
@@ -72,7 +78,11 @@ const SwapForm = (): JSX.Element => {
           <StyledLabel>To</StyledLabel>
           <NetworkBox selectedNetwork={targetNetwork} otherNetwork={sourceNetwork} showDropdown={true} side="TARGET" />
         </NetworkItem>
-      </NetworkWrapper>
+      </FormRow>
+
+      <FormRow>
+        <AmountInput />
+      </FormRow>
     </SwapWrapper>
   )
 }

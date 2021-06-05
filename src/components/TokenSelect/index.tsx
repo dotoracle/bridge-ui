@@ -10,6 +10,9 @@ const Label = styled.label`
   margin-bottom: 1rem;
   color: #aeaeb3;
 `
+const TokenSelectWrapper = styled.div`
+  width: 100%;
+`
 const TokenLogo = styled.img`
   width: 24px;
   height: 24px;
@@ -19,9 +22,8 @@ const TokenLogo = styled.img`
 const SelectButton = styled(EuiButton)`
   width: 100%;
   border: 0;
-  color: #fff;
+  color: #fff !important;
   background-color: #32323c;
-  margin-bottom: 2rem;
 
   .euiButtonContent {
     justify-content: space-between;
@@ -46,7 +48,7 @@ const TokenSelect = (): JSX.Element => {
   const showModal = () => setIsModalVisible(true)
 
   return (
-    <>
+    <TokenSelectWrapper>
       <Label>Assets</Label>
       {selectedToken ? (
         <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>
@@ -59,7 +61,7 @@ const TokenSelect = (): JSX.Element => {
         </SelectButton>
       )}
       {isModalVisible && <SearchModal closeModal={closeModal} />}
-    </>
+    </TokenSelectWrapper>
   )
 }
 
