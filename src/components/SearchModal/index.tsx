@@ -12,7 +12,6 @@ import {
 import { EuiWindowEvent } from '@elastic/eui/lib/services'
 import { isAddress } from 'web3-utils'
 import { FixedSizeList } from 'react-window'
-import AutoSizer from 'react-virtualized-auto-sizer'
 import styled from 'styled-components'
 import Token from '../../type/Token'
 import { filterTokens } from './filtering'
@@ -136,16 +135,7 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
                       onSelect={handleSelectSearchToken}
                     />
                   ) : filteredTokens.length > 0 ? (
-                    <AutoSizer defaultHeight={280} disableWidth>
-                      {({ height }) => (
-                        <TokenList
-                          height={height}
-                          tokenList={filteredTokens}
-                          fixedListRef={fixedList}
-                          onTokenSelect={handleSelect}
-                        />
-                      )}
-                    </AutoSizer>
+                    <TokenList tokenList={filteredTokens} fixedListRef={fixedList} onTokenSelect={handleSelect} />
                   ) : (
                     <NoResultsFound>No results found.</NoResultsFound>
                   )}

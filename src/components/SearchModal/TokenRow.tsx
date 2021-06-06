@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Token from '../../type/Token'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import { useTokenBalance, useActiveWeb3React } from '../../hooks'
+import { formatNumber } from '../../utils'
 
 const Row = styled.div`
   display: grid;
@@ -57,7 +58,7 @@ const TokenRow = (props: ITokenRow): JSX.Element => {
         <TokenName>{token.name}</TokenName>
       </div>
       <div>&nbsp;</div>
-      {tokenBalance >= 0 ? <Balance>{tokenBalance}</Balance> : <Balance>&nbsp;</Balance>}
+      {tokenBalance >= 0 ? <Balance>{formatNumber(tokenBalance)}</Balance> : <Balance>&nbsp;</Balance>}
     </Row>
   )
 }

@@ -5,14 +5,13 @@ import Token from '../../type/Token'
 import BridgeAppContext from '../../context/BridgeAppContext'
 
 interface ITokenListProps {
-  height: number
   tokenList: Token[]
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   onTokenSelect: (token: Token) => void
 }
 
 const TokenList = (props: ITokenListProps): JSX.Element => {
-  const { height, tokenList, fixedListRef, onTokenSelect } = props
+  const { tokenList, fixedListRef, onTokenSelect } = props
   const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
 
   const itemKey = useCallback((index: number, data: Token[]) => {
@@ -42,7 +41,7 @@ const TokenList = (props: ITokenListProps): JSX.Element => {
     <FixedSizeList
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={fixedListRef as any}
-      height={height}
+      height={5 * 56}
       width="100%"
       itemData={tokenList}
       itemCount={tokenList.length}
