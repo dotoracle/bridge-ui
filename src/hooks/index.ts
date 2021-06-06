@@ -1,16 +1,19 @@
-import { useActiveWeb3React, useEagerConnect, useInactiveListener } from './useWeb3'
-import { useToken } from './useToken'
+import useBridgeAddress from './useBridgeAddress'
+import { useTokenContract, useBridgeContract } from './useContract'
+import useDebounce from './useDebounce'
 import { useAllNetworks, useAllNetworksWithFilter, useOtherNetworks, useNetworkInfo } from './useNetwork'
 import useRpcUrl from './useRpcUrl'
-import { useTokenContract } from './useContract'
-import useDebounce from './useDebounce'
+import { useToken } from './useToken'
 import useTokenBalance from './useTokenBalance'
+import { useActiveWeb3React, useEagerConnect, useInactiveListener } from './useWeb3'
 
 export {
+  useBridgeAddress,
   useActiveWeb3React,
   useEagerConnect,
   useInactiveListener,
   useTokenContract,
+  useBridgeContract,
   useAllNetworks,
   useAllNetworksWithFilter,
   useOtherNetworks,

@@ -5,6 +5,8 @@ type Network = {
   explorer: string
   rpcURL: string
   isTestnet: boolean
+  bridge: string
+  firstBlockCrawl: number
 }
 
 export default Network

@@ -6,6 +6,7 @@ import { getContract } from '../utils'
 
 // ABI
 import ERC20_ABI from '../constants/abi/ERC20.abi.json'
+import BRIDGE_ABI from '../constants/abi/GenericBridge.abi.json'
 
 const useContract = (address?: string, abi?: any) => {
   const { library, account } = useActiveWeb3React()
@@ -25,4 +26,8 @@ const useContract = (address?: string, abi?: any) => {
 
 export const useTokenContract = (address?: string): Contract | null => {
   return useContract(address, ERC20_ABI)
+}
+
+export const useBridgeContract = (address?: string): Contract | null => {
+  return useContract(address, BRIDGE_ABI)
 }
