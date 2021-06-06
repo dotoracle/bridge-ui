@@ -38,16 +38,13 @@ const AccountButton = (): JSX.Element => {
 
   const [showWalletModal, setShowWalletModal] = useState(false)
 
-  const closeModal = () => setShowWalletModal(false)
-  const showModal = () => setShowWalletModal(true)
-
   const networkInfo = useNetworkInfo(chainId, library)
 
   return (
     <>
       {account ? (
         <>
-          <StyledButton fill onClick={showModal}>
+          <StyledButton fill>
             <ButtonInner>
               {networkInfo && networkInfo.logoURI && <NetworkLogo src={networkInfo.logoURI} alt={networkInfo.name} />}
               <EuiTextAlign textAlign="left">
@@ -59,10 +56,10 @@ const AccountButton = (): JSX.Element => {
         </>
       ) : (
         <>
-          <StyledButton fill onClick={showModal}>
+          <StyledButton fill onClick={() => setShowWalletModal(true)}>
             Connect Wallet
           </StyledButton>
-          {showWalletModal && <WalletModal closeModal={closeModal} />}
+          {showWalletModal && <WalletModal closeModal={() => setShowWalletModal(false)} />}
         </>
       )}
     </>

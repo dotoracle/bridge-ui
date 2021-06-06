@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
 import AmountInput from '../AmountInput'
+import StepButtons from '../StepButtons'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hooks'
 import ArrowSVG from '../../assets/images/arrow-right.svg'
@@ -81,6 +82,10 @@ const SwapForm = (): JSX.Element => {
 
       <FormRow>
         <AmountInput />
+      </FormRow>
+
+      <FormRow>
+        <StepButtons />
       </FormRow>
     </SwapWrapper>
   )
