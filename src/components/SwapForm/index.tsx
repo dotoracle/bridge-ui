@@ -54,7 +54,6 @@ const SwapForm = (): JSX.Element => {
 
   return (
     <SwapWrapper>
-
       <FormRow>
         <TokenSelect />
       </FormRow>

@@ -13,7 +13,7 @@
   },
   {
     "name": "Binance Smart Chain Testnet",
-    "chainId": 56,
+    "chainId": 97,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png",
     "isTestnet": true
   },

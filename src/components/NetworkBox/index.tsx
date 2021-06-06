@@ -29,12 +29,7 @@ const NetworkLogo = styled.div`
     }
   }
 `
-const ChooseNetwork = styled.div`
-  display: flex;
-  align-items: flex-end;
-`
 const NetworkName = styled.p`
-  flex: 1 1 0;
   font-size: 0.75rem;
   line-height: 1.5;
   color: #e6e8ea;
@@ -73,7 +68,7 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
 
   return (
     <NetworkWrapper>
-      {selectedNetwork && otherNetwork && (
+      {selectedNetwork && otherNetwork ? (
         <>
           <NetworkLogo>
             <img src={selectedNetwork.logoURI ? selectedNetwork.logoURI : UnknownSVG} alt={selectedNetwork.name} />
@@ -99,9 +94,14 @@ const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
               </EuiPopover>
             )}
           </NetworkLogo>
-          <ChooseNetwork>
-            <NetworkName>{selectedNetwork.name}</NetworkName>
-          </ChooseNetwork>
+          <NetworkName>{selectedNetwork.name}</NetworkName>
+        </>
+      ) : (
+        <>
+          <NetworkLogo>
+            <img src={UnknownSVG} alt="Unknow network logo" />
+          </NetworkLogo>
+          <NetworkName>Unknow network</NetworkName>
         </>
       )}
     </NetworkWrapper>

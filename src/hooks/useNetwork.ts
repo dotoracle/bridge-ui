@@ -23,8 +23,6 @@ export const useAllNetworksWithFilter = (isTestnet?: boolean, library?: any): Ne
 
   return useMemo(() => {
     return isTestnet ? networks.filter(n => n.isTestnet) : networks.filter(n => !n.isTestnet)
-
-    return networks
   }, [isTestnet, networks])
 }
 
