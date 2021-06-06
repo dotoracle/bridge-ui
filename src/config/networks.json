@@ -3,24 +3,31 @@
     "name": "Ethereum Mainnet",
     "chainId": 1,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
+    "explorer": "https://etherscan.io",
+    "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": false
   },
   {
     "name": "Kovan Test Network",
     "chainId": 42,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
+    "explorer": "https://kovan.etherscan.io",
+    "rpcURL": "https://kovan.infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true
   },
   {
     "name": "Binance Smart Chain Testnet",
     "chainId": 97,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png",
+    "explorer": "https://testnet.bscscan.com",
+    "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true
   },
   {
     "name": "Moonbeam Testnet",
-    "chainId": 1284,
+    "chainId": 1287,
     "logoURI": "https://docs.moonbeam.network/assets/images/Moonbeam-Favicon-50.png",
+    "explorer": "https://moonbeam-explorer.netlify.app/",
     "isTestnet": true
   }
 ]

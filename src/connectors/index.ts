@@ -2,20 +2,13 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { NetworkConnector } from './NetworkConnector'
 
-export const nodes = [process.env.REACT_APP_RPC_URL_1, process.env.REACT_APP_RPC_URL_2, process.env.REACT_APP_RPC_URL_3]
-
-const getRpcUrl = () => {
-  const randomIndex = Math.floor(Math.random() * nodes.length)
-  return nodes[randomIndex]
-}
-
 export enum ConnectorNames {
   Injected = 'injected',
   WalletConnect = 'walletconnect',
 }
 
-const NETWORK_URL = getRpcUrl()
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '56')
+const NETWORK_CHAIN_ID = Number(process.env.REACT_APP_CHAIN_ID)
+const NETWORK_URL = process.env.REACT_APP_RPC_URL
 
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)

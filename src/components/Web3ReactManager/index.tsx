@@ -5,8 +5,8 @@ import { useEagerConnect, useInactiveListener } from '../../hooks'
 import { NetworkContextName } from '../../constants'
 
 const Web3ReactManager = ({ children }: { children: JSX.Element }): JSX.Element | null => {
-  const { active } = useWeb3React()
-  const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
+  const { active, chainId } = useWeb3React()
+  const { active: networkActive, error: networkError, activate: activateNetwork, chainId: chainIdNetwork } = useWeb3React(NetworkContextName)
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect()

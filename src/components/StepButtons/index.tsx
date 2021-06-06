@@ -18,18 +18,18 @@ const StepButtons = (): JSX.Element => {
   const [showWalletModal, setShowWalletModal] = useState(false)
 
   return (
-    <div>
+    <>
       {account ? (
         <></>
       ) : (
         <>
-          <EuiButton fill onClick={() => setShowWalletModal(true)}>
+          <EuiButton fill fullWidth onClick={() => setShowWalletModal(true)}>
             Unlock Wallet
           </EuiButton>
           {showWalletModal && <WalletModal closeModal={() => setShowWalletModal(false)} />}
         </>
       )}
-    </div>
+    </>
   )
 }
 
