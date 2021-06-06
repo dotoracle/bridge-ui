@@ -33,5 +33,12 @@
     "symbol": "UNI",
     "decimals": 18,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png"
+  },
+  {
+    "name": "ERC20 Mock",
+    "address": "0x1f4513c653eaFBefD3aFA75FB85bb547985CCDf4",
+    "symbol": "ERC20Mock",
+    "decimals": 18,
+    "logoURI": ""
   }
 ]

@@ -34,3 +34,9 @@ export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => 
   }
   return tokens
 }
+
+export const formatNumber = (number: number): string => {
+  const seps = number.toString().split('.')
+  seps[0] = seps[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return seps.join('.')
+}

@@ -48,7 +48,7 @@ interface ITokenRow {
 const TokenRow = (props: ITokenRow): JSX.Element => {
   const { token, isSelected, onSelect } = props
   const { account } = useActiveWeb3React()
-  const tokenBalance = useTokenBalance(token.address, account)
+  const tokenBalance = useTokenBalance(token.address, token.decimals, account)
 
   return (
     <Row onClick={() => (isSelected ? null : onSelect())} className={isSelected ? 'disabled' : ''}>

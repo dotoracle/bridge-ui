@@ -1,7 +1,9 @@
 import { useState, useContext } from 'react'
 import { EuiFieldText, EuiButton } from '@elastic/eui'
 import styled from 'styled-components'
+import { useActiveWeb3React, useTokenBalance } from '../../hooks'
 import BridgeAppContext from '../../context/BridgeAppContext'
+import { formatNumber } from '../../utils'
 
 const AmountInputWrapper = styled.div`
   width: 100%;
@@ -33,8 +35,15 @@ const Description = styled.p`
 `
 
 const AmountInput = (): JSX.Element => {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(0)
   const { selectedToken } = useContext(BridgeAppContext)
+  const { account } = useActiveWeb3React()
+
+  const tokenBalance = useTokenBalance(
+    selectedToken ? selectedToken.address : undefined,
+    selectedToken ? selectedToken.decimals : undefined,
+    account,
+  )
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
@@ -46,13 +55,19 @@ const AmountInput = (): JSX.Element => {
     }
   }
 
-  const onMax = () => {}
+  const onMax = () => {
+    setValue(tokenBalance)
+  }
 
   return (
     <AmountInputWrapper>
       <StyledLabel>Amount</StyledLabel>
       <Input fullWidth value={value} onChange={onChange} append={<Button onClick={onMax}>Max</Button>} />
-      {selectedToken && <Description>Your {selectedToken.symbol} amount: </Description>}
+      {selectedToken && (
+        <Description>
+          Your {selectedToken.symbol} amount: {formatNumber(tokenBalance)}
+        </Description>
+      )}
     </AmountInputWrapper>
   )
 }
