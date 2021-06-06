@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { EuiFieldText, EuiButton } from '@elastic/eui'
+import { EuiFieldNumber, EuiButton } from '@elastic/eui'
 import styled from 'styled-components'
 import { useActiveWeb3React, useTokenBalance } from '../../hooks'
 import BridgeAppContext from '../../context/BridgeAppContext'
@@ -13,7 +13,7 @@ const StyledLabel = styled.label`
   margin-bottom: 1rem;
   color: #aeaeb3;
 `
-const Input = styled(EuiFieldText)`
+const Input = styled(EuiFieldNumber)`
   padding: 1rem;
 `
 const Button = styled(EuiButton)`
@@ -47,12 +47,8 @@ const AmountInput = (): JSX.Element => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
-    const regex = /^[0-9\b]+$/
     const _value = e.target.value
-
-    if (_value === '' || regex.test(_value)) {
-      setValue(_value)
-    }
+    setValue(_value)
   }
 
   const onMax = () => {
@@ -62,7 +58,14 @@ const AmountInput = (): JSX.Element => {
   return (
     <AmountInputWrapper>
       <StyledLabel>Amount</StyledLabel>
-      <Input fullWidth value={value} onChange={onChange} append={<Button onClick={onMax}>Max</Button>} />
+      <Input
+        fullWidth
+        min={0}
+        max={tokenBalance}
+        value={value}
+        onChange={onChange}
+        append={<Button onClick={onMax}>Max</Button>}
+      />
       {selectedToken && (
         <Description>
           Your {selectedToken.symbol} amount: {formatNumber(tokenBalance)}

@@ -47,6 +47,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .euiFieldText:focus,
+  .euiFieldNumber:focus,
   .euiFieldSearch:focus {
     background-image: linear-gradient(to top, ${theme.primary}, ${theme.primary} 2px, #0000 2px, #0000 100%);
   }
