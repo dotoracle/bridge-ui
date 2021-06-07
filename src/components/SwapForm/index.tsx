@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
@@ -45,13 +45,30 @@ const StyledLabel = styled.label`
 
 const SwapForm = (): JSX.Element => {
   const { account, chainId, library } = useActiveWeb3React()
-  const { sourceNetwork: sourceNetworkContext, targetNetwork: targetNetworkContext } = useContext(BridgeAppContext)
+  const {
+    sourceNetwork: sourceNetworkContext,
+    targetNetwork: targetNetworkContext,
+    setSourceNetwork,
+    setTargetNetwork,
+  } = useContext(BridgeAppContext)
 
   const sourceNetworkHook = useNetworkInfo(chainId, library)
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
 
   const otherNetworks = useOtherNetworks(sourceNetwork, library)
   const targetNetwork = targetNetworkContext ? targetNetworkContext : otherNetworks[0]
+
+  useEffect(() => {
+    // set context
+    if (sourceNetwork) {
+      setSourceNetwork(sourceNetwork)
+    }
+
+    if (targetNetwork) {
+      setTargetNetwork(targetNetwork)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sourceNetwork, targetNetwork])
 
   return (
     <SwapWrapper>

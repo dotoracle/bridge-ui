@@ -60,7 +60,8 @@
     }
   }
 
-  &.Toastify__toast--default {
+  &.Toastify__toast--default,
+  &.Toastify__toast--success {
     .toastify-title {
       color: #28c76f;
     }
@@ -100,7 +101,8 @@
     border-top-right-radius: .357rem;
     border-top-left-radius: .357rem;
 
-    &.Toastify__progress-bar--default {
+    &.Toastify__progress-bar--default,
+    &.Toastify__toast--success {
       background: #28c76f;
     }
   }

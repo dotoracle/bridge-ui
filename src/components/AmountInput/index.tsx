@@ -66,11 +66,7 @@ const AmountInput = (): JSX.Element => {
         onChange={onChange}
         append={<Button onClick={onMax}>Max</Button>}
       />
-      {selectedToken && (
-        <Description>
-          Your {selectedToken.symbol} amount: {formatNumber(tokenBalance)}
-        </Description>
-      )}
+      {selectedToken && <Description>Available: {formatNumber(tokenBalance)}</Description>}
     </AmountInputWrapper>
   )
 }

@@ -42,7 +42,8 @@ export const formatNumber = (number: number): string => {
   return seps.join('.')
 }
 
-export const fromWei = (number: string | number, decimals: number): BN => {
-  const result = toBN(number).divRound(toBN(1 * 10 ** decimals))
+export const fromWei = (number: string | number, decimals?: number): BN => {
+  const _decimals = decimals ? decimals : 18
+  const result = toBN(number).divRound(toBN(1 * 10 ** _decimals))
   return result
 }

@@ -36,7 +36,7 @@
   },
   {
     "name": "ERC20 Mock",
-    "address": "0x1f4513c653eaFBefD3aFA75FB85bb547985CCDf4",
+    "address": "0xce0e6bacece7aa5fb13cf072d5cd8e4d082830f3",
     "symbol": "ERC20Mock",
     "decimals": 18,
     "logoURI": ""
