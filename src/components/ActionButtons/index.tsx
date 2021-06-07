@@ -37,27 +37,29 @@ const ActionButtons = (): JSX.Element => {
     sourceNetwork?.chainId,
     bridgeAddress,
   )
-  const [needApprove, setNeedApprove] = useState(approval !== ApprovalState.NOT_APPROVED)
+
+  const [needApprove, setNeedApprove] = useState(true)
 
   const onApprove = async () => {
     try {
       setLoading(true)
 
       if (selectedToken && targetNetwork) {
-        await approveCallback()
+        const receipt = await approveCallback()
 
-        toast.success(
-          <ToastMessage
-            color="success"
-            headerText="Success!"
-            bodyText={`Now you can transfer your ${selectedToken.symbol} to ${targetNetwork.name}`}
-          />,
-          {
-            toastId: 'onApprove',
-          },
-        )
-
-        setNeedApprove(false)
+        if (receipt) {
+          toast.success(
+            <ToastMessage
+              color="success"
+              headerText="Success!"
+              bodyText={`Now you can transfer your ${selectedToken.symbol} to ${targetNetwork.name}`}
+            />,
+            {
+              toastId: 'onApprove',
+            },
+          )
+          setNeedApprove(false)
+        }
       }
     } catch (error) {
       // we only care if the error is something _other_ than the user rejected the tx
@@ -73,11 +75,13 @@ const ActionButtons = (): JSX.Element => {
     }
   }
 
-  const onRequestBridge = async () => {
+  const onTransferToken = async () => {
     try {
       setLoading(true)
 
-      if (selectedToken && targetNetwork) {
+      if (selectedToken && targetNetwork && bridgeContract) {
+        // bridgeContract.methods.requestBridge(selectedToken.address, )
+
         toast.success(
           <ToastMessage
             color="success"
@@ -109,13 +113,18 @@ const ActionButtons = (): JSX.Element => {
         <>
           {selectedToken ? (
             <>
-              {needApprove ? (
-                <StyledButton fill isLoading={isLoading} onClick={onApprove}>
-                  Approve {selectedToken.symbol}
+              {!needApprove || approval === ApprovalState.APPROVED ? (
+                <StyledButton fill isLoading={isLoading} onClick={onTransferToken}>
+                  Transfer {selectedToken.symbol} to bridge
                 </StyledButton>
               ) : (
-                <StyledButton fill isLoading={isLoading} onClick={onRequestBridge}>
-                  Transfer {selectedToken.symbol} to bridge
+                <StyledButton
+                  fill
+                  isLoading={isLoading}
+                  isDisabled={approval === ApprovalState.UNKNOWN}
+                  onClick={onApprove}
+                >
+                  Approve {selectedToken.symbol}
                 </StyledButton>
               )}
             </>

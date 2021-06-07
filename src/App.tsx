@@ -92,6 +92,7 @@ const TitleShadow = styled.span`
 `
 const App = (): JSX.Element => {
   const [selectedToken, setSelectedToken] = useState<Token>()
+  const [tokenAmount, setTokenAmount] = useState(0)
   const [sourceNetwork, setSourceNetwork] = useState<Network>()
   const [targetNetwork, setTargetNetwork] = useState<Network>()
 
@@ -101,6 +102,8 @@ const App = (): JSX.Element => {
         value={{
           selectedToken,
           setSelectedToken,
+          tokenAmount,
+          setTokenAmount,
           sourceNetwork,
           setSourceNetwork,
           targetNetwork,

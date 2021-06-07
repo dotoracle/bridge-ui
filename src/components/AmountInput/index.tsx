@@ -36,7 +36,7 @@ const Description = styled.p`
 
 const AmountInput = (): JSX.Element => {
   const [value, setValue] = useState(0)
-  const { selectedToken } = useContext(BridgeAppContext)
+  const { selectedToken, setTokenAmount } = useContext(BridgeAppContext)
   const { account } = useActiveWeb3React()
 
   const tokenBalance = useTokenBalance(
@@ -49,10 +49,12 @@ const AmountInput = (): JSX.Element => {
   const onChange = (e: any) => {
     const _value = e.target.value
     setValue(_value)
+    setTokenAmount(_value)
   }
 
   const onMax = () => {
     setValue(tokenBalance)
+    setTokenAmount(tokenBalance)
   }
 
   return (

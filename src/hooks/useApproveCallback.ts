@@ -17,7 +17,7 @@ export const useApproveCallback = (
   token?: Token,
   chainId?: number,
   spender?: string,
-): [ApprovalState, () => Promise<void>] => {
+): [ApprovalState, () => Promise<any>] => {
   const { account } = useActiveWeb3React()
 
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
@@ -27,7 +27,7 @@ export const useApproveCallback = (
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
 
     // we might not have enough data to know whether or not we need to approve
-    if (!currentAllowance) return ApprovalState.UNKNOWN
+    if (!currentAllowance || amountToApprove.toString() === '0') return ApprovalState.UNKNOWN
 
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove) ? ApprovalState.NOT_APPROVED : ApprovalState.APPROVED
