@@ -19,12 +19,12 @@ const Input = styled(EuiFieldNumber)`
 const Button = styled(EuiButton)`
   &.euiButton.euiButton--primary {
     color: #fff;
-    border-color: #fff;
+    background-color: ${props => props.theme.primary}1a;
+    border-color: ${props => props.theme.primary};
 
     &:hover,
     &:focus {
-      border-color: ${props => props.theme.secondary};
-      background-color: ${props => props.theme.primary}1a;
+      background-color: ${props => props.theme.primary};
     }
   }
 `
