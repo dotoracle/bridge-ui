@@ -34,12 +34,14 @@ const GlobalStyle = createGlobalStyle`
       }
     }
 
-    &.euiButton--primary.euiButton--fill {
+    &.euiButton--fill {
       color: #fff;
       background-color: ${theme.primary};
 
-      &:hover,
-      &:focus {
+
+      &:not([class*='isDisabled']):hover,
+      &:not([class*='isDisabled']):focus,
+      &:not([class*='isDisabled']):focus-within {
         background-color: ${theme.secondary};
         border-color: ${theme.secondary};
       }

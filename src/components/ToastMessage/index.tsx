@@ -1,6 +1,4 @@
-import React from 'react'
-
-const ToastIcon = ({ type }: { type: string }) => {
+const ToastIcon = ({ type }: { type: 'success' | 'danger' | 'info' }) => {
   let html = <></>
 
   switch (type) {
@@ -65,7 +63,7 @@ const ToastIcon = ({ type }: { type: string }) => {
 }
 
 interface IToastMessageProps {
-  color: string
+  color: 'success' | 'danger' | 'info'
   headerText: string
   bodyText?: string
 }
