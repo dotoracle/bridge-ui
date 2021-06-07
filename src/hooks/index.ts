@@ -1,3 +1,4 @@
+import { ApprovalState, useApproveCallback } from './useApproveCallback'
 import useBridgeAddress from './useBridgeAddress'
 import { useTokenContract, useBridgeContract } from './useContract'
 import useDebounce from './useDebounce'
@@ -8,6 +9,8 @@ import useTokenBalance from './useTokenBalance'
 import { useActiveWeb3React, useEagerConnect, useInactiveListener } from './useWeb3'
 
 export {
+  ApprovalState,
+  useApproveCallback,
   useBridgeAddress,
   useActiveWeb3React,
   useEagerConnect,
