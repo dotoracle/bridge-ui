@@ -4,9 +4,10 @@ import BridgeAppContext from '../../context/BridgeAppContext'
 import WalletModal from '../WalletModal'
 import ApproveButton from './ApproveButton'
 import { useActiveWeb3React, useTokenBalance, useTokenContract, useBridgeAddress, useBridgeContract } from '../../hooks'
+import { StyledButton } from './styled'
 
-const StepButtons = (): JSX.Element => {
-  const { selectedToken, sourceNetwork } = useContext(BridgeAppContext)
+const ActionButtons = (): JSX.Element => {
+  const { selectedToken, sourceNetwork, targetNetwork } = useContext(BridgeAppContext)
   const { account, chainId } = useActiveWeb3React()
 
   const tokenBalance = useTokenBalance(
@@ -25,22 +26,29 @@ const StepButtons = (): JSX.Element => {
     <>
       {account ? (
         <>
-          {selectedToken && (
-            <ApproveButton
-              selectedToken={selectedToken}
-              tokenBalance={tokenBalance}
-              tokenContract={tokenContract}
-              bridgeAddress={bridgeAddress}
-              chainId={sourceNetwork ? sourceNetwork.chainId : chainId}
-              account={account}
-            />
+          {selectedToken ? (
+            <>
+              <ApproveButton
+                selectedToken={selectedToken}
+                tokenBalance={tokenBalance}
+                tokenContract={tokenContract}
+                bridgeAddress={bridgeAddress}
+                targetNetwork={targetNetwork}
+                sourceNetwork={sourceNetwork}
+                account={account}
+              />
+            </>
+          ) : (
+            <StyledButton fill isDisabled>
+              Select a token to transfer
+            </StyledButton>
           )}
         </>
       ) : (
         <>
-          <EuiButton fill fullWidth onClick={() => setShowWalletModal(true)}>
+          <StyledButton fill onClick={() => setShowWalletModal(true)}>
             Unlock Wallet
-          </EuiButton>
+          </StyledButton>
           {showWalletModal && <WalletModal closeModal={() => setShowWalletModal(false)} />}
         </>
       )}
@@ -48,4 +56,4 @@ const StepButtons = (): JSX.Element => {
   )
 }
 
-export default StepButtons
+export default ActionButtons

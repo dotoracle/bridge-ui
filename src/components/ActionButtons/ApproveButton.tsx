@@ -4,20 +4,22 @@ import { toBN, toHex } from 'web3-utils'
 import { toast } from 'react-toastify'
 import ToastMessage from '../ToastMessage'
 import Token from '../../type/Token'
+import Network from '../../type/Network'
 import { fromWei } from '../../utils'
-import { StepButton, StepNumber } from './styled'
+import { StyledButton } from './styled'
 
 interface IApproveButtonProps {
   selectedToken: Token
   tokenBalance: number
   tokenContract: Contract | null
   bridgeAddress: string
-  chainId: number | undefined
+  sourceNetwork: Network | undefined
+  targetNetwork: Network | undefined
   account: string
 }
 
 const ApproveButton = (props: IApproveButtonProps): JSX.Element => {
-  const { selectedToken, tokenBalance, tokenContract, bridgeAddress, chainId, account } = props
+  const { selectedToken, tokenBalance, tokenContract, bridgeAddress, sourceNetwork, targetNetwork, account } = props
 
   const [isLoading, setLoading] = useState(false)
   const [needApprove, setNeedApprove] = useState(true)
@@ -45,20 +47,24 @@ const ApproveButton = (props: IApproveButtonProps): JSX.Element => {
     try {
       setLoading(true)
 
-      if (tokenContract && chainId) {
-        // await tokenContract.methods
-        //   .approve(bridgeAddress, toBN(tokenBalance).mul(toBN(1 * 10 ** 18)))
-        //   .send({ chainId: toHex(chainId), from: account })
+      if (tokenContract && sourceNetwork && targetNetwork) {
+        await tokenContract.methods
+          .approve(bridgeAddress, toBN(tokenBalance).mul(toBN(1 * 10 ** 18)))
+          .send({ chainId: toHex(sourceNetwork.chainId), from: account })
+
+        toast.success(
+          <ToastMessage
+            color="success"
+            headerText="Success!"
+            bodyText={`Now you can transfer your ${selectedToken.symbol} to ${targetNetwork.name}`}
+          />,
+          {
+            toastId: 'onApprove',
+          },
+        )
+
+        setNeedApprove(false)
       }
-
-      toast.success(
-        <ToastMessage color="success" headerText="Success!" bodyText="Next, click the Request Bridge button" />,
-        {
-          toastId: 'onApprove',
-        },
-      )
-
-      setNeedApprove(false)
     } catch (error) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
@@ -76,10 +82,9 @@ const ApproveButton = (props: IApproveButtonProps): JSX.Element => {
   return (
     <>
       {needApprove && (
-        <StepButton fill isLoading={isLoading} iconSide="right" onClick={onApprove}>
-          <StepNumber>1</StepNumber>
+        <StyledButton fill isLoading={isLoading} iconSide="right" onClick={onApprove}>
           <span>{isLoading ? 'Approving' : `Approve ${selectedToken.symbol}`}</span>
-        </StepButton>
+        </StyledButton>
       )}
     </>
   )
