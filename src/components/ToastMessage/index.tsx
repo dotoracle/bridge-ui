@@ -66,10 +66,12 @@ interface IToastMessageProps {
   color: 'success' | 'danger' | 'info'
   headerText: string
   bodyText?: string
+  link?: string
+  linkText?: string
 }
 
 const ToastMessage = (props: IToastMessageProps): JSX.Element => {
-  const { color, headerText, bodyText } = props
+  const { color, headerText, bodyText, link, linkText } = props
 
   return (
     <>
@@ -85,6 +87,11 @@ const ToastMessage = (props: IToastMessageProps): JSX.Element => {
         <div className="toastify-body">
           <span>{bodyText}</span>
         </div>
+      )}
+      {link && (
+        <a className="toastify-link" target="_blank" href={link}>
+          {linkText ? linkText : 'See more'}
+        </a>
       )}
     </>
   )

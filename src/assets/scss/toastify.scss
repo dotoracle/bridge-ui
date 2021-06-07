@@ -44,6 +44,18 @@
     line-height: 1.5;
   }
 
+  .toastify-link {
+    display: block;
+    margin-top: 1rem;
+    padding-left: 2.3rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .Toastify__close-button {
     opacity: 1;
     margin-top: 1px;
