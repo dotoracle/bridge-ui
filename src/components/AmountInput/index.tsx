@@ -35,7 +35,6 @@ const Description = styled.p`
 `
 
 const AmountInput = (): JSX.Element => {
-  const [value, setValue] = useState(0)
   const { selectedToken, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account } = useActiveWeb3React()
 
@@ -49,12 +48,10 @@ const AmountInput = (): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
     const _value = e.target.value
-    setValue(_value)
     setTokenAmount(_value)
   }
 
   const onMax = () => {
-    setValue(tokenBalance)
     setTokenAmount(tokenBalance)
   }
 
@@ -65,7 +62,7 @@ const AmountInput = (): JSX.Element => {
         fullWidth
         min={0}
         max={tokenBalance}
-        value={value}
+        value={tokenAmount}
         onChange={onChange}
         append={<Button onClick={onMax}>Max</Button>}
       />
