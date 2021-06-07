@@ -111,7 +111,7 @@ const ActionButtons = (): JSX.Element => {
     } catch (error) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
-        const message = `Could transfer this token to our bridge. Please try again.`
+        const message = `Could not transfer this token to our bridge. Please try again.`
         toast.error(<ToastMessage color="danger" headerText="Error!" bodyText={message} />, {
           toastId: 'onTransferToken',
         })

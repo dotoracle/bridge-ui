@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react'
-import BN from 'bn.js'
+import BigNumber from 'bignumber.js'
 import { toHex } from 'web3-utils'
 import { useActiveWeb3React } from './useWeb3'
 import useTokenAllowance from './useTokenAllowance'
@@ -13,7 +13,7 @@ export enum ApprovalState {
 }
 
 export const useApproveCallback = (
-  amountToApprove?: BN,
+  amountToApprove?: BigNumber,
   token?: Token,
   chainId?: number,
   spender?: string,

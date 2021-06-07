@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import { AbiItem, toBN } from 'web3-utils'
-import BN from 'bn.js'
+import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
 import Token from '../type/Token'
 
@@ -42,14 +42,16 @@ export const formatNumber = (number: number): string => {
   return seps.join('.')
 }
 
-export const fromWei = (number: string | number, decimals?: number): BN => {
+export const fromWei = (number: string | number, decimals?: number): BigNumber => {
   const _decimals = decimals ? decimals : 18
-  const result = toBN(number).divRound(toBN(1 * 10 ** _decimals))
+  // const result = toBN(number).divRound(toBN(1 * 10 ** _decimals))
+  const result = new BigNumber(number).div(new BigNumber(1 * 10 ** _decimals))
   return result
 }
 
-export const toWei = (number: string | number, decimals?: number): BN => {
+export const toWei = (number: string | number, decimals?: number): BigNumber => {
   const _decimals = decimals ? decimals : 18
-  const result = toBN(number).mul(toBN(1 * 10 ** _decimals))
+  // const result = toBN(number.toString()).mul(toBN(1 * 10 ** _decimals))
+  const result = new BigNumber(number).multipliedBy(new BigNumber(1 * 10 ** _decimals))
   return result
 }

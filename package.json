@@ -18,7 +18,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.2.0",
     "axios": "^0.21.1",
-    "bn.js": "^5.2.0",
+    "bignumber.js": "^9.0.1",
     "moment": "^2.29.1",
     "node-sass": "4.14.1",
     "prop-types": "^15.7.2",

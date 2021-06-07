@@ -62,6 +62,7 @@ const AmountInput = (): JSX.Element => {
         fullWidth
         min={0}
         max={tokenBalance}
+        step={0.1}
         value={tokenAmount}
         onChange={onChange}
         append={<Button onClick={onMax}>Max</Button>}
