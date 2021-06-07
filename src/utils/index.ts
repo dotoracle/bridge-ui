@@ -1,5 +1,6 @@
 import Web3 from 'web3'
-import { AbiItem } from 'web3-utils'
+import { AbiItem, toBN } from 'web3-utils'
+import BN from 'bn.js'
 import { Contract } from 'web3-eth-contract'
 import Token from '../type/Token'
 
@@ -39,4 +40,9 @@ export const formatNumber = (number: number): string => {
   const seps = number.toString().split('.')
   seps[0] = seps[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   return seps.join('.')
+}
+
+export const fromWei = (number: string | number, decimals: number): BN => {
+  const result = toBN(number).divRound(toBN(1 * 10 ** decimals))
+  return result
 }

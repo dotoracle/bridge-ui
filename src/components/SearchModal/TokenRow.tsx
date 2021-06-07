@@ -1,3 +1,4 @@
+import { EuiExpression } from '@elastic/eui'
 import styled from 'styled-components'
 import Token from '../../type/Token'
 import UnknownSVG from '../../assets/images/unknown.svg'
@@ -35,7 +36,7 @@ const TokenName = styled.span`
   font-size: 12px;
   color: #6c7284;
 `
-const Balance = styled.span`
+const Balance = styled(EuiExpression)`
   text-align: right;
 `
 
@@ -58,7 +59,11 @@ const TokenRow = (props: ITokenRow): JSX.Element => {
         <TokenName>{token.name}</TokenName>
       </div>
       <div>&nbsp;</div>
-      {tokenBalance >= 0 ? <Balance>{formatNumber(tokenBalance)}</Balance> : <Balance>&nbsp;</Balance>}
+      {tokenBalance >= 0 ? (
+        <Balance description={formatNumber(tokenBalance)} textWrap="truncate" color="subdued" />
+      ) : (
+        <Balance description="" />
+      )}
     </Row>
   )
 }

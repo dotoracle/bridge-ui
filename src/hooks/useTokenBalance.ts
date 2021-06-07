@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { fromWei } from '../utils'
 import { useTokenContract } from './useContract'
-import { toBN } from 'web3-utils'
 
 const useTokenBalance = (
   tokenAddress: string | undefined,
@@ -17,7 +17,7 @@ const useTokenBalance = (
         const _balance = account ? await tokenContract?.methods.balanceOf(account).call() : -1
 
         if (_balance >= 0 && decimals) {
-          const _balanceBN = toBN(_balance).divRound(toBN(1 * 10 ** decimals))
+          const _balanceBN = fromWei(_balance, decimals)
           setBalance(Number(_balanceBN.toString()))
         } else {
           setBalance(_balance)
@@ -33,7 +33,9 @@ const useTokenBalance = (
     console.error(error)
   }
 
-  return balance
+  return useMemo(() => {
+    return balance
+  }, [balance])
 }
 
 export default useTokenBalance
