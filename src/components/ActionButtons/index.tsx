@@ -14,9 +14,10 @@ import {
 } from '../../hooks'
 import { StyledButton } from './styled'
 import { toWei } from '../../utils'
+import { toHex } from 'web3-utils'
 
 const ActionButtons = (): JSX.Element => {
-  const { selectedToken, sourceNetwork, targetNetwork } = useContext(BridgeAppContext)
+  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId } = useActiveWeb3React()
 
   const tokenBalance = useTokenBalance(
@@ -52,7 +53,7 @@ const ActionButtons = (): JSX.Element => {
             <ToastMessage
               color="success"
               headerText="Success!"
-              bodyText={`Now you can transfer your ${selectedToken.symbol} to ${targetNetwork.name}`}
+              bodyText={`Now you can transfer your ${selectedToken.symbol} to ${targetNetwork.name}.`}
             />,
             {
               toastId: 'onApprove',
@@ -79,26 +80,40 @@ const ActionButtons = (): JSX.Element => {
     try {
       setLoading(true)
 
-      if (selectedToken && targetNetwork && bridgeContract) {
-        // bridgeContract.methods.requestBridge(selectedToken.address, )
+      if (selectedToken && sourceNetwork && targetNetwork && bridgeContract) {
+        const amountInWei = toWei(tokenAmount, selectedToken.decimals)
 
-        toast.success(
-          <ToastMessage
-            color="success"
-            headerText="Success!"
-            bodyText={`Now you can claim your ${selectedToken.symbol} on ${targetNetwork.name}`}
-          />,
-          {
-            toastId: 'onApprove',
-          },
-        )
+        const receipt = await bridgeContract.methods
+          .requestBridge(selectedToken.address, amountInWei, targetNetwork.chainId)
+          .send({
+            chaindId: toHex(sourceNetwork.chainId),
+            from: account,
+            value: 0,
+          })
+
+        if (receipt) {
+          toast.success(
+            <ToastMessage
+              color="success"
+              headerText="Success!"
+              bodyText={`Now you can claim your ${selectedToken.symbol} on ${targetNetwork.name}.`}
+              link={`${sourceNetwork.explorer}/tx/${receipt.transactionHash}`}
+              linkText="View Transaction"
+            />,
+            {
+              toastId: 'onTransferToken',
+            },
+          )
+
+          setTokenAmount(0)
+        }
       }
     } catch (error) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
         const message = `Could transfer this token to our bridge. Please try again.`
         toast.error(<ToastMessage color="danger" headerText="Error!" bodyText={message} />, {
-          toastId: 'onApprove',
+          toastId: 'onTransferToken',
         })
       }
       console.error(error)
@@ -114,7 +129,7 @@ const ActionButtons = (): JSX.Element => {
           {selectedToken ? (
             <>
               {!needApprove || approval === ApprovalState.APPROVED ? (
-                <StyledButton fill isLoading={isLoading} onClick={onTransferToken}>
+                <StyledButton fill isLoading={isLoading} isDisabled={tokenAmount <= 0} onClick={onTransferToken}>
                   Transfer {selectedToken.symbol} to bridge
                 </StyledButton>
               ) : (

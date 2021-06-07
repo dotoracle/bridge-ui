@@ -6,6 +6,7 @@ const useTokenBalance = (
   tokenAddress: string | undefined,
   decimals: number | undefined,
   account: string | null | undefined,
+  tokenAmount?: number,
 ): number => {
   const [balance, setBalance] = useState(0)
 
@@ -28,7 +29,7 @@ const useTokenBalance = (
         fetchData()
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tokenAddress, decimals, account])
+    }, [tokenAddress, decimals, account, tokenAmount])
   } catch (error) {
     console.error(error)
   }
