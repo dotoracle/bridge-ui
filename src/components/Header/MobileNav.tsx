@@ -14,11 +14,11 @@ const MenuToggle = styled(EuiButtonIcon)`
 `
 const MobileMenu = styled.ul``
 const MobileMenuItem = styled.li`
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #333;
   padding: 15px 20px;
 `
 const MobileMenuLink = styled.a`
-  color: #333;
+  color: #fff;
   font-weight: 700;
   text-transform: uppercase;
 `
