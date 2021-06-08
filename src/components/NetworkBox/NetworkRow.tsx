@@ -22,17 +22,18 @@ const Row = styled.div`
     cursor: initial;
   }
 `
+const NetworkNameWrap = styled.div`
+  display: flex;
+  align-items: center;
+`
 const NetworkLogo = styled.img`
-  display: inline-block;
-  vertical-align: middle;
   width: 24px;
   height: 24px;
   margin-right: 0.5rem;
 `
 const NetworkName = styled.span`
-  display: inline-block;
-  vertical-align: middle;
   font-size: 0.8rem;
+  line-height: 1.5;
 `
 const CheckIcon = styled(EuiIcon)`
   margin-left: 0.75rem;
@@ -50,10 +51,10 @@ const NetworkRow = (props: INetworkRowProps): JSX.Element => {
 
   return (
     <Row className={isDisabled ? 'is-disabled' : ''} onClick={() => (isSelected || isDisabled ? null : onSelect())}>
-      <div>
+      <NetworkNameWrap>
         <NetworkLogo src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
         <NetworkName>{network.name}</NetworkName>
-      </div>
+      </NetworkNameWrap>
       {isSelected && <CheckIcon type="check" />}
     </Row>
   )
