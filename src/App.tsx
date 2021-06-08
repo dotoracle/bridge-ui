@@ -7,7 +7,7 @@ import GlobalStyle from './theme/global'
 import Web3ReactManager from './components/Web3ReactManager'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import SwapForm from './components/SwapForm'
+import AppBox from './components/AppBox'
 import PageBackgroundPNG from './assets/images/page-bg.png'
 import '@elastic/eui/dist/eui_theme_dark.css'
 import './assets/fonts/stylesheet.css'
@@ -118,8 +118,7 @@ const App = (): JSX.Element => {
             <Title>Cross-chain bridge</Title>
             <TitleShadow>Cross-chain bridge</TitleShadow>
           </TitleWrapper>
-
-          <SwapForm />
+          <AppBox />
         </PageContainer>
         <Footer />
       </BridgeAppContext.Provider>

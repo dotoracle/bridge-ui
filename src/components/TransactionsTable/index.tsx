@@ -1,10 +1,13 @@
+import { EuiInMemoryTable } from '@elastic/eui'
 import styled from 'styled-components'
 
-const TableTitle = styled.h2`
+const TableWrap = styled.div`
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
   border-top: 1px solid #222;
   padding-top: 2rem;
+`
+const TableTitle = styled.h2`
+  margin-bottom: 1.5rem;
   font-family: MarketSans, sans-serif;
   font-size: 18px;
   text-align: center;
@@ -14,7 +17,12 @@ const TableTitle = styled.h2`
 `
 
 const TransactionsTable = (): JSX.Element => {
-  return <TableTitle>Latest Transactions</TableTitle>
+  return (
+    <TableWrap>
+      <TableTitle>Latest Transactions</TableTitle>
+      {/* <EuiInMemoryTable></EuiInMemoryTable> */}
+    </TableWrap>
+  )
 }
 
 export default TransactionsTable

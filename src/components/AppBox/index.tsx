@@ -48,9 +48,10 @@ const ArrowDown = styled.img`
   margin: 0 auto;
   width: 30px;
   transform: rotate(90deg);
+  opacity: 0.5;
 `
 
-const SwapForm = (): JSX.Element => {
+const AppBox = (): JSX.Element => {
   const { account, chainId, library } = useActiveWeb3React()
   const {
     sourceNetwork: sourceNetworkContext,
@@ -118,4 +119,4 @@ const SwapForm = (): JSX.Element => {
   )
 }
 
-export default SwapForm
+export default AppBox
