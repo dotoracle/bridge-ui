@@ -4,7 +4,10 @@ import theme from './index'
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
+
+    #root {
+      overflow-x: hidden;
+    }
   }
 
   .euiModalHeader__title {

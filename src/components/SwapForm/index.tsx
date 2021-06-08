@@ -4,6 +4,7 @@ import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
 import AmountInput from '../AmountInput'
 import ActionButtons from '../ActionButtons'
+import TransactionsTable from '../TransactionsTable'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hooks'
 import ArrowSVG from '../../assets/images/arrow-right.svg'
@@ -41,6 +42,12 @@ const StyledLabel = styled.label`
   display: block;
   margin-bottom: 1rem;
   color: #aeaeb3;
+`
+const ArrowDown = styled.img`
+  display: block;
+  margin: 0 auto;
+  width: 30px;
+  transform: rotate(90deg);
 `
 
 const SwapForm = (): JSX.Element => {
@@ -104,6 +111,9 @@ const SwapForm = (): JSX.Element => {
       <FormRow>
         <ActionButtons />
       </FormRow>
+
+      <ArrowDown src={ArrowSVG} alt="" />
+      <TransactionsTable />
     </SwapWrapper>
   )
 }

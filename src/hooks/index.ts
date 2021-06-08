@@ -1,3 +1,4 @@
+import useAllTransactions from './useAllTransactions'
 import { ApprovalState, useApproveCallback } from './useApproveCallback'
 import useBridgeAddress from './useBridgeAddress'
 import { useTokenContract, useBridgeContract } from './useContract'
@@ -9,6 +10,7 @@ import useTokenBalance from './useTokenBalance'
 import { useActiveWeb3React, useEagerConnect, useInactiveListener } from './useWeb3'
 
 export {
+  useAllTransactions,
   ApprovalState,
   useApproveCallback,
   useBridgeAddress,
