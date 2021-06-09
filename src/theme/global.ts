@@ -15,6 +15,11 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1.5rem;
   }
 
+  .euiButtonEmpty {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.875rem;
+  }
+
   .euiButton {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;

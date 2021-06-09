@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { EuiInMemoryTable, EuiToolTip, EuiLink, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
+import { EuiInMemoryTable, EuiToolTip, EuiButtonEmpty, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
 import styled from 'styled-components'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { useAllTransactions, useActiveWeb3React } from '../../hooks'
@@ -93,9 +93,16 @@ const Row = styled.div`
     }
   }
 `
-const ActionLink = styled(EuiLink)`
-  &.euiLink.euiLink--primary {
+const ActionLink = styled(EuiButtonEmpty)`
+  padding: 0;
+  height: auto;
+
+  &.euiButtonEmpty {
     color: ${props => props.theme.primary};
+  }
+
+  &:focus {
+    background: transparent;
   }
 `
 
@@ -123,6 +130,7 @@ const TransactionsTable = (): JSX.Element => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const toggleDetails = (item: Transaction) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
@@ -165,6 +173,11 @@ const TransactionsTable = (): JSX.Element => {
       )
     }
     setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues)
+  }
+
+  const claimToken = (item: Transaction) => {
+    console.log('item', item)
+    setIsLoading(true)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -247,7 +260,15 @@ const TransactionsTable = (): JSX.Element => {
       actions: [
         {
           render: (item: Transaction) => {
-            return <>{!item.claimed && <ActionLink>Claim Token</ActionLink>}</>
+            return (
+              <>
+                {!item.claimed && (
+                  <ActionLink isLoading={isLoading} color="text" onClick={() => claimToken(item)}>
+                    Claim Token
+                  </ActionLink>
+                )}
+              </>
+            )
           },
         },
       ],
