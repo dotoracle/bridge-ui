@@ -17,6 +17,7 @@ export const useApproveCallback = (
   token?: Token,
   chainId?: number,
   spender?: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): [ApprovalState, () => Promise<any>] => {
   const { account } = useActiveWeb3React()
 

@@ -30,7 +30,6 @@ const ActionButtons = (): JSX.Element => {
   const [isLoading, setLoading] = useState(false)
 
   const bridgeAddress = useBridgeAddress(chainId)
-  const tokenContract = useTokenContract(selectedToken?.address)
   const bridgeContract = useBridgeContract(bridgeAddress)
   const [approval, approveCallback] = useApproveCallback(
     toWei(tokenBalance),

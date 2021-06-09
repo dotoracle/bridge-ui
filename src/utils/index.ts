@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import Web3 from 'web3'
-import { AbiItem, toBN } from 'web3-utils'
+import { AbiItem } from 'web3-utils'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
+import networks from '../config/networks.json'
 import Token from '../type/Token'
+import Network from '../type/Network'
+import Transaction from '../type/Transaction'
 
 export const getContract = (address: string, abi: AbiItem, web3: Web3): Contract | null => {
   try {
@@ -51,7 +56,47 @@ export const fromWei = (number: string | number, decimals?: number): BigNumber =
 
 export const toWei = (number: string | number, decimals?: number): BigNumber => {
   const _decimals = decimals ? decimals : 18
-  // const result = toBN(number.toString()).mul(toBN(1 * 10 ** _decimals))
   const result = new BigNumber(number).multipliedBy(new BigNumber(1 * 10 ** _decimals))
   return result
+}
+
+export const parseResponseToTransactions = (response: any) => {
+  const transactions = [] as Transaction[]
+
+  if (response.status === 200 && response.data.transactions && response.data.total) {
+    response.data.transactions.forEach((t: Transaction) => {
+      const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
+      const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
+      const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
+      const amountFormated = `${formatNumber(fromWei(t.amount).toNumber())} ${t.originSymbol}`
+
+      const requestEllipsis = `${t.requestHash.substring(0, 8)}...${t.requestHash.substring(t.requestHash.length - 5)}`
+      const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}/tx/${t.requestHash}` : ''
+
+      const claimEllipsis = t.claimHash
+        ? `${t.claimHash.substring(0, 8)}...${t.claimHash.substring(t.claimHash.length - 5)}`
+        : ''
+      const claimHashUrl = toNetwork ? `${toNetwork.explorer}/tx/${t.claimHash}` : ''
+
+      transactions.push({
+        ...t,
+        fromNetwork,
+        toNetwork,
+        originNetwork,
+        amountFormated,
+        requestHashLink: {
+          explorerLogo: fromNetwork ? fromNetwork.logoURI : '',
+          requestHash: requestEllipsis,
+          requestHashUrl,
+        },
+        claimHashLink: {
+          explorerLogo: toNetwork ? toNetwork.logoURI : '',
+          claimHash: claimEllipsis,
+          claimHashUrl,
+        },
+      })
+    })
+  }
+
+  return transactions
 }

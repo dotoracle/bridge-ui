@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { EuiInMemoryTable, EuiToolTip, EuiButtonEmpty, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
 import styled from 'styled-components'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { useAllTransactions, useActiveWeb3React } from '../../hooks'
+import { parseResponseToTransactions } from '../../utils'
 import Transaction from '../../type/Transaction'
 import Network from '../../type/Network'
 import UnknownSVG from '../../assets/images/unknown.svg'
@@ -126,11 +127,26 @@ const NetworkInfo = ({ network }: { network: Network | undefined }): JSX.Element
 
 const TransactionsTable = (): JSX.Element => {
   const { account, chainId } = useActiveWeb3React()
-  const [totalTxs, transactions] = useAllTransactions(account, chainId, 20, 1)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
   const [isDisabled, setIsDisabled] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [transactions, setTranstractions] = useState<Transaction[]>([])
+  const transactionCallback = useAllTransactions(account, chainId, 20, 1)
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      setIsLoading(true)
+      const response = await transactionCallback()
+      setTranstractions(parseResponseToTransactions(response))
+      setIsLoading(false)
+    }
+
+    fetchTransactions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, chainId])
 
   const toggleDetails = (item: Transaction) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
@@ -320,6 +336,7 @@ const TransactionsTable = (): JSX.Element => {
     <TableWrap>
       <TableTitle>Latest Transactions</TableTitle>
       <EuiInMemoryTable
+        loading={isLoading}
         itemId="_id"
         items={transactions}
         columns={columns}
