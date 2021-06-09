@@ -356,7 +356,7 @@ const TransactionsTable = (): JSX.Element => {
       field: 'requestTime',
       name: 'Request Time',
       sortable: true,
-      width: '15%',
+      width: '20%',
       render: (time: number): JSX.Element => {
         return (
           <EuiToolTip content={lightFormat(toDate(time * 1000), 'yyyy-MM-dd HH:mm:ss')}>
@@ -368,7 +368,7 @@ const TransactionsTable = (): JSX.Element => {
     {
       field: 'requestHashLink',
       name: 'Request Tx',
-      width: '25%',
+      width: '22.5%',
       render: ({
         explorerLogo,
         requestHash,
@@ -400,7 +400,7 @@ const TransactionsTable = (): JSX.Element => {
     {
       field: 'claimHashLink',
       name: 'Claim Tx',
-      width: '25%',
+      width: '22.5%',
       render: ({
         explorerLogo,
         claimHash,
