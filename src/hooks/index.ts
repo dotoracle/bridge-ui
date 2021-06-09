@@ -3,7 +3,7 @@ import { ApprovalState, useApproveCallback } from './useApproveCallback'
 import useBridgeAddress from './useBridgeAddress'
 import { useTokenContract, useBridgeContract } from './useContract'
 import useDebounce from './useDebounce'
-import { useAllNetworks, useAllNetworksWithFilter, useOtherNetworks, useNetworkInfo } from './useNetwork'
+import { useAllNetworks, useOtherNetworks, useNetworkInfo } from './useNetwork'
 import useRpcUrl from './useRpcUrl'
 import { useToken } from './useToken'
 import useTokenBalance from './useTokenBalance'
@@ -20,7 +20,6 @@ export {
   useTokenContract,
   useBridgeContract,
   useAllNetworks,
-  useAllNetworksWithFilter,
   useOtherNetworks,
   useNetworkInfo,
   useRpcUrl,

@@ -33,12 +33,12 @@ const StyledButton = styled(EuiButton)`
 `
 
 const AccountButton = (): JSX.Element => {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 
   const [showWalletModal, setShowWalletModal] = useState(false)
 
-  const networkInfo = useNetworkInfo(account, chainId, library)
+  const networkInfo = useNetworkInfo(chainId)
 
   return (
     <>

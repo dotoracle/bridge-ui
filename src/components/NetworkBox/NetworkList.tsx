@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import Network from '../../type/Network'
 import NetworkRow from './NetworkRow'
-import { useActiveWeb3React, useAllNetworksWithFilter, useNetworkInfo } from '../../hooks'
+import { useActiveWeb3React, useAllNetworks, useNetworkInfo } from '../../hooks'
 
 const NetworkListWrapper = styled.div`
   padding: 0 0.5rem;
@@ -21,10 +21,10 @@ const NetworkList = (props: INetworkList): JSX.Element => {
 
   const { setSourceNetwork, setTargetNetwork } = useContext(BridgeAppContext)
 
-  const { account, chainId, library } = useActiveWeb3React()
-  const currentNetwork = useNetworkInfo(account, chainId, library)
+  const { chainId } = useActiveWeb3React()
+  const currentNetwork = useNetworkInfo(chainId)
 
-  const networks = useAllNetworksWithFilter(currentNetwork?.isTestnet, library)
+  const networks = useAllNetworks(currentNetwork?.isTestnet)
 
   const handleSelectNetwork = (network: Network) => {
     onNetworkSelect(network)

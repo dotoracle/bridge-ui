@@ -158,8 +158,8 @@ const NetworkInfo = ({ network }: { network: Network | undefined }): JSX.Element
 }
 
 const TransactionsTable = (): JSX.Element => {
-  const { account, library, chainId: currentChainId } = useActiveWeb3React()
-  const currentNetwork = useNetworkInfo(account, currentChainId, library)
+  const { account, chainId: currentChainId } = useActiveWeb3React()
+  const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)
   const bridgeContract = useBridgeContract(bridgeAddress)

@@ -54,7 +54,7 @@ const ArrowDown = styled.img`
 `
 
 const AppBox = (): JSX.Element => {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const {
     sourceNetwork: sourceNetworkContext,
     targetNetwork: targetNetworkContext,
@@ -62,10 +62,10 @@ const AppBox = (): JSX.Element => {
     setTargetNetwork,
   } = useContext(BridgeAppContext)
 
-  const sourceNetworkHook = useNetworkInfo(account, chainId, library)
+  const sourceNetworkHook = useNetworkInfo(chainId)
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
 
-  const otherNetworks = useOtherNetworks(sourceNetwork, account, chainId, library)
+  const otherNetworks = useOtherNetworks(sourceNetwork, account, chainId)
   const targetNetwork = targetNetworkContext ? targetNetworkContext : otherNetworks[0]
 
   useEffect(() => {
@@ -78,14 +78,14 @@ const AppBox = (): JSX.Element => {
       setTargetNetwork(targetNetwork)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceNetwork, targetNetwork])
+  }, [sourceNetwork, targetNetwork, account, chainId])
 
   // refresh context if change account
   useEffect(() => {
     let _networks = networks as Network[]
     if (sourceNetworkHook) {
       _networks = networks.filter(
-        n => n.isTestnet === sourceNetworkHook?.isTestnet && n.chainId !== sourceNetworkHook?.chainId,
+        n => n.isTestnet === sourceNetworkHook.isTestnet && n.chainId !== sourceNetworkHook.chainId,
       ) as Network[]
       setSourceNetwork(sourceNetworkHook)
     }
