@@ -61,6 +61,13 @@ const GlobalStyle = createGlobalStyle`
   .euiFieldSearch:focus {
     background-image: linear-gradient(to top, ${theme.primary}, ${theme.primary} 2px, #0000 2px, #0000 100%);
   }
+
+  @media (max-width: 767px) {
+    .euiTable.euiTable--responsive .euiTableRow.euiTableRow-isExpandable .euiTableRowCell--isExpander,
+    .euiTable.euiTable--responsive .euiTableRow.euiTableRow-hasActions .euiTableRowCell--hasActions {
+      right: 0;
+    }
+  }
 `
 
 export default GlobalStyle

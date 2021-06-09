@@ -84,6 +84,7 @@ const CollapseWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  border-top: 1px solid #343741;
   padding: 0.5rem;
   width: 100%;
   font-size: 0.75rem;
@@ -97,10 +98,14 @@ const CollapseWrap = styled.div`
       text-decoration: underline;
     }
   }
+
+  @media (min-width: 768px) {
+    border-top: 0;
+  }
 `
 const Row = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
   > div {
     display: flex;
@@ -110,6 +115,11 @@ const Row = styled.div`
     > span {
       margin-right: 0.25rem;
     }
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
   }
 `
 const ActionLink = styled(EuiButtonEmpty)`
