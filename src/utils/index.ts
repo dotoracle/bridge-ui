@@ -100,3 +100,43 @@ export const parseResponseToTransactions = (response: any) => {
 
   return transactions
 }
+
+interface WindowChain {
+  ethereum?: {
+    isMetaMask?: true
+    request?: (...args: any[]) => void
+  }
+}
+
+export const setupNetwork = async (network: Network): Promise<boolean> => {
+  const provider = (window as WindowChain).ethereum
+
+  if (provider) {
+    try {
+      // @ts-ignore
+      await provider.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: `0x${network.chainId.toString(16)}`,
+            chainName: network.name,
+            nativeCurrency: {
+              name: 'BNB',
+              symbol: 'bnb',
+              decimals: 18,
+            },
+            rpcUrls: [network.rpcURL],
+            blockExplorerUrls: [network.explorer],
+          },
+        ],
+      })
+      return true
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+  } else {
+    console.error("Can't setup the BSC network on metamask because window.ethereum is undefined")
+    return false
+  }
+}

@@ -8,7 +8,6 @@ import {
   useApproveCallback,
   useActiveWeb3React,
   useTokenBalance,
-  useTokenContract,
   useBridgeAddress,
   useBridgeContract,
 } from '../../hooks'

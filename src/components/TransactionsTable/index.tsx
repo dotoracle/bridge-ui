@@ -1,12 +1,26 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { EuiInMemoryTable, EuiToolTip, EuiButtonEmpty, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
+import {
+  EuiInMemoryTable,
+  EuiToolTip,
+  EuiButtonEmpty,
+  EuiButtonIcon,
+  EuiBasicTableColumn,
+  EuiConfirmModal,
+} from '@elastic/eui'
 import styled from 'styled-components'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-toastify'
+import { toHex } from 'web3-utils'
 import ToastMessage from '../ToastMessage'
-import { useAllTransactions, useActiveWeb3React } from '../../hooks'
-import { parseResponseToTransactions } from '../../utils'
+import {
+  useAllTransactions,
+  useActiveWeb3React,
+  useNetworkInfo,
+  useBridgeAddress,
+  useBridgeContract,
+} from '../../hooks'
+import { parseResponseToTransactions, setupNetwork } from '../../utils'
 import Transaction from '../../type/Transaction'
 import Network from '../../type/Network'
 import UnknownSVG from '../../assets/images/unknown.svg'
@@ -109,6 +123,20 @@ const ActionLink = styled(EuiButtonEmpty)`
     background: transparent;
   }
 `
+const ConfirmMessage = styled.div`
+  img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  > div {
+    margin-top: 1rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+`
 
 const NetworkInfo = ({ network }: { network: Network | undefined }): JSX.Element => {
   return (
@@ -129,15 +157,22 @@ const NetworkInfo = ({ network }: { network: Network | undefined }): JSX.Element
 }
 
 const TransactionsTable = (): JSX.Element => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, library, chainId: currentChainId } = useActiveWeb3React()
+  const currentNetwork = useNetworkInfo(currentChainId, library)
+
+  const bridgeAddress = useBridgeAddress(currentChainId)
+  const bridgeContract = useBridgeContract(bridgeAddress)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
   const [isDisabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [showNetworkModal, setShowNetworkModal] = useState(false)
+  const [claimTokenSymbol, setClaimTokenSymbol] = useState('')
+  const [toNetwork, setToNetwork] = useState<Network>()
 
   const [transactions, setTranstractions] = useState<Transaction[]>([])
-  const transactionCallback = useAllTransactions(account, chainId, 20, 1)
+  const transactionCallback = useAllTransactions(account, currentChainId, 20, 1)
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -149,7 +184,7 @@ const TransactionsTable = (): JSX.Element => {
 
     fetchTransactions()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, chainId])
+  }, [account, currentChainId])
 
   const toggleDetails = (item: Transaction) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
@@ -194,12 +229,16 @@ const TransactionsTable = (): JSX.Element => {
     setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues)
   }
 
+  const changeButtonText = (button: HTMLElement, text: string) => {
+    const textTag = button.getElementsByClassName('euiButtonEmpty__text')[0]
+    textTag.textContent = text
+  }
+
   const addLoadingState = (button: HTMLElement) => {
     button.setAttribute('disabled', 'true')
     const content = button.getElementsByClassName('euiButtonContent')[0]
-    const text = content.getElementsByClassName('euiButtonEmpty__text')[0]
     const spinner = document.createElement('span')
-    text.textContent = 'Signing transaction...'
+    changeButtonText(button, 'Signing transaction...')
     spinner.classList.add('euiLoadingSpinner', 'euiLoadingSpinner--medium', 'euiButtonContent__spinner')
     content.prepend(spinner)
   }
@@ -207,19 +246,18 @@ const TransactionsTable = (): JSX.Element => {
   const removeLoadingState = (button: HTMLElement) => {
     button.removeAttribute('disabled')
     const spinner = button.getElementsByClassName('euiLoadingSpinner')[0]
-    const text = button.getElementsByClassName('euiButtonEmpty__text')[0]
-    text.textContent = 'Claim Token'
+    changeButtonText(button, 'Claim Token')
     spinner.remove()
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const claimToken = async (e: any, item: Transaction) => {
+  const onClaimToken = async (e: any, item: Transaction) => {
     const button = e.currentTarget
     addLoadingState(button)
 
     try {
       setIsDisabled(true)
-      const { requestHash, fromChainId, toChainId, index } = item
+      const { requestHash, originChainId, fromChainId, toChainId, index, originToken, amount } = item
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/request-withdraw`, {
         requestHash,
@@ -228,7 +266,43 @@ const TransactionsTable = (): JSX.Element => {
         index: index,
       })
 
-      if (response.status === 200) {
+      if (response.status === 200 && response.data) {
+        setClaimTokenSymbol(item.originSymbol)
+        setToNetwork(item.toNetwork)
+
+        const sign = response.data
+        const { name, symbol, decimals, r, s, v } = sign
+
+        // Ask user if the currentChainId is different than the toChainId
+        if (currentChainId !== toChainId) {
+          setShowNetworkModal(true)
+        } else {
+          const chainIdData = [originChainId, fromChainId, toChainId, index]
+
+          if (bridgeContract) {
+            changeButtonText(button, 'Confirming...')
+            const receipt = await bridgeContract.methods
+              .claimToken(originToken, account, amount, chainIdData, requestHash, r, s, v, name, symbol, decimals)
+              .send({
+                chainId: toHex(item.toChainId),
+                from: account,
+              })
+
+            if (receipt && currentNetwork) {
+              toast.success(
+                <ToastMessage
+                  color="success"
+                  headerText="Success!"
+                  link={`${currentNetwork.explorer}/tx/${receipt.transactionHash}`}
+                  linkText="View Transaction"
+                />,
+                {
+                  toastId: 'onClaimToken',
+                },
+              )
+            }
+          }
+        }
       } else {
         const signError = new Error('Could not sign the withdrawal request')
         signError.name = 'SignError'
@@ -249,6 +323,29 @@ const TransactionsTable = (): JSX.Element => {
     } finally {
       removeLoadingState(button)
       setIsDisabled(false)
+    }
+  }
+
+  const onSetupNetwork = async () => {
+    try {
+      let hasSetup = false
+
+      if (toNetwork) {
+        hasSetup = await setupNetwork(toNetwork)
+
+        if (hasSetup) {
+          setShowNetworkModal(false)
+        }
+      }
+
+      if (!toNetwork || !hasSetup) {
+        throw 'Could not setup network'
+      }
+    } catch (error) {
+      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Could not setup network" />, {
+        toastId: 'claimToken',
+      })
+      console.error(error)
     }
   }
 
@@ -336,7 +433,7 @@ const TransactionsTable = (): JSX.Element => {
               <>
                 {!item.claimed && (
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  <ActionLink isDisabled={isDisabled} color="text" onClick={(e: any) => claimToken(e, item)}>
+                  <ActionLink isDisabled={isDisabled} color="text" onClick={(e: any) => onClaimToken(e, item)}>
                     Claim Token
                   </ActionLink>
                 )}
@@ -361,19 +458,45 @@ const TransactionsTable = (): JSX.Element => {
   ]
 
   return (
-    <TableWrap>
-      <TableTitle>Latest Transactions</TableTitle>
-      <EuiInMemoryTable
-        loading={isLoading}
-        itemId="_id"
-        items={transactions}
-        columns={columns}
-        isExpandable={true}
-        itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-        hasActions={false}
-        tableLayout="fixed"
-      />
-    </TableWrap>
+    <>
+      <TableWrap>
+        <TableTitle>Latest Transactions</TableTitle>
+        <EuiInMemoryTable
+          loading={isLoading}
+          itemId="_id"
+          items={transactions}
+          columns={columns}
+          isExpandable={true}
+          itemIdToExpandedRowMap={itemIdToExpandedRowMap}
+          hasActions={false}
+          tableLayout="fixed"
+        />
+      </TableWrap>
+      {showNetworkModal && (
+        <EuiConfirmModal
+          title="Important!"
+          onCancel={() => setShowNetworkModal(false)}
+          onConfirm={onSetupNetwork}
+          cancelButtonText="Cancel"
+          confirmButtonText="Switch the network"
+          defaultFocusedButton="confirm"
+        >
+          <ConfirmMessage>
+            You&rsquo;re trying to claim {claimTokenSymbol}
+            {toNetwork && (
+              <>
+                {' '}
+                on <NetworkInfo network={toNetwork}></NetworkInfo>
+              </>
+            )}
+          </ConfirmMessage>
+          <ConfirmMessage>
+            However, you&rsquo;re connecting to <NetworkInfo network={currentNetwork}></NetworkInfo>
+          </ConfirmMessage>
+          <ConfirmMessage>Please switch the network to continute.</ConfirmMessage>
+        </EuiConfirmModal>
+      )}
+    </>
   )
 }
 

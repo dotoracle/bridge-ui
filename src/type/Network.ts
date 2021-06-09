@@ -7,6 +7,11 @@ type Network = {
   isTestnet: boolean
   bridge: string
   firstBlockCrawl: number
+  nativeCurrency: {
+    name: string
+    symbol: string
+    decimals: number
+  }
 }
 
 export default Network

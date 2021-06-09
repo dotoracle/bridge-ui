@@ -15,7 +15,12 @@
     "rpcURL": "https://kovan.infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
     "bridge": "0xA73EfffAeB7DAE47ff894401c3398BD13cD2915B",
-    "firstBlockCrawl": 25256976
+    "firstBlockCrawl": 25256976,
+    "nativeCurrency": {
+      "name": "ETH",
+      "symbol": "ETH",
+      "decimals": 18
+    }
   },
   {
     "name": "Binance Smart Chain Testnet",
@@ -25,7 +30,12 @@
     "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true,
     "bridge": "0x52B12486944b56cDdb27b700e1B080264Fa5dBC5",
-    "firstBlockCrawl": 9434428
+    "firstBlockCrawl": 9434428,
+    "nativeCurrency": {
+      "name": "BNB",
+      "symbol": "BNB",
+      "decimals": 18
+    }
   },
   {
     "name": "Moonbeam Testnet",
