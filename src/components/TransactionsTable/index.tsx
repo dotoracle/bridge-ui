@@ -130,7 +130,7 @@ const TransactionsTable = (): JSX.Element => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
-  const [isLoading, setIsLoading] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
 
   const toggleDetails = (item: Transaction) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
@@ -175,9 +175,33 @@ const TransactionsTable = (): JSX.Element => {
     setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues)
   }
 
-  const claimToken = (item: Transaction) => {
-    console.log('item', item)
-    setIsLoading(true)
+  const addLoadingState = (button: HTMLElement) => {
+    button.setAttribute('disabled', 'true')
+    const content = button.getElementsByClassName('euiButtonContent')[0]
+    const spinner = document.createElement('span')
+    spinner.classList.add('euiLoadingSpinner', 'euiLoadingSpinner--medium', 'euiButtonContent__spinner')
+    content.prepend(spinner)
+  }
+
+  const removeLoadingState = (button: HTMLElement) => {
+    button.removeAttribute('disabled')
+    const spinner = button.getElementsByClassName('euiLoadingSpinner')[0]
+    spinner.remove()
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const claimToken = (e: any, item: Transaction) => {
+    const button = e.currentTarget
+    addLoadingState(button)
+
+    try {
+      setIsDisabled(true)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      removeLoadingState(button)
+      setIsDisabled(false)
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -263,7 +287,7 @@ const TransactionsTable = (): JSX.Element => {
             return (
               <>
                 {!item.claimed && (
-                  <ActionLink isLoading={isLoading} color="text" onClick={() => claimToken(item)}>
+                  <ActionLink isDisabled={isDisabled} color="text" onClick={(e) => claimToken(e, item)}>
                     Claim Token
                   </ActionLink>
                 )}
