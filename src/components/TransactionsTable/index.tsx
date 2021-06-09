@@ -178,7 +178,9 @@ const TransactionsTable = (): JSX.Element => {
   const addLoadingState = (button: HTMLElement) => {
     button.setAttribute('disabled', 'true')
     const content = button.getElementsByClassName('euiButtonContent')[0]
+    const text = content.getElementsByClassName('euiButtonEmpty__text')[0]
     const spinner = document.createElement('span')
+    text.textContent = 'Signing transaction...'
     spinner.classList.add('euiLoadingSpinner', 'euiLoadingSpinner--medium', 'euiButtonContent__spinner')
     content.prepend(spinner)
   }
@@ -186,6 +188,8 @@ const TransactionsTable = (): JSX.Element => {
   const removeLoadingState = (button: HTMLElement) => {
     button.removeAttribute('disabled')
     const spinner = button.getElementsByClassName('euiLoadingSpinner')[0]
+    const text = button.getElementsByClassName('euiButtonEmpty__text')[0]
+    text.textContent = 'Claim Token'
     spinner.remove()
   }
 
@@ -287,7 +291,8 @@ const TransactionsTable = (): JSX.Element => {
             return (
               <>
                 {!item.claimed && (
-                  <ActionLink isDisabled={isDisabled} color="text" onClick={(e) => claimToken(e, item)}>
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  <ActionLink isDisabled={isDisabled} color="text" onClick={(e: any) => claimToken(e, item)}>
                     Claim Token
                   </ActionLink>
                 )}
