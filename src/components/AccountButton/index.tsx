@@ -38,7 +38,7 @@ const AccountButton = (): JSX.Element => {
 
   const [showWalletModal, setShowWalletModal] = useState(false)
 
-  const networkInfo = useNetworkInfo(chainId, library)
+  const networkInfo = useNetworkInfo(account, chainId, library)
 
   return (
     <>

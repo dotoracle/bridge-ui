@@ -63,6 +63,10 @@ export const toWei = (number: string | number, decimals?: number): BigNumber => 
 export const parseResponseToTransactions = (response: any) => {
   const transactions = [] as Transaction[]
 
+  if (!response) {
+    return []
+  }
+
   if (response.status === 200 && response.data.transactions && response.data.total) {
     response.data.transactions.forEach((t: Transaction) => {
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network

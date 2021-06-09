@@ -21,8 +21,8 @@ const NetworkList = (props: INetworkList): JSX.Element => {
 
   const { setSourceNetwork, setTargetNetwork } = useContext(BridgeAppContext)
 
-  const { chainId, library } = useActiveWeb3React()
-  const currentNetwork = useNetworkInfo(chainId, library)
+  const { account, chainId, library } = useActiveWeb3React()
+  const currentNetwork = useNetworkInfo(account, chainId, library)
 
   const networks = useAllNetworksWithFilter(currentNetwork?.isTestnet, library)
 

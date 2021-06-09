@@ -8,6 +8,8 @@ import TransactionsTable from '../TransactionsTable'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hooks'
 import ArrowSVG from '../../assets/images/arrow-right.svg'
+import networks from '../../config/networks.json'
+import Network from '../../type/Network'
 
 const SwapWrapper = styled.div`
   margin: 3rem auto 0;
@@ -60,10 +62,10 @@ const AppBox = (): JSX.Element => {
     setTargetNetwork,
   } = useContext(BridgeAppContext)
 
-  const sourceNetworkHook = useNetworkInfo(chainId, library)
+  const sourceNetworkHook = useNetworkInfo(account, chainId, library)
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
 
-  const otherNetworks = useOtherNetworks(sourceNetwork, library)
+  const otherNetworks = useOtherNetworks(sourceNetwork, account, chainId, library)
   const targetNetwork = targetNetworkContext ? targetNetworkContext : otherNetworks[0]
 
   useEffect(() => {
@@ -77,6 +79,22 @@ const AppBox = (): JSX.Element => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceNetwork, targetNetwork])
+
+  // refresh context if change account
+  useEffect(() => {
+    let _networks = networks as Network[]
+    if (sourceNetworkHook) {
+      _networks = networks.filter(
+        n => n.isTestnet === sourceNetworkHook?.isTestnet && n.chainId !== sourceNetworkHook?.chainId,
+      ) as Network[]
+      setSourceNetwork(sourceNetworkHook)
+    }
+
+    if (targetNetwork && targetNetwork.chainId !== _networks[0].chainId) {
+      setTargetNetwork(_networks[0])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, chainId])
 
   return (
     <SwapWrapper>
