@@ -35,6 +35,7 @@ const useAllTransactions = (
             response.data.transactions.forEach((t: Transaction) => {
               const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
               const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
+              const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
               const amountFormated = `${formatNumber(fromWei(t.amount).toNumber())} ${t.originSymbol}`
 
               const requestEllipsis = `${t.requestHash.substring(0, 8)}...${t.requestHash.substring(
@@ -51,6 +52,7 @@ const useAllTransactions = (
                 ...t,
                 fromNetwork,
                 toNetwork,
+                originNetwork,
                 amountFormated,
                 requestHashLink: {
                   explorerLogo: fromNetwork ? fromNetwork.logoURI : '',

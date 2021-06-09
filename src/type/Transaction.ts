@@ -11,6 +11,7 @@ type Transaction = {
   amount: string
   amountFormated: string
   originChainId: number
+  originNetwork: Network | undefined
   originSymbol: string
   originToken: string
   requestBlock: number

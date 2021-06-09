@@ -36,7 +36,9 @@ const NetworkLogo = styled.img`
 `
 const NetworkName = styled.p`
   font-size: 0.75rem;
+  font-weight: 500;
   line-height: 1.5;
+  color: #fff;
 `
 const ExplorerLogo = styled.img`
   height: 12px;
@@ -61,9 +63,25 @@ const FakeLink = styled.span`
 `
 const CollapseWrap = styled.div`
   display: flex;
-  align-items: center;
-  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.5rem;
+  width: 100%;
   font-size: 0.75rem;
+  line-height: 2;
+  color: #aeaeb5;
+
+  a {
+    color: ${props => props.theme.primary};
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`
+const Row = styled.div`
+  display: flex;
+  align-items: center;
 
   > div {
     display: flex;
@@ -109,14 +127,35 @@ const TransactionsTable = (): JSX.Element => {
     } else {
       itemIdToExpandedRowMapValues[item._id] = (
         <CollapseWrap>
-          <div>
-            <span>From</span>
-            <NetworkInfo network={item.fromNetwork} />
-          </div>
-          <div>
-            <span>To</span>
-            <NetworkInfo network={item.toNetwork} />
-          </div>
+          <Row>
+            <div>
+              <span>Transfer</span>
+              {item.originNetwork ? (
+                <Wrapper>
+                  <a
+                    href={`${item.originNetwork.explorer}/token/${item.originToken}`}
+                    target="__blank"
+                    rel="noopener noreferrer nofollow"
+                  >
+                    {item.amountFormated}
+                  </a>
+                </Wrapper>
+              ) : (
+                <span>{item.amountFormated}</span>
+              )}
+            </div>
+            <div>
+              <span>From</span>
+              <NetworkInfo network={item.fromNetwork} />
+            </div>
+            <div>
+              <span>To</span>
+              <NetworkInfo network={item.toNetwork} />
+            </div>
+          </Row>
+          <Row>
+            This token was deployed on <NetworkInfo network={item.originNetwork} />
+          </Row>
         </CollapseWrap>
       )
     }
