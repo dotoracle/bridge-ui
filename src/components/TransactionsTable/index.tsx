@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
@@ -163,7 +164,6 @@ const TransactionsTable = (): JSX.Element => {
   const bridgeAddress = useBridgeAddress(currentChainId)
   const bridgeContract = useBridgeContract(bridgeAddress)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
   const [isDisabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -250,7 +250,6 @@ const TransactionsTable = (): JSX.Element => {
     spinner.remove()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onClaimToken = async (e: any, item: Transaction) => {
     const button = e.currentTarget
     addLoadingState(button)
@@ -349,7 +348,6 @@ const TransactionsTable = (): JSX.Element => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const columns: EuiBasicTableColumn<any>[] = [
     {
       field: 'requestTime',
@@ -432,7 +430,6 @@ const TransactionsTable = (): JSX.Element => {
             return (
               <>
                 {!item.claimed && (
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   <ActionLink isDisabled={isDisabled} color="text" onClick={(e: any) => onClaimToken(e, item)}>
                     Claim Token
                   </ActionLink>
