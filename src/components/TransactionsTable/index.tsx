@@ -308,16 +308,19 @@ const TransactionsTable = (): JSX.Element => {
         }
       }
     } catch (error) {
-      let message = `Could not claim ${item.originSymbol}`
+      // we only care if the error is something _other_ than the user rejected the tx
+      if (error?.code !== 4001) {
+        let message = `Could not claim ${item.originSymbol}`
 
-      if (error.name === 'SignError') {
-        // eslint-disable-next-line prefer-destructuring
-        message = error.message
+        if (error.name === 'SignError') {
+          // eslint-disable-next-line prefer-destructuring
+          message = error.message
+        }
+
+        toast.error(<ToastMessage color="danger" headerText="Error!" bodyText={message} />, {
+          toastId: 'claimToken',
+        })
       }
-
-      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText={message} />, {
-        toastId: 'claimToken',
-      })
       console.error(error)
     } finally {
       removeLoadingState(button)
