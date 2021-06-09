@@ -258,25 +258,25 @@ const TransactionsTable = (): JSX.Element => {
       setIsDisabled(true)
       const { requestHash, originChainId, fromChainId, toChainId, index, originToken, amount } = item
 
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/request-withdraw`, {
-        requestHash,
-        fromChainId,
-        toChainId,
-        index: index,
-      })
+      // Ask user if the currentChainId is different than the toChainId
+      if (currentChainId !== toChainId) {
+        setShowNetworkModal(true)
+      } else {
+        const chainIdData = [originChainId, fromChainId, toChainId, index]
 
-      if (response.status === 200 && response.data) {
-        setClaimTokenSymbol(item.originSymbol)
-        setToNetwork(item.toNetwork)
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/request-withdraw`, {
+          requestHash,
+          fromChainId,
+          toChainId,
+          index: index,
+        })
 
-        const sign = response.data
-        const { name, symbol, decimals, r, s, v } = sign
+        if (response.status === 200 && response.data) {
+          setClaimTokenSymbol(item.originSymbol)
+          setToNetwork(item.toNetwork)
 
-        // Ask user if the currentChainId is different than the toChainId
-        if (currentChainId !== toChainId) {
-          setShowNetworkModal(true)
-        } else {
-          const chainIdData = [originChainId, fromChainId, toChainId, index]
+          const sign = response.data
+          const { name, symbol, decimals, r, s, v } = sign
 
           if (bridgeContract) {
             changeButtonText(button, 'Confirming...')
@@ -301,11 +301,11 @@ const TransactionsTable = (): JSX.Element => {
               )
             }
           }
+        } else {
+          const signError = new Error('Could not sign the withdrawal request')
+          signError.name = 'SignError'
+          throw signError
         }
-      } else {
-        const signError = new Error('Could not sign the withdrawal request')
-        signError.name = 'SignError'
-        throw signError
       }
     } catch (error) {
       let message = `Could not claim ${item.originSymbol}`

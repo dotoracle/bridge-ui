@@ -15,7 +15,6 @@
     "rpcURL": "https://kovan.infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
     "bridge": "0xA73EfffAeB7DAE47ff894401c3398BD13cD2915B",
-    "firstBlockCrawl": 25256976,
     "nativeCurrency": {
       "name": "ETH",
       "symbol": "ETH",
@@ -30,10 +29,23 @@
     "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true,
     "bridge": "0x52B12486944b56cDdb27b700e1B080264Fa5dBC5",
-    "firstBlockCrawl": 9434428,
     "nativeCurrency": {
       "name": "BNB",
       "symbol": "BNB",
+      "decimals": 18
+    }
+  },
+  {
+    "name": "TomoChain Testnet",
+    "chainId": 89,
+    "logoURI": "https://assets.coingecko.com/coins/images/3416/large/Asset_59_2x.png",
+    "explorer": "https://scan.testnet.tomochain.com",
+    "rpcURL": "https://rpc.testnet.tomochain.com",
+    "isTestnet": true,
+    "bridge": "0x74344790f493F31f66C4a69E14BA5779EC397DEA",
+    "nativeCurrency": {
+      "name": "TOMO",
+      "symbol": "TOMO",
       "decimals": 18
     }
   },
