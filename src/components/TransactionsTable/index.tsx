@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { EuiInMemoryTable, EuiToolTip, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
+import { EuiInMemoryTable, EuiToolTip, EuiLink, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
 import styled from 'styled-components'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { useAllTransactions, useActiveWeb3React } from '../../hooks'
@@ -91,6 +91,11 @@ const Row = styled.div`
     > span {
       margin-right: 0.25rem;
     }
+  }
+`
+const ActionLink = styled(EuiLink)`
+  &.euiLink.euiLink--primary {
+    color: ${props => props.theme.primary};
   }
 `
 
@@ -203,7 +208,7 @@ const TransactionsTable = (): JSX.Element => {
     {
       field: 'amountFormated',
       name: 'Amount',
-      width: '25%',
+      width: '20%',
       sortable: true,
       render: (amountFormated: string): JSX.Element => {
         return <StyledSpan>{amountFormated}</StyledSpan>
@@ -238,8 +243,14 @@ const TransactionsTable = (): JSX.Element => {
     },
     {
       name: 'Action',
-      width: '10%',
-      actions: [],
+      width: '15%',
+      actions: [
+        {
+          render: (item: Transaction) => {
+            return <>{!item.claimed && <ActionLink>Claim Token</ActionLink>}</>
+          },
+        },
+      ],
     },
     {
       align: 'right',
@@ -264,7 +275,7 @@ const TransactionsTable = (): JSX.Element => {
         columns={columns}
         isExpandable={true}
         itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-        hasActions={true}
+        hasActions={false}
         tableLayout="fixed"
       />
     </TableWrap>
