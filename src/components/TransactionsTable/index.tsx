@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { EuiInMemoryTable, EuiToolTip, EuiButtonEmpty, EuiButtonIcon, EuiBasicTableColumn } from '@elastic/eui'
 import styled from 'styled-components'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
+import { toast } from 'react-toastify'
+import ToastMessage from '../ToastMessage'
 import { useAllTransactions, useActiveWeb3React } from '../../hooks'
 import { parseResponseToTransactions } from '../../utils'
 import Transaction from '../../type/Transaction'
@@ -210,13 +213,38 @@ const TransactionsTable = (): JSX.Element => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const claimToken = (e: any, item: Transaction) => {
+  const claimToken = async (e: any, item: Transaction) => {
     const button = e.currentTarget
     addLoadingState(button)
 
     try {
       setIsDisabled(true)
+      const { requestHash, fromChainId, toChainId, index } = item
+
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/request-withdraw`, {
+        requestHash,
+        fromChainId,
+        toChainId,
+        index: index,
+      })
+
+      if (response.status === 200) {
+      } else {
+        const signError = new Error('Could not sign the withdrawal request')
+        signError.name = 'SignError'
+        throw signError
+      }
     } catch (error) {
+      let message = `Could not claim ${item.originSymbol}`
+
+      if (error.name === 'SignError') {
+        // eslint-disable-next-line prefer-destructuring
+        message = error.message
+      }
+
+      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText={message} />, {
+        toastId: 'claimToken',
+      })
       console.error(error)
     } finally {
       removeLoadingState(button)
