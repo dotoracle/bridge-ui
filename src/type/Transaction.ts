@@ -16,11 +16,11 @@ type Transaction = {
   originToken: string
   requestBlock: number
   requestHash: string
-  requestHashLink: { explorerLogo: string; requestHash: string; requestHashUrl: string }
+  requestHashLink: { networkName: string; explorerLogo: string; requestHash: string; requestHashUrl: string }
   requestTime: number
   claimBlock: number
   claimHash: string
-  claimHashLink: { explorerLogo: string; claimHash: string; claimHashUrl: string }
+  claimHashLink: { networkName: string; explorerLogo: string; claimHash: string; claimHashUrl: string }
   claimId: string
   claimed: boolean
 }

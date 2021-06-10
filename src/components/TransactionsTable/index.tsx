@@ -197,8 +197,6 @@ const TransactionsTable = (): JSX.Element => {
                   toastId: 'onClaimToken',
                 },
               )
-
-              onLoadTransactions()
             }
           }
         } else {
@@ -270,21 +268,25 @@ const TransactionsTable = (): JSX.Element => {
       name: 'Request Tx',
       width: '22.5%',
       render: ({
+        networkName,
         explorerLogo,
         requestHash,
         requestHashUrl,
       }: {
+        networkName: string
         explorerLogo: string
         requestHash: string
         requestHashUrl: string
       }): JSX.Element => {
         return (
-          <Wrapper>
-            <ExplorerLogo src={explorerLogo ? explorerLogo : UnknownSVG} alt="explorer-logo" />
-            <Link href={requestHashUrl} target="__blank" rel="noopener nofollow noreferrer">
-              {requestHash}
-            </Link>
-          </Wrapper>
+          <EuiToolTip content={networkName}>
+            <Wrapper>
+              <ExplorerLogo src={explorerLogo ? explorerLogo : UnknownSVG} alt="explorer-logo" />
+              <Link href={requestHashUrl} target="__blank" rel="noopener nofollow noreferrer">
+                {requestHash}
+              </Link>
+            </Wrapper>
+          </EuiToolTip>
         )
       },
     },
@@ -302,25 +304,29 @@ const TransactionsTable = (): JSX.Element => {
       name: 'Claim Tx',
       width: '22.5%',
       render: ({
+        networkName,
         explorerLogo,
         claimHash,
         claimHashUrl,
       }: {
+        networkName: string
         explorerLogo: string
         claimHash: string
         claimHashUrl: string
       }): JSX.Element => {
         return (
-          <Wrapper>
-            {claimHash && <ExplorerLogo src={explorerLogo ? explorerLogo : UnknownSVG} alt="explorer-logo" />}
-            {claimHashUrl ? (
-              <Link href={claimHashUrl} target="__blank" rel="noopener nofollow noreferrer">
-                {claimHash}
-              </Link>
-            ) : (
-              <FakeLink>{claimHash}</FakeLink>
-            )}
-          </Wrapper>
+          <EuiToolTip content={networkName}>
+            <Wrapper>
+              {claimHash && <ExplorerLogo src={explorerLogo ? explorerLogo : UnknownSVG} alt="explorer-logo" />}
+              {claimHashUrl ? (
+                <Link href={claimHashUrl} target="__blank" rel="noopener nofollow noreferrer">
+                  {claimHash}
+                </Link>
+              ) : (
+                <FakeLink>{claimHash}</FakeLink>
+              )}
+            </Wrapper>
+          </EuiToolTip>
         )
       },
     },

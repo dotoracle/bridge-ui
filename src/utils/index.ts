@@ -89,11 +89,13 @@ export const parseResponseToTransactions = (response: any) => {
         originNetwork,
         amountFormated,
         requestHashLink: {
+          networkName: fromNetwork.name,
           explorerLogo: fromNetwork ? fromNetwork.logoURI : '',
           requestHash: requestEllipsis,
           requestHashUrl,
         },
         claimHashLink: {
+          networkName: toNetwork.name,
           explorerLogo: toNetwork ? toNetwork.logoURI : '',
           claimHash: claimEllipsis,
           claimHashUrl,
