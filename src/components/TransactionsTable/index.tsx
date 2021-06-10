@@ -130,6 +130,10 @@ const ActionLink = styled(EuiButtonEmpty)`
     color: ${props => props.theme.primary};
   }
 
+  &:disabled {
+    color: #4c4e51;
+  }
+
   &:focus {
     background: transparent;
   }
