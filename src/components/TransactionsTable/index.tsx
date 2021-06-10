@@ -68,12 +68,16 @@ const TransactionsTable = (): JSX.Element => {
     setPageSize(_pageSize)
   }
 
+  const onLoadTransactions = async () => {
+    setIsLoading(true)
+    const response = await transactionCallback()
+    setTranstractions(parseResponseToTransactions(response))
+    setIsLoading(false)
+  }
+
   useEffect(() => {
     const fetchTransactions = async () => {
-      setIsLoading(true)
-      const response = await transactionCallback()
-      setTranstractions(parseResponseToTransactions(response))
-      setIsLoading(false)
+      onLoadTransactions()
     }
 
     fetchTransactions()
@@ -193,6 +197,8 @@ const TransactionsTable = (): JSX.Element => {
                   toastId: 'onClaimToken',
                 },
               )
+
+              onLoadTransactions()
             }
           }
         } else {
@@ -356,7 +362,9 @@ const TransactionsTable = (): JSX.Element => {
       <TableWrap>
         <TableTitle>
           Latest Transactions
-          <RefreshButton iconType="refresh">Refresh</RefreshButton>
+          <RefreshButton isLoading={isLoading} iconType="refresh" onClick={onLoadTransactions}>
+            Refresh
+          </RefreshButton>
         </TableTitle>
         <EuiInMemoryTable
           loading={isLoading}

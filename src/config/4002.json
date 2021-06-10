@@ -1,0 +1,9 @@
+[
+  {
+    "name": "ERC20 Mock",
+    "address": "0x52e8c6695cdefc13a8b30f92b03d3256e9660c2c",
+    "symbol": "ERC20Mock",
+    "decimals": 18,
+    "logoURI": ""
+  }
+]
