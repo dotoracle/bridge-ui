@@ -178,6 +178,7 @@ const TransactionsTable = (): JSX.Element => {
 
           if (bridgeContract) {
             changeButtonText(button, 'Confirming...')
+
             const receipt = await bridgeContract.methods
               .claimToken(originToken, account, amount, chainIdData, requestHash, r, s, v, name, symbol, decimals)
               .send({
