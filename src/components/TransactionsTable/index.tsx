@@ -30,6 +30,12 @@ const TableWrap = styled.div`
   margin-top: 1.5rem;
   border-top: 1px solid #222;
   padding-top: 2rem;
+
+  @media (min-width: 1200px) {
+    margin-top: 0;
+    border-top: 0;
+    padding-top: 0;
+  }
 `
 const TableTitle = styled.h2`
   margin-bottom: 1.5rem;

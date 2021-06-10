@@ -25,7 +25,7 @@ const NetworkLogo = styled.div`
 
   @media (min-width: 768px) {
     img {
-      width: 50px;
+      width: 40px;
     }
   }
 `

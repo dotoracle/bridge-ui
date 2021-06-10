@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react'
 import styled from 'styled-components'
+import Container from '../Container'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
 import AmountInput from '../AmountInput'
@@ -11,18 +12,28 @@ import ArrowSVG from '../../assets/images/arrow-right.svg'
 import networks from '../../config/networks.json'
 import Network from '../../type/Network'
 
-const SwapWrapper = styled.div`
+const AppBoxWrap = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 3rem auto 0;
   border-radius: 40px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 50rem;
+  padding: 2rem 0;
   background-color: #0f0f1e;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
 
-  @media (min-width: 992px) {
-    width: 100%;
+  @media (min-width: 1200px) {
+    flex-direction: row;
   }
+`
+const FormWrap = styled.div`
+  flex: 0 0 40%;
+  padding-right: 1rem;
+  padding-left: 2rem;
+`
+const TableWrap = styled.div`
+  flex: 0 0 60%;
+  padding-left: 1rem;
+  padding-right: 2rem;
 `
 const FormRow = styled.div`
   display: flex;
@@ -44,13 +55,6 @@ const StyledLabel = styled.label`
   display: block;
   margin-bottom: 1rem;
   color: #aeaeb3;
-`
-const ArrowDown = styled.img`
-  display: block;
-  margin: 0 auto;
-  width: 30px;
-  transform: rotate(90deg);
-  opacity: 0.5;
 `
 
 const AppBox = (): JSX.Element => {
@@ -97,43 +101,53 @@ const AppBox = (): JSX.Element => {
   }, [account, chainId])
 
   return (
-    <SwapWrapper>
-      <FormRow>
-        <TokenSelect />
-      </FormRow>
+    <Container>
+      <AppBoxWrap>
+        <FormWrap>
+          <FormRow>
+            <TokenSelect />
+          </FormRow>
 
-      <FormRow>
-        <NetworkItem>
-          <StyledLabel>From</StyledLabel>
-          <NetworkBox
-            selectedNetwork={sourceNetwork}
-            otherNetwork={targetNetwork}
-            showDropdown={account ? false : true}
-            side="SOURCE"
-          />
-        </NetworkItem>
+          <FormRow>
+            <NetworkItem>
+              <StyledLabel>From</StyledLabel>
+              <NetworkBox
+                selectedNetwork={sourceNetwork}
+                otherNetwork={targetNetwork}
+                showDropdown={account ? false : true}
+                side="SOURCE"
+              />
+            </NetworkItem>
 
-        <div style={{ alignSelf: 'center', marginTop: '2rem' }}>
-          <ArrowImage src={ArrowSVG} alt="" />
-        </div>
+            <div style={{ alignSelf: 'center', marginTop: '2rem' }}>
+              <ArrowImage src={ArrowSVG} alt="" />
+            </div>
 
-        <NetworkItem>
-          <StyledLabel>To</StyledLabel>
-          <NetworkBox selectedNetwork={targetNetwork} otherNetwork={sourceNetwork} showDropdown={true} side="TARGET" />
-        </NetworkItem>
-      </FormRow>
+            <NetworkItem>
+              <StyledLabel>To</StyledLabel>
+              <NetworkBox
+                selectedNetwork={targetNetwork}
+                otherNetwork={sourceNetwork}
+                showDropdown={true}
+                side="TARGET"
+              />
+            </NetworkItem>
+          </FormRow>
 
-      <FormRow>
-        <AmountInput />
-      </FormRow>
+          <FormRow>
+            <AmountInput />
+          </FormRow>
 
-      <FormRow>
-        <ActionButtons />
-      </FormRow>
+          <FormRow>
+            <ActionButtons />
+          </FormRow>
+        </FormWrap>
 
-      <ArrowDown src={ArrowSVG} alt="" />
-      <TransactionsTable />
-    </SwapWrapper>
+        <TableWrap>
+          <TransactionsTable />
+        </TableWrap>
+      </AppBoxWrap>
+    </Container>
   )
 }
 
