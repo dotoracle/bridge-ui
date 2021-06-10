@@ -66,7 +66,7 @@
   {
     "name": "Mumbai Matic",
     "chainId": 80001,
-    "logoURI": "https://assets.coingecko.com/coins/images/4713/large/matic___polygon.jpg",
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png",
     "explorer": "https://explorer-mumbai.maticvigil.com/",
     "rpcURL": "https://rpc-mumbai.maticvigil.com/",
     "isTestnet": true,
