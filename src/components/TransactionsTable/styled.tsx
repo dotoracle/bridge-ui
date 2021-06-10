@@ -43,6 +43,10 @@ export const RefreshButton = styled(EuiButtonEmpty)`
     border-color: #fff;
     background-color: #ffffff1f;
   }
+
+  &:disabled {
+    border-color: #4c4e51;
+  }
 `
 export const StyledSpan = styled.span`
   font-size: 0.75rem;

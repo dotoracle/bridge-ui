@@ -1,12 +1,31 @@
 import { useState, useContext } from 'react'
+import { EuiConfirmModal } from '@elastic/eui'
 import { toast } from 'react-toastify'
+import styled from 'styled-components'
+import { toHex } from 'web3-utils'
 import ToastMessage from '../ToastMessage'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import WalletModal from '../WalletModal'
 import { ApprovalState, useApproveCallback, useActiveWeb3React, useBridgeAddress, useBridgeContract } from '../../hooks'
 import { StyledButton } from './styled'
 import { toWei } from '../../utils'
-import { toHex } from 'web3-utils'
+import UnknownSVG from '../../assets/images/unknown.svg'
+
+const TokenAmount = styled.span`
+  color: ${props => props.theme.primary};
+  line-height: 2;
+  font-weight: 500;
+`
+
+const NetworkLogo = styled.img`
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+  margin-bottom: 0 !important;
+  display: inline-block !important;
+  vertical-align: baseline !important;
+  height: 18px !important;
+  width: 18px !important;
+`
 
 const ActionButtons = (): JSX.Element => {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
@@ -14,6 +33,8 @@ const ActionButtons = (): JSX.Element => {
 
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isLoading, setLoading] = useState(false)
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const bridgeAddress = useBridgeAddress(chainId)
   const bridgeContract = useBridgeContract(bridgeAddress)
@@ -107,6 +128,21 @@ const ActionButtons = (): JSX.Element => {
     }
   }
 
+  const onOpenConfirmModal = () => {
+    setLoading(true)
+    setShowConfirmModal(true)
+  }
+
+  const onCancelTransfer = () => {
+    setShowConfirmModal(false)
+    setLoading(false)
+  }
+
+  const onConfirmTransfer = async () => {
+    setShowConfirmModal(false)
+    onTransferToken()
+  }
+
   return (
     <>
       {account ? (
@@ -114,7 +150,7 @@ const ActionButtons = (): JSX.Element => {
           {selectedToken ? (
             <>
               {!needApprove || approval === ApprovalState.APPROVED ? (
-                <StyledButton fill isLoading={isLoading} isDisabled={tokenAmount <= 0} onClick={onTransferToken}>
+                <StyledButton fill isLoading={isLoading} isDisabled={tokenAmount <= 0} onClick={onOpenConfirmModal}>
                   Transfer {selectedToken.symbol} to bridge
                 </StyledButton>
               ) : (
@@ -132,6 +168,35 @@ const ActionButtons = (): JSX.Element => {
             <StyledButton fill isDisabled>
               Select a token to transfer
             </StyledButton>
+          )}
+          {showConfirmModal && selectedToken && tokenAmount && sourceNetwork && targetNetwork && (
+            <EuiConfirmModal
+              title="Note!"
+              onCancel={onCancelTransfer}
+              onConfirm={onConfirmTransfer}
+              cancelButtonText="No, don't do it"
+              confirmButtonText="Yes, do it"
+              defaultFocusedButton="confirm"
+            >
+              <p style={{ lineHeight: 2 }}>
+                Are you sure you want to transfer{' '}
+                <TokenAmount>
+                  {tokenAmount} {selectedToken.symbol}
+                </TokenAmount>
+                <br />
+                from{' '}
+                <strong>
+                  <NetworkLogo src={sourceNetwork.logoURI ? sourceNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                  {sourceNetwork.name}
+                </strong>{' '}
+                to{' '}
+                <strong>
+                  <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                  {targetNetwork.name}
+                </strong>{' '}
+                ?
+              </p>
+            </EuiConfirmModal>
           )}
         </>
       ) : (

@@ -394,7 +394,7 @@ const TransactionsTable = (): JSX.Element => {
           onTableChange={onTableChange}
         />
       </TableWrap>
-      {showNetworkModal  && toNetwork && (
+      {showNetworkModal && toNetwork && (
         <EuiConfirmModal
           title="Important!"
           onCancel={() => setShowNetworkModal(false)}
