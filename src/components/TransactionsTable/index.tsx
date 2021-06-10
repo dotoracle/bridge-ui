@@ -294,6 +294,9 @@ const TransactionsTable = (): JSX.Element => {
 
     try {
       setIsDisabled(true)
+      setClaimTokenSymbol(item.originSymbol)
+      setToNetwork(item.toNetwork)
+
       const { requestHash, originChainId, fromChainId, toChainId, index, originToken, amount } = item
 
       // Ask user if the currentChainId is different than the toChainId
@@ -310,9 +313,6 @@ const TransactionsTable = (): JSX.Element => {
         })
 
         if (response.status === 200 && response.data) {
-          setClaimTokenSymbol(item.originSymbol)
-          setToNetwork(item.toNetwork)
-
           const sign = response.data
           const { name, symbol, decimals, r, s, v } = sign
 
