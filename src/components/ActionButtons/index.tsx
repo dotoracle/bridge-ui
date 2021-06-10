@@ -31,7 +31,7 @@ const ActionButtons = (): JSX.Element => {
   const bridgeAddress = useBridgeAddress(chainId)
   const bridgeContract = useBridgeContract(bridgeAddress)
   const [approval, approveCallback] = useApproveCallback(
-    toWei(tokenBalance),
+    toWei(tokenAmount),
     selectedToken,
     sourceNetwork?.chainId,
     bridgeAddress,

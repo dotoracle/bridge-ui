@@ -67,7 +67,9 @@ export const useApproveCallback = (
       return
     }
 
-    return tokenContract.methods.approve(spender, amountToApprove).send({ chainId: toHex(chainId), from: account })
+    return tokenContract.methods
+      .approve(spender, amountToApprove.toString())
+      .send({ chainId: toHex(chainId), from: account })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [approvalState, token, tokenContract, amountToApprove, spender])
 
