@@ -44,6 +44,7 @@ const TransactionsTable = (): JSX.Element => {
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
   const [isDisabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [showNetworkModal, setShowNetworkModal] = useState(false)
   const [claimTokenSymbol, setClaimTokenSymbol] = useState('')
   const [toNetwork, setToNetwork] = useState<Network>()
@@ -69,16 +70,27 @@ const TransactionsTable = (): JSX.Element => {
     setPageSize(_pageSize)
   }
 
-  const onLoadTransactions = async () => {
+  // Loading message
+  const [loadingMessage, setLoadingMessage] = useState('')
+
+  const onLoadTransactions = async (isHardRefresh: boolean) => {
     setIsLoading(true)
-    const response = await transactionCallback()
-    setTranstractions(parseResponseToTransactions(response))
+    setLoadingMessage('Loading transactions...')
+    const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
+
+    if (!_transactions || (isHardRefresh && !isProcessing)) {
+      const response = await transactionCallback()
+      setTranstractions(parseResponseToTransactions(response, account, currentChainId))
+    } else {
+      setTranstractions(JSON.parse(_transactions))
+    }
     setIsLoading(false)
+    setLoadingMessage('')
   }
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      onLoadTransactions()
+      onLoadTransactions(false)
     }
 
     fetchTransactions()
@@ -137,7 +149,7 @@ const TransactionsTable = (): JSX.Element => {
     button.setAttribute('disabled', 'true')
     const content = button.getElementsByClassName('euiButtonContent')[0]
     const spinner = document.createElement('span')
-    changeButtonText(button, 'Signing transaction...')
+    changeButtonText(button, 'Please wait...')
     spinner.classList.add('euiLoadingSpinner', 'euiLoadingSpinner--medium', 'euiButtonContent__spinner')
     content.prepend(spinner)
   }
@@ -199,6 +211,31 @@ const TransactionsTable = (): JSX.Element => {
                   toastId: 'onClaimToken',
                 },
               )
+
+              // Update storage
+              const data = localStorage.getItem(`transactions_${account}_${currentChainId}`)
+
+              if (data) {
+                const _transactions = JSON.parse(data) as Transaction[]
+                const _item = _transactions.find(t => t._id === item._id)
+                if (_item && _item.toNetwork) {
+                  _item.claimed = true
+                  _item.claimHash = `${receipt.transactionHash.substring(0, 6)}...${receipt.transactionHash.substring(
+                    receipt.transactionHash.length - 4,
+                  )}`
+                  _item.claimHashLink = {
+                    networkName: _item.toNetwork.name,
+                    explorerLogo: _item.toNetwork.logoURI,
+                    claimHash: _item.claimHash,
+                    claimHashUrl: `${_item.toNetwork.explorer}/tx/${receipt.transactionHash}`,
+                  }
+                }
+                setTranstractions(_transactions)
+                localStorage.setItem(`transactions_${account}_${currentChainId}`, JSON.stringify(_transactions))
+
+                setIsProcessing(true)
+                onLoadTransactions(false)
+              }
             }
           }
         } else {
@@ -377,7 +414,7 @@ const TransactionsTable = (): JSX.Element => {
       <TableWrap>
         <TableTitle>
           Latest Transactions
-          <RefreshButton isLoading={isLoading} iconType="refresh" onClick={onLoadTransactions}>
+          <RefreshButton isLoading={isLoading} iconType="refresh" onClick={() => onLoadTransactions(true)}>
             Refresh
           </RefreshButton>
         </TableTitle>
@@ -385,6 +422,7 @@ const TransactionsTable = (): JSX.Element => {
           loading={isLoading}
           itemId="_id"
           items={transactions}
+          message={loadingMessage}
           columns={columns}
           isExpandable={true}
           itemIdToExpandedRowMap={itemIdToExpandedRowMap}

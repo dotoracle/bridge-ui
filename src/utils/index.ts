@@ -60,7 +60,7 @@ export const toWei = (number: string | number, decimals?: number): BigNumber => 
   return result
 }
 
-export const parseResponseToTransactions = (response: any) => {
+export const parseResponseToTransactions = (response: any, account: string | null | undefined, chainId?: number) => {
   const transactions = [] as Transaction[]
 
   if (!response) {
@@ -102,6 +102,8 @@ export const parseResponseToTransactions = (response: any) => {
         },
       })
     })
+
+    localStorage.setItem(`transactions_${account}_${chainId}`, JSON.stringify(transactions))
   }
 
   return transactions
