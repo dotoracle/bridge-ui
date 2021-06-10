@@ -35,6 +35,7 @@ import NetworkInfo from './NetworkInfo'
 
 const TransactionsTable = (): JSX.Element => {
   const { account, chainId: currentChainId } = useActiveWeb3React()
+  const defaultMetamaskChainId = [1, 42]
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)
@@ -232,21 +233,28 @@ const TransactionsTable = (): JSX.Element => {
       let hasSetup = false
 
       if (toNetwork) {
-        hasSetup = await setupNetwork(toNetwork)
+        if (!defaultMetamaskChainId.includes(toNetwork.chainId)) {
+          hasSetup = await setupNetwork(toNetwork)
 
-        if (hasSetup) {
+          if (hasSetup) {
+            setShowNetworkModal(false)
+          }
+
+          if (!toNetwork || !hasSetup) {
+            console.error('Could not setup network')
+          }
+        } else {
           setShowNetworkModal(false)
         }
       }
-
-      if (!toNetwork || !hasSetup) {
-        throw 'Could not setup network'
-      }
     } catch (error) {
-      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Could not setup network" />, {
-        toastId: 'claimToken',
-      })
-      console.error(error)
+      // we only care if the error is something _other_ than the user rejected the tx
+      if (error?.code !== 4001) {
+        toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Could not setup network" />, {
+          toastId: 'claimToken',
+        })
+        console.error(error)
+      }
     }
   }
 
@@ -386,23 +394,21 @@ const TransactionsTable = (): JSX.Element => {
           onTableChange={onTableChange}
         />
       </TableWrap>
-      {showNetworkModal && (
+      {showNetworkModal  && toNetwork && (
         <EuiConfirmModal
           title="Important!"
           onCancel={() => setShowNetworkModal(false)}
           onConfirm={onSetupNetwork}
           cancelButtonText="Cancel"
-          confirmButtonText="Switch the network"
+          confirmButtonText={defaultMetamaskChainId.includes(toNetwork.chainId) ? 'OK' : 'Switch the network'}
           defaultFocusedButton="confirm"
         >
           <ConfirmMessage>
             You&rsquo;re trying to claim {claimTokenSymbol}
-            {toNetwork && (
-              <>
-                {' '}
-                on <NetworkInfo network={toNetwork}></NetworkInfo>
-              </>
-            )}
+            <>
+              {' '}
+              on <NetworkInfo network={toNetwork}></NetworkInfo>
+            </>
           </ConfirmMessage>
           <ConfirmMessage>
             However, you&rsquo;re connecting to <NetworkInfo network={currentNetwork}></NetworkInfo>
