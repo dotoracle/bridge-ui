@@ -50,10 +50,59 @@
     }
   },
   {
+    "name": "Fantom Testnet",
+    "chainId": 4002,
+    "logoURI": "https://assets.coingecko.com/coins/images/4001/large/Fantom.png",
+    "explorer": "https://testnet.ftmscan.com/",
+    "rpcURL": "https://rpc.testnet.fantom.network/",
+    "isTestnet": true,
+    "bridge": "0xCE0E6bACEcE7Aa5fb13CF072d5CD8E4D082830f3",
+    "nativeCurrency": {
+      "name": "FTM",
+      "symbol": "FTM",
+      "decimals": 18
+    }
+  },
+  {
+    "name": "Mumbai Matic",
+    "chainId": 80001,
+    "logoURI": "https://assets.coingecko.com/coins/images/4713/large/matic___polygon.jpg",
+    "explorer": "https://explorer-mumbai.maticvigil.com/",
+    "rpcURL": "https://rpc-mumbai.maticvigil.com/",
+    "isTestnet": true,
+    "bridge": "0x74344790f493F31f66C4a69E14BA5779EC397DEA",
+    "nativeCurrency": {
+      "name": "Matic",
+      "symbol": "Matic",
+      "decimals": 18
+    }
+  },
+  {
+    "name": "Avalanche Testnet",
+    "chainId": 43113,
+    "logoURI": "https://assets.coingecko.com/coins/images/12559/large/coin-round-red.png",
+    "explorer": "https://cchain.explorer.avax-test.network/",
+    "rpcURL": "https://api.avax-test.network/ext/bc/C/rpc",
+    "isTestnet": true,
+    "bridge": "0x7Af638f257bCd0DA8F095f07bD6617c55FffaD8b",
+    "nativeCurrency": {
+      "name": "AVAX",
+      "symbol": "AVAX",
+      "decimals": 18
+    }
+  },
+  {
     "name": "Moonbeam Testnet",
     "chainId": 1287,
     "logoURI": "https://docs.moonbeam.network/assets/images/Moonbeam-Favicon-50.png",
     "explorer": "https://moonbeam-explorer.netlify.app/",
-    "isTestnet": true
+    "rpcURL": "https://rpc.testnet.moonbeam.network",
+    "isTestnet": true,
+    "bridge": "0x0bb20dc9D6fEE2E8bd291842EFf7f34AbdcEE451",
+    "nativeCurrency": {
+      "name": "DEV",
+      "symbol": "DEV",
+      "decimals": 18
+    }
   }
 ]
