@@ -7,6 +7,8 @@ import { useActiveWeb3React, useAllNetworks, useNetworkInfo } from '../../hooks'
 
 const NetworkListWrapper = styled.div`
   padding: 0 0.5rem;
+  max-height: 280px;
+  overflow: auto;
 `
 
 interface INetworkList {
