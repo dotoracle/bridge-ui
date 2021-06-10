@@ -3,14 +3,7 @@ import { toast } from 'react-toastify'
 import ToastMessage from '../ToastMessage'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import WalletModal from '../WalletModal'
-import {
-  ApprovalState,
-  useApproveCallback,
-  useActiveWeb3React,
-  useTokenBalance,
-  useBridgeAddress,
-  useBridgeContract,
-} from '../../hooks'
+import { ApprovalState, useApproveCallback, useActiveWeb3React, useBridgeAddress, useBridgeContract } from '../../hooks'
 import { StyledButton } from './styled'
 import { toWei } from '../../utils'
 import { toHex } from 'web3-utils'
@@ -18,12 +11,6 @@ import { toHex } from 'web3-utils'
 const ActionButtons = (): JSX.Element => {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId } = useActiveWeb3React()
-
-  const tokenBalance = useTokenBalance(
-    selectedToken ? selectedToken.address : undefined,
-    selectedToken ? selectedToken.decimals : undefined,
-    account,
-  )
 
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -82,7 +69,7 @@ const ActionButtons = (): JSX.Element => {
         const amountInWei = toWei(tokenAmount, selectedToken.decimals)
 
         const receipt = await bridgeContract.methods
-          .requestBridge(selectedToken.address, amountInWei, targetNetwork.chainId)
+          .requestBridge(selectedToken.address, amountInWei.toString(), targetNetwork.chainId)
           .send({
             chaindId: toHex(sourceNetwork.chainId),
             from: account,
