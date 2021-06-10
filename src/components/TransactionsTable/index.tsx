@@ -1,15 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {
-  EuiInMemoryTable,
-  EuiToolTip,
-  EuiButtonEmpty,
-  EuiButtonIcon,
-  EuiBasicTableColumn,
-  EuiConfirmModal,
-} from '@elastic/eui'
-import styled from 'styled-components'
+import { EuiInMemoryTable, EuiToolTip, EuiButtonIcon, EuiBasicTableColumn, EuiConfirmModal } from '@elastic/eui'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-toastify'
 import { toHex } from 'web3-utils'
@@ -24,158 +16,22 @@ import {
 import { parseResponseToTransactions, setupNetwork } from '../../utils'
 import Transaction from '../../type/Transaction'
 import Network from '../../type/Network'
+import {
+  TableWrap,
+  TableTitle,
+  RefreshButton,
+  StyledSpan,
+  Wrapper,
+  ExplorerLogo,
+  Link,
+  FakeLink,
+  CollapseWrap,
+  Row,
+  ActionLink,
+  ConfirmMessage,
+} from './styled'
 import UnknownSVG from '../../assets/images/unknown.svg'
-
-const TableWrap = styled.div`
-  margin-top: 1.5rem;
-  border-top: 1px solid #222;
-  padding-top: 2rem;
-
-  @media (min-width: 1200px) {
-    margin-top: 0;
-    border-top: 0;
-    padding-top: 0;
-  }
-`
-const TableTitle = styled.h2`
-  margin-bottom: 1.5rem;
-  font-family: MarketSans, sans-serif;
-  font-size: 18px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #fff;
-`
-const StyledSpan = styled.span`
-  font-size: 0.75rem;
-`
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-`
-const NetworkLogo = styled.img`
-  margin-right: 0.25rem;
-  margin-left: 0.25rem;
-  height: 12px;
-  width: 12px;
-`
-const NetworkName = styled.p`
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.5;
-  color: #fff;
-`
-const ExplorerLogo = styled.img`
-  height: 20px;
-  width: 20px;
-  margin-right: 0.5rem;
-`
-const Link = styled.a`
-  font-size: 0.75rem;
-  color: #fff;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`
-const FakeLink = styled.span`
-  font-size: 0.75rem;
-  color: #fff;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`
-const CollapseWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border-top: 1px solid #343741;
-  padding: 0.5rem;
-  width: 100%;
-  font-size: 0.75rem;
-  line-height: 2;
-  color: #aeaeb5;
-
-  a {
-    color: ${props => props.theme.primary};
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  @media (min-width: 768px) {
-    border-top: 0;
-  }
-`
-const Row = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  > div {
-    display: flex;
-    align-items: center;
-    margin-right: 0.5rem;
-
-    > span {
-      margin-right: 0.25rem;
-    }
-  }
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-  }
-`
-const ActionLink = styled(EuiButtonEmpty)`
-  padding: 0;
-  height: auto;
-
-  &.euiButtonEmpty {
-    color: ${props => props.theme.primary};
-  }
-
-  &:disabled {
-    color: #4c4e51;
-  }
-
-  &:focus {
-    background: transparent;
-  }
-`
-const ConfirmMessage = styled.div`
-  img {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  > div {
-    margin-top: 1rem;
-  }
-
-  p {
-    font-size: 1rem;
-  }
-`
-
-const NetworkInfo = ({ network }: { network: Network | undefined }): JSX.Element => {
-  return (
-    <Wrapper>
-      {network ? (
-        <>
-          <NetworkLogo src={network.logoURI ? network.logoURI : UnknownSVG} alt={network.name} />
-          <NetworkName>{network.name}</NetworkName>
-        </>
-      ) : (
-        <>
-          <NetworkLogo src={UnknownSVG} alt="Unknown network" />
-          <NetworkName>Unknown network</NetworkName>
-        </>
-      )}
-    </Wrapper>
-  )
-}
+import NetworkInfo from './NetworkInfo'
 
 const TransactionsTable = (): JSX.Element => {
   const { account, chainId: currentChainId } = useActiveWeb3React()
@@ -498,7 +354,10 @@ const TransactionsTable = (): JSX.Element => {
   return (
     <>
       <TableWrap>
-        <TableTitle>Latest Transactions</TableTitle>
+        <TableTitle>
+          Latest Transactions
+          <RefreshButton iconType="refresh">Refresh</RefreshButton>
+        </TableTitle>
         <EuiInMemoryTable
           loading={isLoading}
           itemId="_id"
