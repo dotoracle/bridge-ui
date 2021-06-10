@@ -60,8 +60,8 @@ const NetworkName = styled.p`
   color: #fff;
 `
 const ExplorerLogo = styled.img`
-  height: 12px;
-  width: 12px;
+  height: 20px;
+  width: 20px;
   margin-right: 0.5rem;
 `
 const Link = styled.a`
