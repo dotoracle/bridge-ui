@@ -182,7 +182,25 @@ const TransactionsTable = (): JSX.Element => {
   const [toNetwork, setToNetwork] = useState<Network>()
 
   const [transactions, setTranstractions] = useState<Transaction[]>([])
-  const transactionCallback = useAllTransactions(account, currentChainId, 20, 1)
+  const transactionCallback = useAllTransactions(account, currentChainId, 200, 1)
+
+  // pagination
+  const [pageIndex, setPageIndex] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
+  const pagination = {
+    pageIndex,
+    pageSize,
+    totalItemCount: 5,
+    pageSizeOptions: [10, 15, 20],
+  }
+
+  const onTableChange = ({ page = {} }) => {
+    // @ts-ignore
+    const { index: _pageIndex, size: _pageSize } = page
+
+    setPageIndex(_pageIndex)
+    setPageSize(_pageSize)
+  }
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -480,6 +498,8 @@ const TransactionsTable = (): JSX.Element => {
           itemIdToExpandedRowMap={itemIdToExpandedRowMap}
           hasActions={false}
           tableLayout="fixed"
+          pagination={pagination}
+          onTableChange={onTableChange}
         />
       </TableWrap>
       {showNetworkModal && (

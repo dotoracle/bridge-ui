@@ -68,6 +68,11 @@ const GlobalStyle = createGlobalStyle`
       right: 0;
     }
   }
+
+  .euiPagination .euiButtonIcon[disabled] {
+    opacity: 0.5;
+    cursor: initial;
+  }
 `
 
 export default GlobalStyle
