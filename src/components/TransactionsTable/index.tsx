@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { EuiInMemoryTable, EuiToolTip, EuiButtonIcon, EuiBasicTableColumn, EuiConfirmModal } from '@elastic/eui'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-toastify'
 import { toHex } from 'web3-utils'
+import BridgeAppContext from '../../context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import {
   useAllTransactions,
@@ -16,6 +17,7 @@ import {
 import { parseResponseToTransactions, setupNetwork } from '../../utils'
 import Transaction from '../../type/Transaction'
 import Network from '../../type/Network'
+import ClaimCountdown from './ClaimCountdown'
 import {
   TableWrap,
   TableTitle,
@@ -27,7 +29,7 @@ import {
   FakeLink,
   CollapseWrap,
   Row,
-  ActionLink,
+  StyledClaimButton,
   ConfirmMessage,
 } from './styled'
 import UnknownSVG from '../../assets/images/unknown.svg'
@@ -35,6 +37,7 @@ import NetworkInfo from './NetworkInfo'
 
 const TransactionsTable = (): JSX.Element => {
   const { account, chainId: currentChainId } = useActiveWeb3React()
+  const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
   const defaultMetamaskChainId = [1, 42]
   const currentNetwork = useNetworkInfo(currentChainId)
 
@@ -85,6 +88,7 @@ const TransactionsTable = (): JSX.Element => {
         setIsLoading(false)
       }, 500)
     }
+    setRefreshLocal(false)
   }
 
   useEffect(() => {
@@ -94,7 +98,7 @@ const TransactionsTable = (): JSX.Element => {
 
     fetchTransactions()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, currentChainId])
+  }, [account, currentChainId, refreshLocal])
 
   const toggleDetails = (item: Transaction) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
@@ -130,9 +134,11 @@ const TransactionsTable = (): JSX.Element => {
               <NetworkInfo network={item.toNetwork} />
             </div>
           </Row>
-          <Row>
-            This token was deployed on <NetworkInfo network={item.originNetwork} />
-          </Row>
+          {item.originNetwork && (
+            <Row>
+              This token was deployed on <NetworkInfo network={item.originNetwork} />
+            </Row>
+          )}
         </CollapseWrap>
       )
     }
@@ -218,14 +224,17 @@ const TransactionsTable = (): JSX.Element => {
                 const _transactions = JSON.parse(data) as Transaction[]
                 const _item = _transactions.find(t => t._id === item._id)
                 if (_item && _item.toNetwork) {
+                  const claimHashEllipsis = `${receipt.transactionHash.substring(
+                    0,
+                    6,
+                  )}...${receipt.transactionHash.substring(receipt.transactionHash.length - 4)}`
+
                   _item.claimed = true
-                  _item.claimHash = `${receipt.transactionHash.substring(0, 6)}...${receipt.transactionHash.substring(
-                    receipt.transactionHash.length - 4,
-                  )}`
+                  _item.claimHash = receipt.transactionHash
                   _item.claimHashLink = {
                     networkName: _item.toNetwork.name,
                     explorerLogo: _item.toNetwork.logoURI,
-                    claimHash: _item.claimHash,
+                    claimHash: claimHashEllipsis,
                     claimHashUrl: `${_item.toNetwork.explorer}/tx/${receipt.transactionHash}`,
                   }
                 }
@@ -384,9 +393,24 @@ const TransactionsTable = (): JSX.Element => {
             return (
               <>
                 {!item.claimed && (
-                  <ActionLink isDisabled={isDisabled} color="text" onClick={(e: any) => onClaimToken(e, item)}>
-                    Claim Token
-                  </ActionLink>
+                  <>
+                    {item.index ? (
+                      <StyledClaimButton isDisabled={isDisabled} onClick={(e: any) => onClaimToken(e, item)}>
+                        Claim Token
+                      </StyledClaimButton>
+                    ) : (
+                      <>
+                        {item.fromNetwork && (
+                          <ClaimCountdown
+                            transaction={item}
+                            network={item.fromNetwork}
+                            isDisabled={isDisabled}
+                            onClick={(e: any) => onClaimToken(e, item)}
+                          />
+                        )}
+                      </>
+                    )}
+                  </>
                 )}
               </>
             )

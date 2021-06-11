@@ -130,7 +130,7 @@ export const Row = styled.div`
     align-items: center;
   }
 `
-export const ActionLink = styled(EuiButtonEmpty)`
+export const StyledClaimButton = styled(EuiButtonEmpty)`
   padding: 0;
   height: auto;
 

@@ -5,7 +5,9 @@
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
     "explorer": "https://etherscan.io",
     "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
-    "isTestnet": false
+    "isTestnet": false,
+    "confirmations": 6,
+    "blockTime": 15
   },
   {
     "name": "Kovan Test Network",
@@ -19,7 +21,9 @@
       "name": "ETH",
       "symbol": "ETH",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 15
   },
   {
     "name": "Binance Smart Chain Testnet",
@@ -33,7 +37,9 @@
       "name": "BNB",
       "symbol": "BNB",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 3
   },
   {
     "name": "TomoChain Testnet",
@@ -47,7 +53,9 @@
       "name": "TOMO",
       "symbol": "TOMO",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 2
   },
   {
     "name": "Fantom Testnet",
@@ -61,7 +69,9 @@
       "name": "FTM",
       "symbol": "FTM",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 2
   },
   {
     "name": "Mumbai Matic",
@@ -75,7 +85,9 @@
       "name": "Matic",
       "symbol": "Matic",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 2
   },
   {
     "name": "Avalanche Testnet",
@@ -89,7 +101,9 @@
       "name": "AVAX",
       "symbol": "AVAX",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 16
   },
   {
     "name": "Moonbeam Testnet",
@@ -103,6 +117,8 @@
       "name": "DEV",
       "symbol": "DEV",
       "decimals": 18
-    }
+    },
+    "confirmations": 6,
+    "blockTime": 12
   }
 ]

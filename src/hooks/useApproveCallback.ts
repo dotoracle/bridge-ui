@@ -22,7 +22,6 @@ export const useApproveCallback = (
   const { account } = useActiveWeb3React()
 
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
-  // console.log(amountToApprove?.toNumber())
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN

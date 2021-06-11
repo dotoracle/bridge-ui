@@ -96,6 +96,7 @@ const App = (): JSX.Element => {
   const [tokenAmount, setTokenAmount] = useState(0)
   const [sourceNetwork, setSourceNetwork] = useState<Network>()
   const [targetNetwork, setTargetNetwork] = useState<Network>()
+  const [refreshLocal, setRefreshLocal] = useState(false)
   const { chainId, account } = useWeb3React()
 
   useEffect(() => {
@@ -104,6 +105,8 @@ const App = (): JSX.Element => {
 
     if (ethereum) {
       ethereum.on('chainChanged', () => {
+        // clear local storage
+        localStorage.removeItem(`transactions_${account}_${chainId}`)
         window.location.reload()
       })
     }
@@ -121,6 +124,8 @@ const App = (): JSX.Element => {
           setSourceNetwork,
           targetNetwork,
           setTargetNetwork,
+          refreshLocal,
+          setRefreshLocal,
         }}
       >
         <GlobalStyle />

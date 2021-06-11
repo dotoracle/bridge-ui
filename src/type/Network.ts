@@ -12,6 +12,8 @@ type Network = {
     symbol: string
     decimals: number
   }
+  confirmations: number
+  blockTime: number
 }
 
 export default Network
