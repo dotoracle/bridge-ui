@@ -6,8 +6,9 @@ const NAV_ITEMS: Array<NavItem> = [
     href: '/',
   },
   {
-    label: 'White Paper',
-    href: '#',
+    label: 'Faucet',
+    href: 'https://faucet.dotoracle.network',
+    target: '__blank',
   },
 ]
 

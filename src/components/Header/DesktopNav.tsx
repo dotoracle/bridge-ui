@@ -54,7 +54,9 @@ const DesktopNav = (): JSX.Element => {
       <EuiFlexGroup gutterSize="none" justifyContent="flexEnd">
         {NAV_ITEMS.map(navItem => (
           <MenuItem key={navItem.label} grow={false}>
-            <Link href={navItem.href ?? '#'}>{navItem.label}</Link>
+            <Link href={navItem.href ?? '#'} target={navItem.target ?? '_self'}>
+              {navItem.label}
+            </Link>
             {navItem.subLabel && <SubText>{navItem.subLabel}</SubText>}
           </MenuItem>
         ))}

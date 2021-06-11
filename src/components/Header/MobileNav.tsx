@@ -53,7 +53,9 @@ const MobileNav = (): JSX.Element => {
         <MobileMenu>
           {NAV_ITEMS.map(navItem => (
             <MobileMenuItem key={navItem.label}>
-              <MobileMenuLink href={navItem.href ?? '#'}>{navItem.label}</MobileMenuLink>
+              <MobileMenuLink href={navItem.href ?? '#'} target={navItem.target ?? '_self'}>
+                {navItem.label}
+              </MobileMenuLink>
               {navItem.subLabel && <SubText>{navItem.subLabel}</SubText>}
             </MobileMenuItem>
           ))}

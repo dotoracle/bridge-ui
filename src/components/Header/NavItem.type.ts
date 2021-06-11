@@ -3,6 +3,7 @@ type NavItem = {
   subLabel?: string
   children?: Array<NavItem>
   href?: string
+  target?: string
   dot?: true
 }
 
