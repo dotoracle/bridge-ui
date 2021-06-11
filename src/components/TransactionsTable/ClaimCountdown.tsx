@@ -5,6 +5,7 @@ import Network from '../../type/Network'
 import Transaction from '../../type/Transaction'
 
 const CountdownText = styled.p`
+  font-size: 0.75rem;
   color: #aeaeb5;
 `
 

@@ -18,9 +18,8 @@ export const useApproveCallback = (
   chainId?: number,
   spender?: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): [ApprovalState, () => Promise<any>] => {
+): [ApprovalState, (infinity?: boolean) => Promise<any>] => {
   const { account } = useActiveWeb3React()
-
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
@@ -35,42 +34,47 @@ export const useApproveCallback = (
 
   const tokenContract = useTokenContract(token?.address)
 
-  const approve = useCallback(async (): Promise<void> => {
-    if (approvalState !== ApprovalState.NOT_APPROVED) {
-      console.error('approve was called unnecessarily')
-      return
-    }
+  const approve = useCallback(
+    async (infinity?: boolean): Promise<void> => {
+      if (approvalState !== ApprovalState.NOT_APPROVED) {
+        console.error('approve was called unnecessarily')
+        return
+      }
 
-    if (!token) {
-      console.error('no token')
-      return
-    }
+      if (!token) {
+        console.error('no token')
+        return
+      }
 
-    if (!tokenContract) {
-      console.error('tokenContract is null')
-      return
-    }
+      if (!tokenContract) {
+        console.error('tokenContract is null')
+        return
+      }
 
-    if (!chainId) {
-      console.error('no chain id')
-      return
-    }
+      if (!chainId) {
+        console.error('no chain id')
+        return
+      }
 
-    if (!amountToApprove) {
-      console.error('missing amount to approve')
-      return
-    }
+      if (!amountToApprove) {
+        console.error('missing amount to approve')
+        return
+      }
 
-    if (!spender) {
-      console.error('no spender')
-      return
-    }
+      if (!spender) {
+        console.error('no spender')
+        return
+      }
 
-    return tokenContract.methods
-      .approve(spender, amountToApprove.toString(10))
-      .send({ chainId: toHex(chainId), from: account })
+      const infiniteAmount = new BigNumber(2 ** 255 - 1)
+
+      return tokenContract.methods
+        .approve(spender, infinity ? infiniteAmount.toString(10) : amountToApprove.toString(10))
+        .send({ chainId: toHex(chainId), from: account })
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [approvalState, token, tokenContract, amountToApprove, spender])
+    [approvalState, token, tokenContract, amountToApprove, spender],
+  )
 
   return [approvalState, approve]
 }

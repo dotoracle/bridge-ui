@@ -7,7 +7,7 @@ import BridgeAppContext from '../../context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import WalletModal from '../WalletModal'
 import { ApprovalState, useApproveCallback, useActiveWeb3React, useBridgeAddress, useBridgeContract } from '../../hooks'
-import { StyledButton } from './styled'
+import { StyledButton, UnlockButton } from './styled'
 import { toWei, formatNumber } from '../../utils'
 import Transaction from '../../type/Transaction'
 import UnknownSVG from '../../assets/images/unknown.svg'
@@ -17,7 +17,6 @@ const TokenAmount = styled.span`
   line-height: 2;
   font-weight: 500;
 `
-
 const NetworkLogo = styled.img`
   margin-right: 0.25rem;
   margin-left: 0.25rem;
@@ -27,6 +26,11 @@ const NetworkLogo = styled.img`
   height: 18px !important;
   width: 18px !important;
 `
+const ApproveWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
 
 const ActionButtons = (): JSX.Element => {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, setRefreshLocal } =
@@ -35,6 +39,7 @@ const ActionButtons = (): JSX.Element => {
 
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const [isInfinteLoading, setInfiniteLoading] = useState(false)
 
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -48,12 +53,10 @@ const ActionButtons = (): JSX.Element => {
   )
   const [needApprove, setNeedApprove] = useState(true)
 
-  const onApprove = async () => {
+  const approveToken = async (infinity?: boolean) => {
     try {
-      setLoading(true)
-
       if (selectedToken && targetNetwork) {
-        const receipt = await approveCallback()
+        const receipt = await approveCallback(infinity)
 
         if (receipt) {
           toast.success(
@@ -80,7 +83,18 @@ const ActionButtons = (): JSX.Element => {
       console.error(error)
     } finally {
       setLoading(false)
+      setInfiniteLoading(false)
     }
+  }
+
+  const onApprove = async () => {
+    setLoading(true)
+    await approveToken()
+  }
+
+  const onApproveInfinite = async () => {
+    setInfiniteLoading(true)
+    await approveToken(true)
   }
 
   const onTransferToken = async () => {
@@ -199,14 +213,23 @@ const ActionButtons = (): JSX.Element => {
                   Transfer {selectedToken.symbol} to bridge
                 </StyledButton>
               ) : (
-                <StyledButton
-                  fill
-                  isLoading={isLoading}
-                  isDisabled={approval === ApprovalState.UNKNOWN}
-                  onClick={onApprove}
-                >
-                  Approve {selectedToken.symbol}
-                </StyledButton>
+                <ApproveWrap>
+                  <UnlockButton
+                    fill
+                    isLoading={isLoading}
+                    isDisabled={approval === ApprovalState.UNKNOWN || isInfinteLoading}
+                    onClick={onApprove}
+                  >
+                    Unlock <br /> {tokenAmount ? `${tokenAmount} ${selectedToken.symbol}` : `${selectedToken.symbol}`}
+                  </UnlockButton>
+                  <UnlockButton
+                    isLoading={isInfinteLoading}
+                    isDisabled={approval === ApprovalState.UNKNOWN || isLoading}
+                    onClick={onApproveInfinite}
+                  >
+                    Infinite Unlock
+                  </UnlockButton>
+                </ApproveWrap>
               )}
             </>
           ) : (

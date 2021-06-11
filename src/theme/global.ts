@@ -44,12 +44,20 @@ const GlobalStyle = createGlobalStyle`
         border-color: ${theme.secondary};
         background-color: ${theme.secondary}1a;
       }
+
+      &.euiButton-isDisabled {
+        color: #757678;
+        border-color: #434548;
+
+        &:hover {
+          background-color: #4345481a;
+        }
+      }
     }
 
     &.euiButton--fill {
       color: #fff;
       background-color: ${theme.primary};
-
 
       &:not([class*='isDisabled']):hover,
       &:not([class*='isDisabled']):focus,
