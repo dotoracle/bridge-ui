@@ -70,22 +70,21 @@ const TransactionsTable = (): JSX.Element => {
     setPageSize(_pageSize)
   }
 
-  // Loading message
-  const [loadingMessage, setLoadingMessage] = useState('')
-
   const onLoadTransactions = async (isHardRefresh: boolean) => {
-    setIsLoading(true)
-    setLoadingMessage('Loading transactions...')
     const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
 
     if (!_transactions || (isHardRefresh && !isProcessing)) {
+      setIsLoading(true)
       const response = await transactionCallback()
       setTranstractions(parseResponseToTransactions(response, account, currentChainId))
+      setIsLoading(false)
     } else {
-      setTranstractions(JSON.parse(_transactions))
+      setIsLoading(true)
+      setTimeout(() => {
+        setTranstractions(JSON.parse(_transactions))
+        setIsLoading(false)
+      }, 500)
     }
-    setIsLoading(false)
-    setLoadingMessage('')
   }
 
   useEffect(() => {
@@ -422,7 +421,6 @@ const TransactionsTable = (): JSX.Element => {
           loading={isLoading}
           itemId="_id"
           items={transactions}
-          message={loadingMessage}
           columns={columns}
           isExpandable={true}
           itemIdToExpandedRowMap={itemIdToExpandedRowMap}

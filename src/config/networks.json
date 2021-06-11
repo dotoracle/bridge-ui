@@ -95,7 +95,7 @@
     "name": "Moonbeam Testnet",
     "chainId": 1287,
     "logoURI": "https://docs.moonbeam.network/assets/images/Moonbeam-Favicon-50.png",
-    "explorer": "https://moonbeam-explorer.netlify.app/",
+    "explorer": "https://moonbeam-explorer.netlify.app",
     "rpcURL": "https://rpc.testnet.moonbeam.network",
     "isTestnet": true,
     "bridge": "0x0bb20dc9D6fEE2E8bd291842EFf7f34AbdcEE451",
