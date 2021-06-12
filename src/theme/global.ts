@@ -14,6 +14,20 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Montserrat', sans-serif;
   }
 
+  .euiFilterSelectItem__content {
+    margin: 0.5rem !important;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .euiFilterSelectItem:focus, .euiFilterSelectItem-isFocused {
+    background-color: ${theme.secondary}1a;
+    color: ${theme.primary};
+
+    p {
+      color: ${theme.primary};
+    }
+  }
+
   .euiModalHeader__title {
     font-weight: 500;
     font-size: 1.5rem;

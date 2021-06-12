@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-import { EuiInMemoryTable, EuiToolTip, EuiButtonIcon, EuiBasicTableColumn, EuiConfirmModal } from '@elastic/eui'
+import {
+  EuiInMemoryTable,
+  EuiToolTip,
+  EuiButtonIcon,
+  EuiBasicTableColumn,
+  EuiConfirmModal,
+  Pagination,
+  Search,
+} from '@elastic/eui'
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-toastify'
 import { toHex } from 'web3-utils'
@@ -13,6 +21,7 @@ import {
   useNetworkInfo,
   useBridgeAddress,
   useBridgeContract,
+  useAllNetworks,
 } from '../../hooks'
 import { parseResponseToTransactions, setupNetwork } from '../../utils'
 import Transaction from '../../type/Transaction'
@@ -63,14 +72,65 @@ const TransactionsTable = (): JSX.Element => {
     pageSize,
     totalItemCount: 5,
     pageSizeOptions: [10, 15, 20],
+  } as Pagination
+
+  // Sorting
+  const [sortField, setSortField] = useState('requestTime')
+  const [sortDirection, setSortDirection] = useState('asc')
+
+  const sorting = {
+    sort: {
+      field: sortField,
+      direction: sortDirection,
+    },
   }
 
-  const onTableChange = ({ page = {} }) => {
+  // Search
+  const networks = useAllNetworks(currentNetwork?.isTestnet)
+
+  const search = {
+    box: {
+      incremental: true,
+      schema: true,
+      placeholder: 'Enter the transaction hash...',
+    },
+    filters: [
+      {
+        type: 'field_value_selection',
+        field: 'fromChainId',
+        name: 'From Network',
+        multiSelect: false,
+        options: networks.map((network: Network) => ({
+          value: network.chainId,
+          name: network.name,
+          view: <NetworkInfo network={network} />,
+        })),
+      },
+      {
+        type: 'field_value_selection',
+        field: 'toChainId',
+        name: 'To Network',
+        multiSelect: false,
+        options: networks.map((network: Network) => ({
+          value: network.chainId,
+          name: network.name,
+          view: <NetworkInfo network={network} />,
+        })),
+      },
+    ],
+  } as Search
+
+  const onTableChange = ({ page = {}, sort = {} }) => {
     // @ts-ignore
     const { index: _pageIndex, size: _pageSize } = page
 
     setPageIndex(_pageIndex)
     setPageSize(_pageSize)
+
+    // @ts-ignore
+    const { field: _sortField, direction: _sortDirection } = sort
+    setSortField(_sortField)
+    setSortDirection(_sortDirection)
   }
 
   const onLoadTransactions = async (isHardRefresh: boolean) => {
@@ -322,6 +382,10 @@ const TransactionsTable = (): JSX.Element => {
       },
     },
     {
+      field: 'fromChainId',
+      name: 'From Chain Id',
+    },
+    {
       field: 'requestHashLink',
       name: 'Request Tx',
       width: '22.5%',
@@ -387,6 +451,10 @@ const TransactionsTable = (): JSX.Element => {
           </EuiToolTip>
         )
       },
+    },
+    {
+      field: 'toChainId',
+      name: 'To Chain Id',
     },
     {
       name: 'Action',
@@ -455,6 +523,9 @@ const TransactionsTable = (): JSX.Element => {
           hasActions={false}
           tableLayout="fixed"
           pagination={pagination}
+          // @ts-ignore
+          sorting={sorting}
+          search={search}
           onTableChange={onTableChange}
         />
       </TableWrap>

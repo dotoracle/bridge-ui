@@ -11,6 +11,15 @@ export const TableWrap = styled.div`
     border-top: 0;
     padding-top: 0;
   }
+
+  .euiTable {
+    .euiTableHeaderCell:nth-child(2),
+    .euiTableRowCell:nth-child(2),
+    .euiTableHeaderCell:nth-child(6),
+    .euiTableRowCell:nth-child(6) {
+      display: none;
+    }
+  }
 `
 export const TableTitle = styled.h2`
   margin-bottom: 1.5rem;
@@ -58,8 +67,8 @@ export const Wrapper = styled.div`
 export const NetworkLogo = styled.img`
   margin-right: 0.25rem;
   margin-left: 0.25rem;
-  height: 12px;
-  width: 12px;
+  height: 18px;
+  width: 18px;
 `
 export const NetworkName = styled.p`
   font-size: 0.75rem;
