@@ -40,6 +40,7 @@ const ActionButtons = (): JSX.Element => {
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isInfinteLoading, setInfiniteLoading] = useState(false)
+  const [infinityApprove, setInfinityApprove] = useState(false)
 
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -70,6 +71,7 @@ const ActionButtons = (): JSX.Element => {
             },
           )
           setNeedApprove(false)
+          setInfinityApprove(typeof infinityApprove === 'undefined' ? false : infinityApprove)
         }
       }
     } catch (error) {
@@ -127,10 +129,14 @@ const ActionButtons = (): JSX.Element => {
           )
 
           setTokenAmount(0)
+
+          // Reset approve state
+          if (!infinityApprove) {
+            setNeedApprove(true)
+          }
+
           // Update storage
           const data = localStorage.getItem(`transactions_${account}_${chainId}`)
-
-          setTokenAmount(0)
 
           if (data) {
             const _transactions = JSON.parse(data) as Transaction[]

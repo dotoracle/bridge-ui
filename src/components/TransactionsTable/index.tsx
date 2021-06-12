@@ -94,6 +94,10 @@ const TransactionsTable = (): JSX.Element => {
   useEffect(() => {
     const fetchTransactions = async () => {
       onLoadTransactions(false)
+
+      if (refreshLocal) {
+        setIsProcessing(true)
+      }
     }
 
     fetchTransactions()
