@@ -76,7 +76,7 @@ const TransactionsTable = (): JSX.Element => {
 
   // Sorting
   const [sortField, setSortField] = useState('requestTime')
-  const [sortDirection, setSortDirection] = useState('asc')
+  const [sortDirection, setSortDirection] = useState('desc')
 
   const sorting = {
     sort: {
