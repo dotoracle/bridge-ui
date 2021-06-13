@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useMemo, useEffect } from 'react'
+import { useCallback, useState, useMemo, useEffect } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -11,7 +11,6 @@ import {
 // @ts-ignore
 import { EuiWindowEvent } from '@elastic/eui/lib/services'
 import { isAddress } from 'web3-utils'
-import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import Token from '../../type/Token'
 import { filterTokens } from './filtering'
