@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useMemo, useContext, useEffect } from 'react'
+import { useCallback, useState, useRef, useMemo, useEffect } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -18,8 +18,7 @@ import { filterTokens } from './filtering'
 import { useDebounce, useToken, useActiveWeb3React } from '../../hooks'
 import { getTokensFromConfig } from '../../utils'
 import TokenList from './TokenList'
-import TokenRow from './TokenRow'
-import BridgeAppContext from '../../context/BridgeAppContext'
+import ImportRow from './ImportRow'
 
 const BreakLine = styled.div`
   margin-top: 15px;
@@ -44,7 +43,6 @@ interface ITokenSearchModalProps {
 
 const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
   const { closeModal } = props
-  const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
 
   const { library, chainId, account } = useActiveWeb3React()
   const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
@@ -59,7 +57,7 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
     const fetchData = async () => {
       try {
         setFetching(true)
-        setTokenList(await getTokensFromConfig(networkId))
+        setTokenList(await getTokensFromConfig(account, networkId))
       } catch (error) {
         console.error(error)
       } finally {
@@ -83,25 +81,33 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
     }
   }
 
-  // refs for fixed size lists
-  const fixedList = useRef<FixedSizeList>()
-
   const handleInput = useCallback(event => {
     const input = event.target.value
     const checksummedInput = isAddress(input) ? input : false
     setSearchQuery(checksummedInput || input)
-    fixedList.current?.scrollTo(0)
   }, [])
 
   const handleSelect = () => {
     closeModal()
   }
 
-  const handleSelectSearchToken = () => {
-    if (searchToken) {
-      setSelectedToken(searchToken)
-      closeModal()
+  const onAddCustomToken = () => {
+    let _tokens = [] as Token[]
+    const data = localStorage.getItem(`tokens_${account}_${chainId}`)
+
+    if (data) {
+      _tokens = JSON.parse(data) as Token[]
     }
+
+    if (searchToken) {
+      _tokens.unshift(searchToken)
+    }
+
+    if (_tokens.length) {
+      localStorage.setItem(`tokens_${account}_${chainId}`, JSON.stringify(_tokens))
+    }
+
+    closeModal()
   }
 
   return (
@@ -129,21 +135,11 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
               ) : (
                 <>
                   {searchToken ? (
-                    <TokenRow
-                      token={searchToken}
-                      isSelected={selectedToken?.address === searchToken.address}
-                      onSelect={handleSelectSearchToken}
-                    />
+                    <ImportRow token={searchToken} onAddCustomToken={onAddCustomToken} />
                   ) : filteredTokens.length > 0 ? (
-                    <TokenList tokenList={filteredTokens} fixedListRef={fixedList} onTokenSelect={handleSelect} />
+                    <TokenList tokenList={filteredTokens} onTokenSelect={handleSelect} />
                   ) : (
-                    <>
-                      {isAddress(searchQuery) ? (
-                        <EuiLoadingSpinner />
-                      ) : (
-                        <NoResultsFound>No results found.</NoResultsFound>
-                      )}
-                    </>
+                    <NoResultsFound>No results found.</NoResultsFound>
                   )}
                 </>
               )}
