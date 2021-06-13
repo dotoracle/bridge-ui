@@ -14,10 +14,11 @@ interface ITokenListProps {
   tokenList: Token[]
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   onTokenSelect: (token: Token) => void
+  onRemoveCustomToken: (token: Token) => void
 }
 
 const TokenList = (props: ITokenListProps): JSX.Element => {
-  const { tokenList, onTokenSelect } = props
+  const { tokenList, onTokenSelect, onRemoveCustomToken } = props
   const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
 
   return (
@@ -34,6 +35,12 @@ const TokenList = (props: ITokenListProps): JSX.Element => {
                   if (token) {
                     onTokenSelect(token)
                     setSelectedToken(token)
+                  }
+                }}
+                onRemoveCustomToken={() => {
+                  if (token) {
+                    onRemoveCustomToken(token)
+                    setSelectedToken(undefined)
                   }
                 }}
               />

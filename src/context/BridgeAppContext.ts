@@ -5,7 +5,7 @@ import Network from '../type/Network'
 
 type BridgeAppContextType = {
   selectedToken: Token | undefined
-  setSelectedToken: (value: Token) => void
+  setSelectedToken: (value: Token | undefined) => void
   tokenAmount: number
   setTokenAmount: (value: number) => void
   sourceNetwork: Network | undefined

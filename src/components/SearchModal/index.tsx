@@ -91,7 +91,7 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
     closeModal()
   }
 
-  const onAddCustomToken = () => {
+  const onAddCustomToken = async () => {
     let _tokens = [] as Token[]
     const data = localStorage.getItem(`tokens_${account}_${chainId}`)
 
@@ -107,7 +107,13 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
       localStorage.setItem(`tokens_${account}_${chainId}`, JSON.stringify(_tokens))
     }
 
-    closeModal()
+    setSearchQuery('')
+    setTokenList(await getTokensFromConfig(account, networkId))
+  }
+
+  const handleRemoveCustomToken = async () => {
+    setSearchQuery('')
+    setTokenList(await getTokensFromConfig(account, networkId))
   }
 
   return (
@@ -134,10 +140,14 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
                 <EuiLoadingSpinner />
               ) : (
                 <>
-                  {searchToken ? (
+                  {filteredTokens.length > 0 ? (
+                    <TokenList
+                      tokenList={filteredTokens}
+                      onTokenSelect={handleSelect}
+                      onRemoveCustomToken={handleRemoveCustomToken}
+                    />
+                  ) : searchToken ? (
                     <ImportRow token={searchToken} onAddCustomToken={onAddCustomToken} />
-                  ) : filteredTokens.length > 0 ? (
-                    <TokenList tokenList={filteredTokens} onTokenSelect={handleSelect} />
                   ) : (
                     <NoResultsFound>No results found.</NoResultsFound>
                   )}

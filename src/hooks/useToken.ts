@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react'
 import { Contract } from 'web3-eth-contract'
 import Token from '../type/Token'
 import { useTokenContract } from './useContract'
+import { useActiveWeb3React } from './useWeb3'
 
 // undefined if invalid or does not exist
 // otherwise returns the token
@@ -24,7 +25,7 @@ const getTokenInfo = async (tokenContract: Contract | null): Promise<Token | und
   }
 }
 
-export function useToken(tokenAddress?: string): Token | undefined {
+export const useToken = (tokenAddress?: string): Token | undefined => {
   const [tokenInfo, setTokenInfo] = useState<Token>()
 
   const tokenContract = useTokenContract(tokenAddress)
@@ -46,4 +47,17 @@ export function useToken(tokenAddress?: string): Token | undefined {
       address: tokenAddress,
     } as Token
   }, [tokenAddress, tokenInfo]) // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+export const useIsUserAddedToken = (token: Token): boolean => {
+  const { account, chainId } = useActiveWeb3React()
+
+  const data = localStorage.getItem(`tokens_${account}_${chainId}`)
+
+  if (!data) {
+    return false
+  }
+
+  const tokens = JSON.parse(data) as Token[]
+  return !!tokens.find(t => t.address === token.address)
 }

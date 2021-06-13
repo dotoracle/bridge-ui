@@ -18,11 +18,27 @@ export const getContract = (address: string, abi: AbiItem, web3: Web3): Contract
   }
 }
 
-export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => {
+export const getTokensFromConfig = async (account: string | null | undefined, chainId: number): Promise<Token[]> => {
   const tokens: Token[] = []
 
   try {
-    if (chainId) {
+    if (account && chainId) {
+      // get token from local storage first
+      const data = localStorage.getItem(`tokens_${account}_${chainId}`)
+      if (data) {
+        const customTokens = JSON.parse(data) as Token[]
+
+        customTokens.forEach(t => {
+          tokens.push({
+            name: t.name,
+            address: t.address,
+            symbol: t.symbol,
+            decimals: Number(t.decimals),
+            logoURI: t.logoURI,
+          })
+        })
+      }
+
       const response = (await import(`../config/${chainId}.json`)).default as Token[]
 
       response.forEach(t => {

@@ -5,7 +5,7 @@ import { useTokenContract, useBridgeContract } from './useContract'
 import useDebounce from './useDebounce'
 import { useAllNetworks, useOtherNetworks, useNetworkInfo } from './useNetwork'
 import useRpcUrl from './useRpcUrl'
-import { useToken } from './useToken'
+import { useToken, useIsUserAddedToken } from './useToken'
 import useTokenBalance from './useTokenBalance'
 import { useActiveWeb3React, useEagerConnect, useInactiveListener } from './useWeb3'
 
@@ -24,6 +24,7 @@ export {
   useNetworkInfo,
   useRpcUrl,
   useToken,
+  useIsUserAddedToken,
   useDebounce,
   useTokenBalance,
 }
