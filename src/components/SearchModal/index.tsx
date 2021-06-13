@@ -137,7 +137,13 @@ const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
                   ) : filteredTokens.length > 0 ? (
                     <TokenList tokenList={filteredTokens} fixedListRef={fixedList} onTokenSelect={handleSelect} />
                   ) : (
-                    <NoResultsFound>No results found.</NoResultsFound>
+                    <>
+                      {isAddress(searchQuery) ? (
+                        <EuiLoadingSpinner />
+                      ) : (
+                        <NoResultsFound>No results found.</NoResultsFound>
+                      )}
+                    </>
                   )}
                 </>
               )}
