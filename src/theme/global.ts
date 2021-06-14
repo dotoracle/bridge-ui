@@ -10,6 +10,10 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  a {
+    transition: 0.5s all ease;
+  }
+
   .euiContextMenuItem {
     font-family: 'Montserrat', sans-serif;
   }
