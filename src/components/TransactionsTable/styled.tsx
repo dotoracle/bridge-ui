@@ -32,11 +32,9 @@ export const TableTitle = styled.h2`
   color: #fff;
 `
 export const RefreshButton = styled(EuiButtonEmpty)`
-  margin-top: -7px;
+  display: block;
+  margin-top: 1.5rem;
   border-radius: 5px;
-  position: absolute;
-  right: 0;
-  top: 0;
   height: 30px;
   text-transform: none;
   color: #adadb4;
@@ -55,6 +53,13 @@ export const RefreshButton = styled(EuiButtonEmpty)`
 
   &:disabled {
     border-color: #4c4e51;
+  }
+
+  @media (min-width: 768px) {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: -7px;
   }
 `
 export const StyledSpan = styled.span`
