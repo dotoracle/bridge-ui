@@ -1,4 +1,4 @@
-const ToastIcon = ({ type }: { type: 'success' | 'danger' | 'info' }) => {
+function ToastIcon({ type }: { type: 'success' | 'danger' | 'info' }): JSX.Element {
   let html = <></>
 
   switch (type) {
