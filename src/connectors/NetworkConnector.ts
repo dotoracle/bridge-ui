@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import invariant from 'tiny-invariant'
@@ -179,6 +180,7 @@ export class NetworkConnector extends AbstractConnector {
     return null
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public deactivate() {
     return null
   }

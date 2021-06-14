@@ -10,6 +10,7 @@ import './assets/scss/toastify.scss'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getLibrary = (provider: any) => {
   return provider
 }

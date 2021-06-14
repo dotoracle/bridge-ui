@@ -29,6 +29,7 @@ export const network = new NetworkConnector({
   urls: { [NETWORK_CHAIN_ID]: NETWORK_URL },
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,

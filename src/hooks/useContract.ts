@@ -8,6 +8,7 @@ import { getContract } from '../utils'
 import ERC20_ABI from '../constants/abi/ERC20.abi.json'
 import BRIDGE_ABI from '../constants/abi/GenericBridge.abi.json'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useContract = (address?: string, abi?: any) => {
   const { library, account } = useActiveWeb3React()
 
