@@ -38,7 +38,7 @@ interface IImportRow {
   onAddCustomToken: () => void
 }
 
-const ImportRow = (props: IImportRow): JSX.Element => {
+function ImportRow(props: IImportRow): JSX.Element {
   const { token, onAddCustomToken } = props
 
   // check if already added on local storage tokens

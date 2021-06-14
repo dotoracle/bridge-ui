@@ -34,7 +34,7 @@ const Description = styled.p`
   margin-top: 0.75rem;
 `
 
-const AmountInput = (): JSX.Element => {
+function AmountInput(): JSX.Element {
   const { selectedToken, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account } = useActiveWeb3React()
 

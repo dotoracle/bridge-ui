@@ -58,7 +58,7 @@ interface INetworkBoxProps {
   side: 'SOURCE' | 'TARGET'
 }
 
-const NetworkBox = (props: INetworkBoxProps): JSX.Element => {
+function NetworkBox(props: INetworkBoxProps): JSX.Element {
   const { selectedNetwork, otherNetwork, showDropdown, side } = props
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 

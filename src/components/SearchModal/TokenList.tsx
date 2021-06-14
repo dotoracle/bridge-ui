@@ -17,7 +17,7 @@ interface ITokenListProps {
   onRemoveCustomToken: (token: Token) => void
 }
 
-const TokenList = (props: ITokenListProps): JSX.Element => {
+function TokenList(props: ITokenListProps): JSX.Element {
   const { tokenList, onTokenSelect, onRemoveCustomToken } = props
   const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
 

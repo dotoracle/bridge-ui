@@ -38,7 +38,7 @@ const SubText = styled.span`
   background-color: ${props => props.theme.primary};
 `
 
-const MobileNav = (): JSX.Element => {
+function MobileNav(): JSX.Element {
   const [navIsOpen, setNavIsOpen] = useState(false)
 
   return (

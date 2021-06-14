@@ -45,7 +45,7 @@ const LogoMobile = styled(EuiHeaderLogo)`
   }
 `
 
-const Header = (): JSX.Element => {
+function Header(): JSX.Element {
   return (
     <StyledHeader>
       <StyledContainer justifyContent="spaceBetween">

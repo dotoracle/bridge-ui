@@ -40,7 +40,7 @@ const SelectButton = styled(EuiButton)`
   }
 `
 
-const TokenSelect = (): JSX.Element => {
+function TokenSelect(): JSX.Element {
   const { selectedToken } = useContext(BridgeAppContext)
   const [isModalVisible, setIsModalVisible] = useState(false)
 

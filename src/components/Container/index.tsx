@@ -13,7 +13,7 @@ const StyledContainer = styled(EuiFlexGroup)`
   }
 `
 
-const Container = (props: EuiFlexGroupProps): JSX.Element => {
+function Container(props: EuiFlexGroupProps): JSX.Element {
   return <StyledContainer>{props.children}</StyledContainer>
 }
 

@@ -57,7 +57,7 @@ const StyledLabel = styled.label`
   color: #aeaeb3;
 `
 
-const AppBox = (): JSX.Element => {
+function AppBox(): JSX.Element {
   const { account, chainId } = useActiveWeb3React()
   const {
     sourceNetwork: sourceNetworkContext,

@@ -4,7 +4,7 @@ import { network } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks'
 import { NetworkContextName } from '../../constants'
 
-const Web3ReactManager = ({ children }: { children: JSX.Element }): JSX.Element | null => {
+function Web3ReactManager({ children }: { children: JSX.Element }): JSX.Element | null {
   const { active } = useWeb3React()
   const { active: networkActive, error: networkError, activate: activateNetwork } = useWeb3React(NetworkContextName)
 

@@ -37,7 +37,7 @@ const SocialItem = styled.li`
   }
 `
 
-const Footer = (): JSX.Element => {
+function Footer(): JSX.Element {
   return (
     <StyledFooter>
       <Container justifyContent="spaceBetween">

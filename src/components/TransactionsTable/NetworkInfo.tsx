@@ -2,7 +2,7 @@ import { Wrapper, NetworkLogo, NetworkName } from './styled'
 import Network from '../../type/Network'
 import UnknownSVG from '../../assets/images/unknown.svg'
 
-const NetworkInfo = ({ network }: { network: Network | undefined }): JSX.Element => {
+function NetworkInfo({ network }: { network: Network | undefined }): JSX.Element {
   return (
     <Wrapper>
       {network ? (

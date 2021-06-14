@@ -17,7 +17,7 @@ interface IClaimCountdownProps {
   onClick: (e: any) => Promise<void>
 }
 
-const ClaimCountdown = (props: IClaimCountdownProps): JSX.Element => {
+function ClaimCountdown(props: IClaimCountdownProps): JSX.Element {
   const { transaction, network, isDisabled, onClick } = props
   return (
     <Countdown

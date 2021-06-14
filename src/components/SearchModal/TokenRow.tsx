@@ -73,7 +73,7 @@ interface ITokenRow {
   onRemoveCustomToken: () => void
 }
 
-const TokenRow = (props: ITokenRow): JSX.Element => {
+function TokenRow(props: ITokenRow): JSX.Element {
   const { token, isSelected, onSelect, onRemoveCustomToken } = props
   const { account, chainId } = useActiveWeb3React()
   const tokenBalance = useTokenBalance(token.address, token.decimals, account)

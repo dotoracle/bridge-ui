@@ -46,7 +46,7 @@ interface INetworkRowProps {
   onSelect: () => void
 }
 
-const NetworkRow = (props: INetworkRowProps): JSX.Element => {
+function NetworkRow(props: INetworkRowProps): JSX.Element {
   const { network, isSelected, isDisabled, onSelect } = props
 
   return (

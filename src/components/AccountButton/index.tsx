@@ -32,7 +32,7 @@ const StyledButton = styled(EuiButton)`
   }
 `
 
-const AccountButton = (): JSX.Element => {
+function AccountButton(): JSX.Element {
   const { account, chainId } = useActiveWeb3React()
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 

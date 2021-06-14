@@ -91,7 +91,7 @@ const TitleShadow = styled.span`
     font-size: 90px;
   }
 `
-const App = (): JSX.Element => {
+function App(): JSX.Element {
   const [selectedToken, setSelectedToken] = useState<Token>()
   const [tokenAmount, setTokenAmount] = useState(0)
   const [sourceNetwork, setSourceNetwork] = useState<Network>()

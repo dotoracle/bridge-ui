@@ -58,7 +58,7 @@ interface IWalletModalProps {
   closeModal: () => void
 }
 
-const WalletModal = (props: IWalletModalProps): JSX.Element => {
+function WalletModal(props: IWalletModalProps): JSX.Element {
   const { closeModal } = props
   const { activate } = useWeb3React()
 

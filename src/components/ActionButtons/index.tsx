@@ -32,7 +32,7 @@ const ApproveWrap = styled.div`
   width: 100%;
 `
 
-const ActionButtons = (): JSX.Element => {
+function ActionButtons(): JSX.Element {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, setRefreshLocal } =
     useContext(BridgeAppContext)
   const { account, chainId } = useActiveWeb3React()

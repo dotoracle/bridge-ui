@@ -44,7 +44,7 @@ import {
 import UnknownSVG from '../../assets/images/unknown.svg'
 import NetworkInfo from './NetworkInfo'
 
-const TransactionsTable = (): JSX.Element => {
+function TransactionsTable(): JSX.Element {
   const { account, chainId: currentChainId } = useActiveWeb3React()
   const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
   const defaultMetamaskChainId = [1, 42]
@@ -373,7 +373,7 @@ const TransactionsTable = (): JSX.Element => {
       name: 'Request Time',
       sortable: true,
       width: '20%',
-      render: (time: number): JSX.Element => {
+      render: function (time: number): JSX.Element {
         return (
           <EuiToolTip content={lightFormat(toDate(time * 1000), 'yyyy-MM-dd HH:mm:ss')}>
             <StyledSpan>{formatDistanceToNow(time * 1000, { addSuffix: true })}</StyledSpan>
@@ -389,7 +389,7 @@ const TransactionsTable = (): JSX.Element => {
       field: 'requestHashLink',
       name: 'Request Tx',
       width: '22.5%',
-      render: ({
+      render: function ({
         networkName,
         explorerLogo,
         requestHash,
@@ -399,7 +399,7 @@ const TransactionsTable = (): JSX.Element => {
         explorerLogo: string
         requestHash: string
         requestHashUrl: string
-      }): JSX.Element => {
+      }): JSX.Element {
         return (
           <EuiToolTip content={networkName}>
             <Wrapper>
@@ -417,7 +417,7 @@ const TransactionsTable = (): JSX.Element => {
       name: 'Amount',
       width: '20%',
       sortable: true,
-      render: (amountFormated: string): JSX.Element => {
+      render: function (amountFormated: string): JSX.Element {
         return <StyledSpan>{amountFormated}</StyledSpan>
       },
     },
@@ -425,7 +425,7 @@ const TransactionsTable = (): JSX.Element => {
       field: 'claimHashLink',
       name: 'Claim Tx',
       width: '22.5%',
-      render: ({
+      render: function ({
         networkName,
         explorerLogo,
         claimHash,
@@ -435,7 +435,7 @@ const TransactionsTable = (): JSX.Element => {
         explorerLogo: string
         claimHash: string
         claimHashUrl: string
-      }): JSX.Element => {
+      }): JSX.Element {
         return (
           <EuiToolTip content={networkName}>
             <Wrapper>

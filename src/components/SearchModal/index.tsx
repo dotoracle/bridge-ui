@@ -40,7 +40,7 @@ interface ITokenSearchModalProps {
   closeModal: () => void
 }
 
-const SearchModal = (props: ITokenSearchModalProps): JSX.Element => {
+function SearchModal(props: ITokenSearchModalProps): JSX.Element {
   const { closeModal } = props
 
   const { library, chainId, account } = useActiveWeb3React()

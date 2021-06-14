@@ -70,7 +70,7 @@ interface IToastMessageProps {
   linkText?: string
 }
 
-const ToastMessage = (props: IToastMessageProps): JSX.Element => {
+function ToastMessage(props: IToastMessageProps): JSX.Element {
   const { color, headerText, bodyText, link, linkText } = props
 
   return (

@@ -18,7 +18,7 @@ interface INetworkList {
   onNetworkSelect: (network: Network) => void
 }
 
-const NetworkList = (props: INetworkList): JSX.Element => {
+function NetworkList(props: INetworkList): JSX.Element {
   const { selectedNetwork, otherNetwork, side, onNetworkSelect } = props
 
   const { setSourceNetwork, setTargetNetwork } = useContext(BridgeAppContext)
