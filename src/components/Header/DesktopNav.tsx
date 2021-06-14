@@ -10,7 +10,7 @@ const MenuItem = styled(EuiFlexItem)`
 const Link = styled.a`
   position: relative;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
 
   &::before {
@@ -40,7 +40,7 @@ const SubText = styled.span`
   top: -25px;
   width: fit-content;
   font-size: 7px;
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
   letter-spacing: 0.05rem;
   text-transform: uppercase;

@@ -19,7 +19,7 @@ const MobileMenuItem = styled.li`
 `
 const MobileMenuLink = styled.a`
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
 `
 const SubText = styled.span`
@@ -30,7 +30,7 @@ const SubText = styled.span`
   border-radius: 3px;
   width: fit-content;
   font-size: 7px;
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
