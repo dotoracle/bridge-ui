@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -24,7 +23,6 @@ import ToastMessage from '../ToastMessage'
 import { ConnectorNames, connectorsByName } from '../../connectors'
 import { connectorLocalStorageKey } from '../../constants'
 import MetaMaskSVG from '../../assets/images/metamask.svg'
-import BridgeAppContext from '../../context/BridgeAppContext'
 
 const WalletButton = styled(EuiButton)`
   width: 100%;
@@ -63,12 +61,6 @@ interface IWalletModalProps {
 const WalletModal = (props: IWalletModalProps): JSX.Element => {
   const { closeModal } = props
   const { activate } = useWeb3React()
-  const {
-    sourceNetwork: sourceNetworkContext,
-    targetNetwork: targetNetworkContext,
-    setSourceNetwork,
-    setTargetNetwork,
-  } = useContext(BridgeAppContext)
 
   const onConnectWallet = async (connectorID: ConnectorNames) => {
     const connector = connectorsByName[connectorID]
