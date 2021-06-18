@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ReactGA from 'react-ga'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import { ThemeProvider } from 'styled-components'
 import { ToastContainer } from 'react-toastify'
@@ -14,6 +15,9 @@ const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 const getLibrary = (provider: any) => {
   return provider
 }
+
+ReactGA.initialize('G-826N01LRMN')
+ReactGA.pageview(window.location.pathname + window.location.search)
 
 ReactDOM.render(
   <React.StrictMode>
