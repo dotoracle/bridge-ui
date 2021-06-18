@@ -66,9 +66,9 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
     const connector = connectorsByName[connectorID]
 
     if (connector) {
-      await activate(connector, async (error: Error) => {
-        window.localStorage.setItem(connectorLocalStorageKey, connectorID)
+      window.localStorage.setItem(connectorLocalStorageKey, connectorID)
 
+      await activate(connector, async (error: Error) => {
         if (error instanceof UnsupportedChainIdError) {
           toast.error(
             <ToastMessage color="danger" headerText="Wrong network" bodyText="Please check your chain id." />,
