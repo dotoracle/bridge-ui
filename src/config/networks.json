@@ -112,7 +112,7 @@
     "explorer": "https://moonbeam-explorer.netlify.app",
     "rpcURL": "https://rpc.testnet.moonbeam.network",
     "isTestnet": true,
-    "bridge": "0x6682CBf5AF0A0eb6e64c131AddCAF74a8a664066",
+    "bridge": "0x7c94eaDbB107510Aa0f732b387aAe85fefef1b72",
     "nativeCurrency": {
       "name": "DEV",
       "symbol": "DEV",
