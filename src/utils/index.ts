@@ -134,25 +134,32 @@ interface WindowChain {
 
 export const setupNetwork = async (network: Network): Promise<boolean> => {
   const provider = (window as WindowChain).ethereum
+  const defaultMetamaskChainId = [1, 42]
+  const method = defaultMetamaskChainId.includes(network.chainId)
+    ? 'wallet_switchEthereumChain'
+    : 'wallet_addEthereumChain'
+  const params = defaultMetamaskChainId.includes(network.chainId)
+    ? [{ chainId: `0x${network.chainId.toString(16)}` }]
+    : [
+        {
+          chainId: `0x${network.chainId.toString(16)}`,
+          chainName: network.name,
+          nativeCurrency: {
+            name: 'BNB',
+            symbol: 'bnb',
+            decimals: 18,
+          },
+          rpcUrls: [network.rpcURL],
+          blockExplorerUrls: [network.explorer],
+        },
+      ]
 
   if (provider) {
     try {
       // @ts-ignore
       await provider.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${network.chainId.toString(16)}`,
-            chainName: network.name,
-            nativeCurrency: {
-              name: 'BNB',
-              symbol: 'bnb',
-              decimals: 18,
-            },
-            rpcUrls: [network.rpcURL],
-            blockExplorerUrls: [network.explorer],
-          },
-        ],
+        method,
+        params,
       })
       return true
     } catch (error) {

@@ -47,7 +47,6 @@ import NetworkInfo from './NetworkInfo'
 function TransactionsTable(): JSX.Element {
   const { account, chainId: currentChainId } = useActiveWeb3React()
   const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
-  const defaultMetamaskChainId = [1, 42]
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)
@@ -342,18 +341,10 @@ function TransactionsTable(): JSX.Element {
       let hasSetup = false
 
       if (toNetwork) {
-        if (!defaultMetamaskChainId.includes(toNetwork.chainId)) {
-          hasSetup = await setupNetwork(toNetwork)
+        hasSetup = await setupNetwork(toNetwork)
 
-          if (hasSetup) {
-            setShowNetworkModal(false)
-          }
-
-          if (!toNetwork || !hasSetup) {
-            console.error('Could not setup network')
-          }
-        } else {
-          setShowNetworkModal(false)
+        if (!toNetwork || !hasSetup) {
+          console.error('Could not setup network')
         }
       }
     } catch (error) {
@@ -364,6 +355,8 @@ function TransactionsTable(): JSX.Element {
         })
         console.error(error)
       }
+    } finally {
+      setShowNetworkModal(false)
     }
   }
 
@@ -535,7 +528,7 @@ function TransactionsTable(): JSX.Element {
           onCancel={() => setShowNetworkModal(false)}
           onConfirm={onSetupNetwork}
           cancelButtonText="Cancel"
-          confirmButtonText={defaultMetamaskChainId.includes(toNetwork.chainId) ? 'OK' : 'Switch the network'}
+          confirmButtonText="Change network"
           defaultFocusedButton="confirm"
         >
           <ConfirmMessage>
@@ -548,7 +541,7 @@ function TransactionsTable(): JSX.Element {
           <ConfirmMessage>
             However, you&rsquo;re connecting to <NetworkInfo network={currentNetwork}></NetworkInfo>
           </ConfirmMessage>
-          <ConfirmMessage>Please switch the network to continute.</ConfirmMessage>
+          <ConfirmMessage>Please change the network to continute.</ConfirmMessage>
         </EuiConfirmModal>
       )}
     </>

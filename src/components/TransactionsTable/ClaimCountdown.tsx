@@ -26,7 +26,7 @@ function ClaimCountdown(props: IClaimCountdownProps): JSX.Element {
       renderer={props2 =>
         !props2.completed ? (
           <CountdownText>
-            Claimable in {zeroPad(props2.minutes)} m : {zeroPad(props2.seconds)} s
+            Claimable in {zeroPad(props2.minutes)}m : {zeroPad(props2.seconds)}s
           </CountdownText>
         ) : (
           <StyledClaimButton isDisabled={isDisabled} onClick={onClick}>
