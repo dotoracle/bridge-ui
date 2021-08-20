@@ -52,10 +52,10 @@ function Header(): JSX.Element {
         <EuiHeaderSectionItem border="none">
           <LogoDekstop href="/" iconType={LogoPNG} iconTitle="DotOracle" />
           <LogoMobile href="/" iconType={LogoMobilePNG} iconTitle="DotOracle" />
+          <DesktopNav />
         </EuiHeaderSectionItem>
 
         <EuiHeaderSectionItem border="none">
-          <DesktopNav />
           <AccountButton />
           <MobileNav />
         </EuiHeaderSectionItem>
