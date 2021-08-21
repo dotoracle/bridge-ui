@@ -43,6 +43,7 @@ import {
 } from './styled'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import NetworkInfo from './NetworkInfo'
+import { NativeTokenAddress } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
   const { account, chainId: currentChainId } = useActiveWeb3React()
@@ -175,15 +176,21 @@ function TransactionsTable(): JSX.Element {
             <div>
               <span>Transfer</span>
               {item.originNetwork ? (
-                <Wrapper>
-                  <a
-                    href={`${item.originNetwork.explorer}/token/${item.originToken}`}
-                    target="__blank"
-                    rel="noopener noreferrer nofollow"
-                  >
-                    {item.amountFormated}
-                  </a>
-                </Wrapper>
+                <>
+                  {item.originToken === NativeTokenAddress ? (
+                    <span>{item.amountFormated}</span>
+                  ) : (
+                    <Wrapper>
+                      <a
+                        href={`${item.originNetwork.explorer}/token/${item.originToken}`}
+                        target="__blank"
+                        rel="noopener noreferrer nofollow"
+                      >
+                        {item.amountFormated}
+                      </a>
+                    </Wrapper>
+                  )}
+                </>
               ) : (
                 <span>{item.amountFormated}</span>
               )}
@@ -197,7 +204,7 @@ function TransactionsTable(): JSX.Element {
               <NetworkInfo network={item.toNetwork} />
             </div>
           </Row>
-          {item.originNetwork && (
+          {item.originNetwork && item.originToken !== NativeTokenAddress && (
             <Row>
               This token was deployed on <NetworkInfo network={item.originNetwork} />
             </Row>
