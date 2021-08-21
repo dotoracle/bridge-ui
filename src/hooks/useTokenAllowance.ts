@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import Token from '../type/Token'
 import { useTokenContract } from './useContract'
+import { NativeTokenAddress } from '../constants'
 
 const useTokenAllowance = (token?: Token, owner?: string, spender?: string): BigNumber | undefined => {
   const [allowance, setAllowance] = useState<BigNumber>(new BigNumber(0))
@@ -20,7 +21,9 @@ const useTokenAllowance = (token?: Token, owner?: string, spender?: string): Big
   }
 
   useEffect(() => {
-    fetchAllowance()
+    if (token?.address !== NativeTokenAddress) {
+      fetchAllowance()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 

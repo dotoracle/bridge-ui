@@ -1,5 +1,12 @@
 [
   {
+    "name": "BNB",
+    "address": "0x1111111111111111111111111111111111111111",
+    "symbol": "BNB",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png"
+  },
+  {
     "name": "ERC20 Mock",
     "address": "0x51c87aba0ad711331bb4d09ae314a10e93aaa7eb",
     "symbol": "ERC20Mock",

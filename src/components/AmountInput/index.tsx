@@ -36,12 +36,13 @@ const Description = styled.p`
 
 function AmountInput(): JSX.Element {
   const { selectedToken, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
 
   const tokenBalance = useTokenBalance(
     selectedToken ? selectedToken.address : undefined,
     selectedToken ? selectedToken.decimals : undefined,
     account,
+    library,
     tokenAmount,
   )
 

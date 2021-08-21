@@ -5,6 +5,7 @@ import { useActiveWeb3React } from './useWeb3'
 import useTokenAllowance from './useTokenAllowance'
 import { useTokenContract } from './useContract'
 import Token from '../type/Token'
+import { NativeTokenAddress } from '../constants'
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -23,6 +24,9 @@ export const useApproveCallback = (
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
+    // native token
+    if (token?.address === NativeTokenAddress) return ApprovalState.APPROVED
+
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
 
     // we might not have enough data to know whether or not we need to approve
@@ -30,6 +34,7 @@ export const useApproveCallback = (
 
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove) ? ApprovalState.NOT_APPROVED : ApprovalState.APPROVED
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, spender])
 
   const tokenContract = useTokenContract(token?.address)

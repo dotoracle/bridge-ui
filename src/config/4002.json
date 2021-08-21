@@ -1,5 +1,12 @@
 [
   {
+    "name": "FTM",
+    "address": "0x1111111111111111111111111111111111111111",
+    "symbol": "FTM",
+    "decimals": 18,
+    "logoURI": "https://assets.coingecko.com/coins/images/4001/large/Fantom.png"
+  },
+  {
     "name": "ERC20 Mock",
     "address": "0x52e8c6695cdefc13a8b30f92b03d3256e9660c2c",
     "symbol": "ERC20Mock",

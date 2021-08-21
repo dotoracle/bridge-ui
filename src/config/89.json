@@ -1,5 +1,12 @@
 [
   {
+    "name": "TOMO",
+    "address": "0x1111111111111111111111111111111111111111",
+    "symbol": "TOMO",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tomochain/info/logo.png"
+  },
+  {
     "name": "ERC20 Mock",
     "address": "0x58a976cffa50ae2485d9fe3b16a84d0da2a17075",
     "symbol": "ERC20Mock",

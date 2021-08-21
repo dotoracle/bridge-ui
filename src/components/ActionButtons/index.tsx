@@ -6,11 +6,19 @@ import { toHex } from 'web3-utils'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import WalletModal from '../WalletModal'
-import { ApprovalState, useApproveCallback, useActiveWeb3React, useBridgeAddress, useBridgeContract } from '../../hooks'
+import {
+  ApprovalState,
+  useApproveCallback,
+  useActiveWeb3React,
+  useBridgeAddress,
+  useBridgeContract,
+  useTokenBalance,
+} from '../../hooks'
 import { StyledButton, UnlockButton } from './styled'
-import { toWei, formatNumber } from '../../utils'
+import { toWei, fromWei, formatNumber } from '../../utils'
 import Transaction from '../../type/Transaction'
 import UnknownSVG from '../../assets/images/unknown.svg'
+import { NativeTokenAddress } from '../../constants'
 
 const TokenAmount = styled.span`
   color: ${props => props.theme.primary};
@@ -35,7 +43,15 @@ const ApproveWrap = styled.div`
 function ActionButtons(): JSX.Element {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, setRefreshLocal } =
     useContext(BridgeAppContext)
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
+
+  const tokenBalance = useTokenBalance(
+    selectedToken ? selectedToken.address : undefined,
+    selectedToken ? selectedToken.decimals : undefined,
+    account,
+    library,
+    tokenAmount,
+  )
 
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -105,13 +121,18 @@ function ActionButtons(): JSX.Element {
 
       if (selectedToken && sourceNetwork && targetNetwork && bridgeContract) {
         const amountInWei = toWei(tokenAmount, selectedToken.decimals)
+        let value = 0
+
+        if (account && selectedToken.address === NativeTokenAddress) {
+          value = amountInWei.toNumber()
+        }
 
         const receipt = await bridgeContract.methods
           .requestBridge(selectedToken.address, amountInWei.toString(10), targetNetwork.chainId)
           .send({
             chaindId: toHex(sourceNetwork.chainId),
             from: account,
-            value: 0,
+            value: value.toString(),
           })
 
         if (receipt) {
@@ -215,7 +236,12 @@ function ActionButtons(): JSX.Element {
           {selectedToken ? (
             <>
               {!needApprove || approval === ApprovalState.APPROVED ? (
-                <StyledButton fill isLoading={isLoading} isDisabled={tokenAmount <= 0} onClick={onOpenConfirmModal}>
+                <StyledButton
+                  fill
+                  isLoading={isLoading}
+                  isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
+                  onClick={onOpenConfirmModal}
+                >
                   Transfer {selectedToken.symbol} to bridge
                 </StyledButton>
               ) : (
