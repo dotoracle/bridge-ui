@@ -15,7 +15,7 @@ import {
   useTokenBalance,
 } from '../../hooks'
 import { StyledButton, UnlockButton } from './styled'
-import { toWei, fromWei, formatNumber } from '../../utils'
+import { toWei, formatNumber } from '../../utils'
 import Transaction from '../../type/Transaction'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import { NativeTokenAddress } from '../../constants'
