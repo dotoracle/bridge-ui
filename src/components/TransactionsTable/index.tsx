@@ -532,16 +532,11 @@ function TransactionsTable(): JSX.Element {
           defaultFocusedButton="confirm"
         >
           <ConfirmMessage>
-            You&rsquo;re trying to claim {claimTokenSymbol}
-            <>
-              {' '}
-              on <NetworkInfo network={toNetwork}></NetworkInfo>
-            </>
+            You&rsquo;re connected to <NetworkInfo network={currentNetwork}></NetworkInfo>
           </ConfirmMessage>
           <ConfirmMessage>
-            However, you&rsquo;re connecting to <NetworkInfo network={currentNetwork}></NetworkInfo>
+            Please change the network to <NetworkInfo network={toNetwork}></NetworkInfo> to claim {claimTokenSymbol}.
           </ConfirmMessage>
-          <ConfirmMessage>Please change the network to continute.</ConfirmMessage>
         </EuiConfirmModal>
       )}
     </>
