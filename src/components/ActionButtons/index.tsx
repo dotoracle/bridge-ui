@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import { EuiConfirmModal } from '@elastic/eui'
 import { toast } from 'react-toastify'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { toHex } from 'web3-utils'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'

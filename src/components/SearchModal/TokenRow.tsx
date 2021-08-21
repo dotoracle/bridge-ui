@@ -1,5 +1,5 @@
 import { EuiExpression, EuiButtonIcon, EuiIcon } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import Token from '../../type/Token'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import { useTokenBalance, useActiveWeb3React, useIsUserAddedToken, useNetworkInfo } from '../../hooks'

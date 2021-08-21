@@ -1,5 +1,5 @@
 import Countdown, { zeroPad } from 'react-countdown'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { StyledClaimButton } from './styled'
 import Network from '../../type/Network'
 import Transaction from '../../type/Transaction'

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import Network from '../../type/Network'
 import NetworkRow from './NetworkRow'

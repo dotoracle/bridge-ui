@@ -1,7 +1,7 @@
 import { EuiFlexItem, EuiText } from '@elastic/eui'
 import { FaTwitter, FaGithub, FaTelegramPlane } from 'react-icons/fa'
 import Container from '../Container'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const StyledFooter = styled.div`
   padding-top: 1rem;

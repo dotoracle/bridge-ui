@@ -18,7 +18,7 @@ import {
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
 import { toast } from 'react-toastify'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import ToastMessage from '../ToastMessage'
 import { ConnectorNames, connectorsByName } from '../../connectors'
 import { connectorLocalStorageKey } from '../../constants'

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { EuiButton } from '@elastic/eui'
 
 export const StyledButton = styled(EuiButton)`

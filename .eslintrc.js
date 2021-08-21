@@ -37,13 +37,25 @@ module.exports = {
     'no-constant-condition': ['error', { checkLoops: false }],
     // Prettier
     'prettier/prettier': [
-      'warn',
+      'error',
       {
         trailingComma: 'all',
         semi: false,
         singleQuote: true,
         printWidth: 120,
         arrowParens: 'avoid',
+      },
+    ],
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'styled-components',
+            message: 'Please import from styled-components/macro.',
+          },
+        ],
+        patterns: ['!styled-components/macro'],
       },
     ],
   },

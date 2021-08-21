@@ -11,7 +11,7 @@ import {
 // @ts-ignore
 import { EuiWindowEvent } from '@elastic/eui/lib/services'
 import { isAddress } from 'web3-utils'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import Token from '../../type/Token'
 import { filterTokens } from './filtering'
 import { useDebounce, useToken, useActiveWeb3React } from '../../hooks'

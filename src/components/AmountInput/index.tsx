@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { EuiFieldNumber, EuiButton } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useActiveWeb3React, useTokenBalance } from '../../hooks'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import { formatNumber } from '../../utils'

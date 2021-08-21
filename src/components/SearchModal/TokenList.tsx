@@ -1,6 +1,6 @@
 import { MutableRefObject, useContext } from 'react'
 import { FixedSizeList } from 'react-window'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import TokenRow from './TokenRow'
 import Token from '../../type/Token'
 import BridgeAppContext from '../../context/BridgeAppContext'

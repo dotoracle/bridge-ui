@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useState, useEffect } from 'react'
 import BridgeAppContext from './context/BridgeAppContext'
 import { useWeb3React } from '@web3-react/core'

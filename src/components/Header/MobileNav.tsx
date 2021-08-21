@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { EuiCollapsibleNav, EuiButtonIcon, EuiHideFor } from '@elastic/eui'
 import NAV_ITEMS from './items'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const MenuToggle = styled(EuiButtonIcon)`
   margin-left: 16px;

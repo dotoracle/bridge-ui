@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { EuiPopover, EuiButtonIcon } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import Network from '../../type/Network'
 import NetworkList from './NetworkList'
 import UnknownSVG from '../../assets/images/unknown.svg'

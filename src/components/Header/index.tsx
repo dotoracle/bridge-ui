@@ -1,5 +1,5 @@
 import { EuiHeader, EuiHeaderSectionItem, EuiHeaderLogo, EuiFlexGroup } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
 import AccountButton from '../AccountButton'

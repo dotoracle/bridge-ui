@@ -1,5 +1,5 @@
 import { EuiFlexGroup, EuiFlexItem, EuiShowFor } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import NAV_ITEMS from './items'
 
 const MenuItem = styled(EuiFlexItem)`

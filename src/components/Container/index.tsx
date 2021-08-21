@@ -1,5 +1,5 @@
 import { EuiFlexGroup, EuiFlexGroupProps } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const StyledContainer = styled(EuiFlexGroup)`
   padding: 0 15px;

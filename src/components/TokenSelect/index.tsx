@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { EuiButton } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import SearchModal from '../SearchModal'

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { EuiTextAlign, EuiButton } from '@elastic/eui'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import WalletModal from '../WalletModal'
 import { useActiveWeb3React, useNetworkInfo } from '../../hooks'
 

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import Container from '../Container'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
