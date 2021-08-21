@@ -5,7 +5,7 @@ import { fromWei } from '../utils'
 import { useTokenContract } from './useContract'
 import { NativeTokenAddress } from '../constants'
 
-const useTokenBalance = (
+export const useTokenBalance = (
   tokenAddress: string | undefined,
   decimals: number | undefined,
   account: string | null | undefined,
@@ -51,5 +51,3 @@ const useTokenBalance = (
     return balance
   }, [balance])
 }
-
-export default useTokenBalance

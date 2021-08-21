@@ -2,7 +2,7 @@
 import { useCallback } from 'react'
 import axios from 'axios'
 
-const useAllTransactions = (
+export const useAllTransactions = (
   account?: string | null | undefined,
   chainId?: number,
   limit?: number,
@@ -27,5 +27,3 @@ const useAllTransactions = (
 
   return callback
 }
-
-export default useAllTransactions
