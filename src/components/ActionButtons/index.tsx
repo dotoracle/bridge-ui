@@ -128,7 +128,7 @@ function ActionButtons(): JSX.Element {
         }
 
         const receipt = await bridgeContract.methods
-          .requestBridge(selectedToken.address, amountInWei.toString(10), targetNetwork.chainId)
+          .requestBridge(selectedToken.address, account, amountInWei.toString(10), targetNetwork.chainId)
           .send({
             chaindId: toHex(sourceNetwork.chainId),
             from: account,
