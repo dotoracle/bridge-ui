@@ -120,5 +120,21 @@
     },
     "confirmations": 6,
     "blockTime": 12
+  },
+  {
+    "name": "Casper Testnet",
+    "chainId": 96945816564243,
+    "logoURI": "https://assets.coingecko.com/coins/images/15279/large/casper.PNG",
+    "explorer": "https://etherscan.io",
+    "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
+    "isTestnet": true,
+    "bridge": "0xEE0E49BBa80cA6b11bd78355FbDacB9A77184e5b",
+    "nativeCurrency": {
+      "name": "fCSPR",
+      "symbol": "fCSPR",
+      "decimals": 18
+    },
+    "confirmations": 15,
+    "blockTime": 15
   }
 ]
