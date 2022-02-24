@@ -20,21 +20,31 @@ interface IClaimCountdownProps {
 function ClaimCountdown(props: IClaimCountdownProps): JSX.Element {
   const { transaction, network, isDisabled, onClick } = props
   return (
-    <Countdown
-      zeroPadTime={2}
-      date={transaction.requestTime * 1000 + (network.confirmations + 1) * (network.blockTime + 10) * 1000}
-      renderer={props2 =>
-        !props2.completed ? (
-          <CountdownText>
-            Claimable in {zeroPad(props2.minutes)}m : {zeroPad(props2.seconds)}s
-          </CountdownText>
-        ) : (
-          <StyledClaimButton isDisabled={isDisabled} onClick={onClick}>
-            Claim Token
-          </StyledClaimButton>
-        )
-      }
-    />
+    <>
+      {network.notEVM ? (
+        <>
+          <span>Processing</span>
+        </>
+      ) : (
+        <>
+          <Countdown
+            zeroPadTime={2}
+            date={transaction.requestTime * 1000 + (network.confirmations + 1) * (network.blockTime + 10) * 1000}
+            renderer={props2 =>
+              !props2.completed ? (
+                <CountdownText>
+                  Claimable in {zeroPad(props2.minutes)}m : {zeroPad(props2.seconds)}s
+                </CountdownText>
+              ) : (
+                <StyledClaimButton isDisabled={isDisabled} onClick={onClick}>
+                  Claim Token
+                </StyledClaimButton>
+              )
+            }
+          />
+        </>
+      )}
+    </>
   )
 }
 
