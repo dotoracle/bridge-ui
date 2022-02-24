@@ -32,7 +32,7 @@
     "explorer": "https://testnet.bscscan.com",
     "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true,
-    "bridge": "0x606A84C753a149BEEA2CAD41e72289C2d785d804",
+    "bridge": "0x029E8A613Fe2010324A2817722F3e36C04826039",
     "nativeCurrency": {
       "name": "BNB",
       "symbol": "BNB",
