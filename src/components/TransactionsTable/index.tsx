@@ -206,9 +206,14 @@ function TransactionsTable(): JSX.Element {
               <NetworkInfo network={item.toNetwork} />
             </div>
           </Row>
-          {/* {item.toNetwork?.notEVM && (
-            <Row>Your recipient account hash: ${item.}</Row>
-          )} */}
+          {item.account !== item.txCreator && (
+            <Row>
+              Your recipient account hash:&nbsp;
+              <a href={`${item.toNetwork?.explorer}/account/${item.account.substring(13, 77)}`} target="__blank">
+                {item.account.substring(13, 64)}
+              </a>
+            </Row>
+          )}
           {item.originNetwork && item.originToken !== NativeTokenAddress && (
             <Row>
               This token was deployed on <NetworkInfo network={item.originNetwork} />

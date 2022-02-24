@@ -132,7 +132,7 @@
     "name": "Casper Testnet",
     "chainId": 96945816564243,
     "logoURI": "https://assets.coingecko.com/coins/images/15279/large/casper.PNG",
-    "explorer": "https://etherscan.io",
+    "explorer": "https://testnet.cspr.live",
     "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
     "notEVM": true,
