@@ -129,8 +129,13 @@ function ActionButtons(): JSX.Element {
         if (account && selectedToken.address === NativeTokenAddress) {
           value = amountInWei.toNumber()
         }
+
         const web3 = new Web3()
-        const encoded = web3.eth.abi.encodeParameters(['string'], [account?.toLowerCase()])
+        let encoded = web3.eth.abi.encodeParameters(['string'], [account?.toLowerCase()])
+
+        if (targetNetwork.notEVM) {
+          encoded = web3.eth.abi.encodeParameters(['string'], [accountHash.toLocaleLowerCase()])
+        }
 
         const receipt = await bridgeContract.methods
           .requestBridge(selectedToken.address, encoded, amountInWei.toString(10), targetNetwork.chainId)

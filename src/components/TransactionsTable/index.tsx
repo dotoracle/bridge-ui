@@ -206,6 +206,9 @@ function TransactionsTable(): JSX.Element {
               <NetworkInfo network={item.toNetwork} />
             </div>
           </Row>
+          {/* {item.toNetwork?.notEVM && (
+            <Row>Your recipient account hash: ${item.}</Row>
+          )} */}
           {item.originNetwork && item.originToken !== NativeTokenAddress && (
             <Row>
               This token was deployed on <NetworkInfo network={item.originNetwork} />
@@ -470,9 +473,19 @@ function TransactionsTable(): JSX.Element {
                 {!item.claimed && (
                   <>
                     {item.index ? (
-                      <StyledClaimButton isDisabled={isDisabled} onClick={(e: any) => onClaimToken(e, item)}>
-                        Claim Token
-                      </StyledClaimButton>
+                      <>
+                        {item.toNetwork?.notEVM ? (
+                          <>
+                            <span>Processing</span>
+                          </>
+                        ) : (
+                          <>
+                            <StyledClaimButton isDisabled={isDisabled} onClick={(e: any) => onClaimToken(e, item)}>
+                              Claim Token
+                            </StyledClaimButton>
+                          </>
+                        )}
+                      </>
                     ) : (
                       <>
                         {item.fromNetwork && (

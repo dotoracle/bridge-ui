@@ -19,9 +19,10 @@ interface IClaimCountdownProps {
 
 function ClaimCountdown(props: IClaimCountdownProps): JSX.Element {
   const { transaction, network, isDisabled, onClick } = props
+
   return (
     <>
-      {network.notEVM ? (
+      {transaction.toNetwork?.notEVM ? (
         <>
           <span>Processing</span>
         </>
