@@ -7,6 +7,7 @@ type Network = {
   isTestnet: boolean
   bridge: string
   firstBlockCrawl: number
+  notEVM: boolean
   nativeCurrency: {
     name: string
     symbol: string

@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { EuiConfirmModal } from '@elastic/eui'
+import { EuiConfirmModal, EuiFieldText, EuiFormRow } from '@elastic/eui'
 import { toast } from 'react-toastify'
 import styled from 'styled-components/macro'
 import { toHex } from 'web3-utils'
@@ -280,24 +280,31 @@ function ActionButtons(): JSX.Element {
               confirmButtonText="Yes, do it"
               defaultFocusedButton="confirm"
             >
-              <p style={{ lineHeight: 2 }}>
-                Are you sure you want to transfer{' '}
-                <TokenAmount>
-                  {tokenAmount} {selectedToken.symbol}
-                </TokenAmount>
-                <br />
-                from{' '}
-                <strong>
-                  <NetworkLogo src={sourceNetwork.logoURI ? sourceNetwork.logoURI : UnknownSVG}></NetworkLogo>
-                  {sourceNetwork.name}
-                </strong>{' '}
-                to{' '}
-                <strong>
-                  <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
-                  {targetNetwork.name}
-                </strong>{' '}
-                ?
-              </p>
+              <>
+                <p style={{ lineHeight: 2 }}>
+                  Are you sure you want to transfer{' '}
+                  <TokenAmount>
+                    {tokenAmount} {selectedToken.symbol}
+                  </TokenAmount>
+                  <br />
+                  from{' '}
+                  <strong>
+                    <NetworkLogo src={sourceNetwork.logoURI ? sourceNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                    {sourceNetwork.name}
+                  </strong>{' '}
+                  to{' '}
+                  <strong>
+                    <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                    {targetNetwork.name}
+                  </strong>{' '}
+                  ?
+                </p>
+                {targetNetwork.notEVM && (
+                  <EuiFormRow label="Hash">
+                    <EuiFieldText />
+                  </EuiFormRow>
+                )}
+              </>
             </EuiConfirmModal>
           )}
         </>

@@ -128,6 +128,7 @@
     "explorer": "https://etherscan.io",
     "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
+    "notEVM": true,
     "bridge": "0xEE0E49BBa80cA6b11bd78355FbDacB9A77184e5b",
     "nativeCurrency": {
       "name": "fCSPR",
