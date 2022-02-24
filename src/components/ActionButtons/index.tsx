@@ -57,6 +57,9 @@ function ActionButtons(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
   const [isInfinteLoading, setInfiniteLoading] = useState(false)
   const [infinityApprove, setInfinityApprove] = useState(false)
+  const [showAccountHashError, setShowAccountHashError] = useState(false)
+  const [accountHash, setAccountHash] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -231,6 +234,24 @@ function ActionButtons(): JSX.Element {
     onTransferToken()
   }
 
+  const onAccountHashChange = (e: any) => {
+    const { value } = e.currentTarget
+    let _accountHash = value
+
+    if (_accountHash.length !== 64 && _accountHash.length !== 77) {
+      setErrorMsg('Invalid Account Hash')
+      setShowAccountHashError(true)
+
+      if (!_accountHash.includes('account-hash-')) {
+        _accountHash = `account-hash-${_accountHash}`
+      }
+    } else {
+      setErrorMsg('')
+      setShowAccountHashError(false)
+    }
+    setAccountHash(value)
+  }
+
   return (
     <>
       {account ? (
@@ -278,7 +299,6 @@ function ActionButtons(): JSX.Element {
               onConfirm={onConfirmTransfer}
               cancelButtonText="No, don't do it"
               confirmButtonText="Yes, do it"
-              defaultFocusedButton="confirm"
             >
               <>
                 <p style={{ lineHeight: 2 }}>
@@ -300,8 +320,8 @@ function ActionButtons(): JSX.Element {
                   ?
                 </p>
                 {targetNetwork.notEVM && (
-                  <EuiFormRow label="Hash">
-                    <EuiFieldText />
+                  <EuiFormRow label="Account Hash" isInvalid={showAccountHashError} error={errorMsg}>
+                    <EuiFieldText value={accountHash} onChange={onAccountHashChange} />
                   </EuiFormRow>
                 )}
               </>
