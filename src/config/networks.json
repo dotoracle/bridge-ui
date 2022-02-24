@@ -16,7 +16,7 @@
     "explorer": "https://kovan.etherscan.io",
     "rpcURL": "https://kovan.infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
-    "bridge": "0x7Ade928F2c168DCf73FE310E8abe09f16c8F6773",
+    "bridge": "0x5920F911F724308814EC8e69f9a8f744Aa2BDf1b",
     "nativeCurrency": {
       "name": "ETH",
       "symbol": "ETH",
@@ -32,7 +32,7 @@
     "explorer": "https://testnet.bscscan.com",
     "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true,
-    "bridge": "0xd4CC02B714492E0301388FB98aB729ABF6116D6c",
+    "bridge": "0x606A84C753a149BEEA2CAD41e72289C2d785d804",
     "nativeCurrency": {
       "name": "BNB",
       "symbol": "BNB",
@@ -48,7 +48,7 @@
     "explorer": "https://scan.testnet.tomochain.com",
     "rpcURL": "https://rpc.testnet.tomochain.com",
     "isTestnet": true,
-    "bridge": "0x5b4e9373bE02F0Eed27C32C6b3fa82aA1634FA3E",
+    "bridge": "0xa0633284f94f1C0B21985648f268C36B40217fF9",
     "nativeCurrency": {
       "name": "TOMO",
       "symbol": "TOMO",
@@ -80,7 +80,7 @@
     "explorer": "https://explorer-mumbai.maticvigil.com/",
     "rpcURL": "https://rpc-mumbai.maticvigil.com/",
     "isTestnet": true,
-    "bridge": "0xaF2C0500A611D1Ab0B153e49CC7477aDA2342205",
+    "bridge": "0xDA7483DE7b9Bb7Ae7689ECe729f0AdAdC34ee67E",
     "nativeCurrency": {
       "name": "Matic",
       "symbol": "Matic",
@@ -96,7 +96,7 @@
     "explorer": "https://cchain.explorer.avax-test.network/",
     "rpcURL": "https://api.avax-test.network/ext/bc/C/rpc",
     "isTestnet": true,
-    "bridge": "0x9de6932336e755a21d76206B72058fD026FE79E8",
+    "bridge": "0x547CA8E548ef43F3408cECD025979311AEFf262D",
     "nativeCurrency": {
       "name": "AVAX",
       "symbol": "AVAX",
@@ -112,7 +112,7 @@
     "explorer": "https://moonbeam-explorer.netlify.app",
     "rpcURL": "https://rpc.testnet.moonbeam.network",
     "isTestnet": true,
-    "bridge": "0xEE0E49BBa80cA6b11bd78355FbDacB9A77184e5b",
+    "bridge": "0xBc1224E1fb7c1d696663FfEFF5a19E80282bba60",
     "nativeCurrency": {
       "name": "DEV",
       "symbol": "DEV",

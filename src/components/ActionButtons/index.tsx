@@ -19,7 +19,7 @@ import { toWei, formatNumber } from '../../utils'
 import Transaction from '../../type/Transaction'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import { NativeTokenAddress } from '../../constants'
-
+import Web3 from 'web3'
 const TokenAmount = styled.span`
   color: ${props => props.theme.primary};
   line-height: 2;
@@ -126,9 +126,11 @@ function ActionButtons(): JSX.Element {
         if (account && selectedToken.address === NativeTokenAddress) {
           value = amountInWei.toNumber()
         }
+        const web3 = new Web3()
+        const encoded = web3.eth.abi.encodeParameters(['string'], [account?.toLowerCase()])
 
         const receipt = await bridgeContract.methods
-          .requestBridge(selectedToken.address, account, amountInWei.toString(10), targetNetwork.chainId)
+          .requestBridge(selectedToken.address, encoded, amountInWei.toString(10), targetNetwork.chainId)
           .send({
             chaindId: toHex(sourceNetwork.chainId),
             from: account,
