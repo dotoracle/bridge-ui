@@ -133,31 +133,33 @@ function TransactionsTable(): JSX.Element {
     setSortDirection(_sortDirection)
   }
 
-  const onLoadTransactions = async (isHardRefresh: boolean) => {
-    const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
+  // const onLoadTransactions = async (isHardRefresh: boolean) => {
+  const onLoadTransactions = async () => {
+    // const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
 
-    if (!_transactions || (isHardRefresh && !isProcessing)) {
-      setIsLoading(true)
-      const response = await transactionCallback()
-      setTranstractions(parseResponseToTransactions(response, account, currentChainId))
-      setIsLoading(false)
-    } else {
-      setIsLoading(true)
-      setTimeout(() => {
-        setTranstractions(JSON.parse(_transactions))
-        setIsLoading(false)
-      }, 500)
-    }
-    setRefreshLocal(false)
+    // if (!_transactions || (isHardRefresh && !isProcessing)) {
+    setIsLoading(true)
+    const response = await transactionCallback()
+    setTranstractions(parseResponseToTransactions(response, account, currentChainId))
+    setIsLoading(false)
+    // } else {
+    //   setIsLoading(true)
+    //   setTimeout(() => {
+    //     setTranstractions(JSON.parse(_transactions))
+    //     setIsLoading(false)
+    //   }, 500)
+    // }
+    // setRefreshLocal(false)
   }
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      onLoadTransactions(false)
+      // onLoadTransactions(false)
+      onLoadTransactions()
 
-      if (refreshLocal) {
-        setIsProcessing(true)
-      }
+      // if (refreshLocal) {
+      //   setIsProcessing(true)
+      // }
     }
 
     fetchTransactions()
@@ -204,6 +206,9 @@ function TransactionsTable(): JSX.Element {
               <NetworkInfo network={item.toNetwork} />
             </div>
           </Row>
+          {/* {item.toNetwork?.notEVM && (
+            <Row>Your recipient account hash: ${item.}</Row>
+          )} */}
           {item.originNetwork && item.originToken !== NativeTokenAddress && (
             <Row>
               This token was deployed on <NetworkInfo network={item.originNetwork} />
@@ -312,7 +317,8 @@ function TransactionsTable(): JSX.Element {
                 localStorage.setItem(`transactions_${account}_${currentChainId}`, JSON.stringify(_transactions))
 
                 setIsProcessing(true)
-                onLoadTransactions(false)
+                // onLoadTransactions(false)
+                onLoadTransactions()
               }
             }
           }
@@ -467,9 +473,19 @@ function TransactionsTable(): JSX.Element {
                 {!item.claimed && (
                   <>
                     {item.index ? (
-                      <StyledClaimButton isDisabled={isDisabled} onClick={(e: any) => onClaimToken(e, item)}>
-                        Claim Token
-                      </StyledClaimButton>
+                      <>
+                        {item.toNetwork?.notEVM ? (
+                          <>
+                            <span>Processing</span>
+                          </>
+                        ) : (
+                          <>
+                            <StyledClaimButton isDisabled={isDisabled} onClick={(e: any) => onClaimToken(e, item)}>
+                              Claim Token
+                            </StyledClaimButton>
+                          </>
+                        )}
+                      </>
                     ) : (
                       <>
                         {item.fromNetwork && (
@@ -509,7 +525,7 @@ function TransactionsTable(): JSX.Element {
       <TableWrap>
         <TableTitle>
           Latest Transactions
-          <RefreshButton isLoading={isLoading} iconType="refresh" onClick={() => onLoadTransactions(true)}>
+          <RefreshButton isLoading={isLoading} iconType="refresh" onClick={() => onLoadTransactions()}>
             Refresh
           </RefreshButton>
         </TableTitle>

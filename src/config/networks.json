@@ -6,6 +6,7 @@
     "explorer": "https://etherscan.io",
     "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": false,
+    "notEVM": false,
     "confirmations": 6,
     "blockTime": 15
   },
@@ -16,6 +17,7 @@
     "explorer": "https://kovan.etherscan.io",
     "rpcURL": "https://kovan.infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0x5920F911F724308814EC8e69f9a8f744Aa2BDf1b",
     "nativeCurrency": {
       "name": "ETH",
@@ -48,6 +50,7 @@
     "explorer": "https://scan.testnet.tomochain.com",
     "rpcURL": "https://rpc.testnet.tomochain.com",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0xa0633284f94f1C0B21985648f268C36B40217fF9",
     "nativeCurrency": {
       "name": "TOMO",
@@ -64,6 +67,7 @@
     "explorer": "https://testnet.ftmscan.com/",
     "rpcURL": "https://rpc.testnet.fantom.network/",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0x106F6E9Ba8A93297b0a94A75BB7863e37a663A80",
     "nativeCurrency": {
       "name": "FTM",
@@ -80,6 +84,7 @@
     "explorer": "https://explorer-mumbai.maticvigil.com/",
     "rpcURL": "https://rpc-mumbai.maticvigil.com/",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0xDA7483DE7b9Bb7Ae7689ECe729f0AdAdC34ee67E",
     "nativeCurrency": {
       "name": "Matic",
@@ -96,6 +101,7 @@
     "explorer": "https://cchain.explorer.avax-test.network/",
     "rpcURL": "https://api.avax-test.network/ext/bc/C/rpc",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0x547CA8E548ef43F3408cECD025979311AEFf262D",
     "nativeCurrency": {
       "name": "AVAX",
@@ -112,6 +118,7 @@
     "explorer": "https://moonbeam-explorer.netlify.app",
     "rpcURL": "https://rpc.testnet.moonbeam.network",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0xBc1224E1fb7c1d696663FfEFF5a19E80282bba60",
     "nativeCurrency": {
       "name": "DEV",
