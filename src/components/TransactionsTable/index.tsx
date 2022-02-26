@@ -289,7 +289,7 @@ function TransactionsTable(): JSX.Element {
                 <ToastMessage
                   color="success"
                   headerText="Success!"
-                  link={`${currentNetwork.explorer}/tx/${receipt.transactionHash}`}
+                  link={`${currentNetwork.explorer}${currentNetwork.txUrl}${receipt.transactionHash}`}
                   linkText="View Transaction"
                 />,
                 {
@@ -315,7 +315,7 @@ function TransactionsTable(): JSX.Element {
                     networkName: _item.toNetwork.name,
                     explorerLogo: _item.toNetwork.logoURI,
                     claimHash: claimHashEllipsis,
-                    claimHashUrl: `${_item.toNetwork.explorer}/tx/${receipt.transactionHash}`,
+                    claimHashUrl: `${_item.toNetwork.explorer}${_item.toNetwork.txUrl}${receipt.transactionHash}`,
                   }
                 }
                 setTranstractions(_transactions)
@@ -475,7 +475,7 @@ function TransactionsTable(): JSX.Element {
           render: (item: Transaction) => {
             return (
               <>
-                {!item.claimed && (
+                {!item.claimed ? (
                   <>
                     {item.index ? (
                       <>
@@ -504,6 +504,8 @@ function TransactionsTable(): JSX.Element {
                       </>
                     )}
                   </>
+                ) : (
+                  <>{item.toNetwork?.notEVM && <span style={{ opacity: 0.5 }}>Done</span>}</>
                 )}
               </>
             )

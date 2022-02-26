@@ -151,7 +151,7 @@ function ActionButtons(): JSX.Element {
               color="success"
               headerText="Success!"
               bodyText={`Now you can claim your ${selectedToken.symbol} on ${targetNetwork.name}.`}
-              link={`${sourceNetwork.explorer}/tx/${receipt.transactionHash}`}
+              link={`${sourceNetwork.explorer}${sourceNetwork.txUrl}${receipt.transactionHash}`}
               linkText="View Transaction"
             />,
             {
@@ -189,7 +189,7 @@ function ActionButtons(): JSX.Element {
                 networkName: sourceNetwork.name,
                 explorerLogo: sourceNetwork.logoURI,
                 requestHash: requestHashEllipsis,
-                requestHashUrl: `${sourceNetwork.explorer}/tx/${receipt.transactionHash}`,
+                requestHashUrl: `${sourceNetwork.explorer}${sourceNetwork.txUrl}${receipt.transactionHash}`,
               },
               requestTime: Date.now() / 1000,
               claimHash: '',
@@ -197,7 +197,7 @@ function ActionButtons(): JSX.Element {
                 networkName: targetNetwork.name,
                 explorerLogo: targetNetwork.logoURI,
                 claimHash: '',
-                claimHashUrl: `${targetNetwork.explorer}/tx/`,
+                claimHashUrl: `${targetNetwork.explorer}${targetNetwork.txUrl}`,
               },
               claimed: false,
             } as Transaction

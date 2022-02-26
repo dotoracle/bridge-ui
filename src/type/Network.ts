@@ -3,6 +3,7 @@ type Network = {
   chainId: number
   logoURI: string
   explorer: string
+  txUrl: string
   rpcURL: string
   isTestnet: boolean
   bridge: string

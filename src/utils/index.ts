@@ -91,12 +91,12 @@ export const parseResponseToTransactions = (response: any, account: string | nul
       const amountFormated = `${formatNumber(fromWei(t.amount).toNumber())} ${t.originSymbol}`
 
       const requestEllipsis = `${t.requestHash.substring(0, 6)}...${t.requestHash.substring(t.requestHash.length - 4)}`
-      const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}/tx/${t.requestHash}` : ''
+      const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}${fromNetwork.txUrl}${t.requestHash}` : ''
 
       const claimEllipsis = t.claimHash
         ? `${t.claimHash.substring(0, 6)}...${t.claimHash.substring(t.claimHash.length - 4)}`
         : ''
-      const claimHashUrl = toNetwork ? `${toNetwork.explorer}/tx/${t.claimHash}` : ''
+      const claimHashUrl = toNetwork ? `${toNetwork.explorer}${toNetwork.txUrl}${t.claimHash}` : ''
 
       transactions.push({
         ...t,
