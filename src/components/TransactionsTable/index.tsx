@@ -505,7 +505,7 @@ function TransactionsTable(): JSX.Element {
                     )}
                   </>
                 ) : (
-                  <>{item.toNetwork?.notEVM && <span style={{ opacity: 0.5 }}>Done</span>}</>
+                  <span style={{ opacity: 0.5 }}>Complete</span>
                 )}
               </>
             )
