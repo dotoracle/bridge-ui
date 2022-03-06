@@ -94,7 +94,7 @@ function AppBox(): JSX.Element {
       setSourceNetwork(sourceNetworkHook)
     }
 
-    if (targetNetwork && targetNetwork.chainId !== _networks[0].chainId) {
+    if (targetNetwork && _networks.length > 0 && targetNetwork.chainId !== _networks[0].chainId) {
       setTargetNetwork(_networks[0])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

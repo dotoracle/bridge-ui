@@ -3,6 +3,8 @@ import { EuiTextAlign, EuiButton } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import WalletModal from '../WalletModal'
 import { useActiveWeb3React, useNetworkInfo } from '../../hooks'
+import { TorusConnector } from '@dotoracle/web3-react-torus-connector-casper'
+import Torus from '@toruslabs/casper-embed'
 
 const NetworkLogo = styled.img`
   width: 24px;
@@ -33,12 +35,15 @@ const StyledButton = styled(EuiButton)`
 `
 
 function AccountButton(): JSX.Element {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, connector } = useActiveWeb3React()
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 
   const [showWalletModal, setShowWalletModal] = useState(false)
 
   const networkInfo = useNetworkInfo(chainId)
+
+  const c = connector?.getProvider()
+  console.log(c)
 
   return (
     <>

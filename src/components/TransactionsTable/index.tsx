@@ -135,21 +135,26 @@ function TransactionsTable(): JSX.Element {
 
   // const onLoadTransactions = async (isHardRefresh: boolean) => {
   const onLoadTransactions = async () => {
-    // const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
+    try {
+      // const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
 
-    // if (!_transactions || (isHardRefresh && !isProcessing)) {
-    setIsLoading(true)
-    const response = await transactionCallback()
-    setTranstractions(parseResponseToTransactions(response, account, currentChainId))
-    setIsLoading(false)
-    // } else {
-    //   setIsLoading(true)
-    //   setTimeout(() => {
-    //     setTranstractions(JSON.parse(_transactions))
-    //     setIsLoading(false)
-    //   }, 500)
-    // }
-    // setRefreshLocal(false)
+      // if (!_transactions || (isHardRefresh && !isProcessing)) {
+      setIsLoading(true)
+      const response = await transactionCallback()
+      setTranstractions(parseResponseToTransactions(response, account, currentChainId))
+      // } else {
+      //   setIsLoading(true)
+      //   setTimeout(() => {
+      //     setTranstractions(JSON.parse(_transactions))
+      //     setIsLoading(false)
+      //   }, 500)
+      // }
+      // setRefreshLocal(false)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -333,7 +338,7 @@ function TransactionsTable(): JSX.Element {
           throw signError
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
         let message = `Could not claim ${item.originSymbol}`
@@ -365,7 +370,7 @@ function TransactionsTable(): JSX.Element {
           console.error('Could not setup network')
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
         toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Could not setup network" />, {

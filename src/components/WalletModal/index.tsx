@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -8,7 +9,7 @@ import {
 } from '@elastic/eui'
 // @ts-ignore
 import { EuiWindowEvent } from '@elastic/eui/lib/services'
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
+import { useWeb3React, UnsupportedChainIdError } from '@dotoracle/web3-react-core'
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -23,8 +24,10 @@ import ToastMessage from '../ToastMessage'
 import { ConnectorNames, connectorsByName } from '../../connectors'
 import { connectorLocalStorageKey } from '../../constants'
 import MetaMaskSVG from '../../assets/images/metamask.svg'
+import TorusPNG from '../../assets/images/torus.png'
 
 const WalletButton = styled(EuiButton)`
+  margin-bottom: 1rem;
   width: 100%;
   height: auto;
   background-color: #32323c;
@@ -47,6 +50,10 @@ const WalletButton = styled(EuiButton)`
     background-color: ${props => props.theme.primary}0d !important;
     border-color: ${props => props.theme.primary} !important;
   }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `
 
 const WalletLogo = styled.img`
@@ -60,13 +67,15 @@ interface IWalletModalProps {
 
 function WalletModal(props: IWalletModalProps): JSX.Element {
   const { closeModal } = props
-  const { activate } = useWeb3React()
+  const { activate, account } = useWeb3React()
+  const [isLoading, setIsLoading] = useState(false)
 
   const onConnectWallet = async (connectorID: ConnectorNames) => {
     const connector = connectorsByName[connectorID]
 
     if (connector) {
       window.localStorage.setItem(connectorLocalStorageKey, connectorID)
+      setIsLoading(true)
 
       await activate(connector, async (error: Error) => {
         if (error instanceof UnsupportedChainIdError) {
@@ -97,6 +106,7 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
           })
         }
       })
+      setIsLoading(false)
     } else {
       toast.error(<ToastMessage color="danger" headerText="Can't find connector" />, {
         toastId: connectorID,
@@ -126,6 +136,10 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
             <WalletButton onClick={() => onConnectWallet(ConnectorNames.Injected)}>
               <span>Metamask</span>
               <WalletLogo src={MetaMaskSVG} alt="Metamask" />
+            </WalletButton>
+            <WalletButton isLoading={isLoading} onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}>
+              <span>Torus</span>
+              <WalletLogo src={TorusPNG} alt="Torus" />
             </WalletButton>
           </EuiModalBody>
         </EuiModal>

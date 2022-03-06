@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@dotoracle/web3-react-core'
 import { network } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks'
 import { NetworkContextName } from '../../constants'

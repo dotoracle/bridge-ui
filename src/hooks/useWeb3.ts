@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { injected } from '../connectors'
+import { useWeb3React } from '@dotoracle/web3-react-core'
+import Torus from '@toruslabs/casper-embed'
+import { injected, torus } from '../connectors'
 import { NetworkContextName, connectorLocalStorageKey } from '../constants'
 
 export const useActiveWeb3React = () => {
@@ -15,16 +16,23 @@ export const useEagerConnect = () => {
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    injected.isAuthorized().then((isAuthorized: boolean) => {
-      const hasSignedIn = window.localStorage.getItem(connectorLocalStorageKey)
-      if (isAuthorized && hasSignedIn) {
-        activate(injected, undefined, true).catch(() => {
+    const connectorId = window.localStorage.getItem(connectorLocalStorageKey)
+
+    if (connectorId === 'injected') {
+      injected.isAuthorized().then((isAuthorized: boolean) => {
+        if (isAuthorized && connectorId) {
+          activate(injected, undefined, true).catch(() => {
+            setTried(true)
+          })
+        } else {
           setTried(true)
-        })
-      } else {
+        }
+      })
+    } else if (connectorId === 'torus') {
+      activate(torus, undefined, true).catch(() => {
         setTried(true)
-      }
-    })
+      })
+    }
   }, [activate])
 
   // if the connection worked, wait until we get confirmation of that to flip the flag

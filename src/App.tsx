@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { useState, useEffect } from 'react'
 import BridgeAppContext from './context/BridgeAppContext'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@dotoracle/web3-react-core'
 import Token from './type/Token'
 import Network from './type/Network'
 import GlobalStyle from './theme/global'
