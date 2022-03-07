@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useMemo } from 'react'
-import networks from '../config/networks.json'
-import Network from '../type/Network'
+import networks from 'config/networks.json'
+import Network from 'type/Network'
 
 export const useAllNetworks = (isTestnet?: boolean): Network[] => {
   return useMemo(() => {

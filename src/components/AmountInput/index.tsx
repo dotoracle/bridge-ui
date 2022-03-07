@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 import { EuiFieldNumber, EuiButton } from '@elastic/eui'
 import styled from 'styled-components/macro'
-import { useActiveWeb3React, useTokenBalance } from '../../hooks'
-import BridgeAppContext from '../../context/BridgeAppContext'
-import { formatNumber } from '../../utils'
+import { useActiveWeb3React, useNetworkInfo, useTokenBalance } from 'hooks'
+import BridgeAppContext from 'context/BridgeAppContext'
+import { formatNumber } from 'utils'
 
 const AmountInputWrapper = styled.div`
   width: 100%;
@@ -36,14 +36,16 @@ const Description = styled.p`
 
 function AmountInput(): JSX.Element {
   const { selectedToken, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
-  const { account, library } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
 
+  const networkInfo = useNetworkInfo(chainId)
   const tokenBalance = useTokenBalance(
     selectedToken ? selectedToken.address : undefined,
     selectedToken ? selectedToken.decimals : undefined,
     account,
     library,
     tokenAmount,
+    networkInfo,
   )
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

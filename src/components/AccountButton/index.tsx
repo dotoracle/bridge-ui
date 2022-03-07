@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { EuiTextAlign, EuiButton } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import WalletModal from '../WalletModal'
+import AccountInfoModal from '../AccountInfoModal'
 import { useActiveWeb3React, useNetworkInfo } from '../../hooks'
-import { TorusConnector } from '@dotoracle/web3-react-torus-connector-casper'
 import Torus from '@toruslabs/casper-embed'
 
 const NetworkLogo = styled.img`
@@ -39,17 +39,15 @@ function AccountButton(): JSX.Element {
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 
   const [showWalletModal, setShowWalletModal] = useState(false)
+  const [showAccountModal, setShowAccountModal] = useState(false)
 
   const networkInfo = useNetworkInfo(chainId)
-
-  const c = connector?.getProvider()
-  console.log(c)
 
   return (
     <>
       {account ? (
         <>
-          <StyledButton fill>
+          <StyledButton fill onClick={() => setShowAccountModal(true)}>
             <ButtonInner>
               {networkInfo && networkInfo.logoURI && <NetworkLogo src={networkInfo.logoURI} alt={networkInfo.name} />}
               <EuiTextAlign textAlign="left">
@@ -58,6 +56,7 @@ function AccountButton(): JSX.Element {
               </EuiTextAlign>
             </ButtonInner>
           </StyledButton>
+          {showAccountModal && <AccountInfoModal closeModal={() => setShowAccountModal(false)} />}
         </>
       ) : (
         <>

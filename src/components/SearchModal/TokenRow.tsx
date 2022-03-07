@@ -76,7 +76,8 @@ interface ITokenRow {
 function TokenRow(props: ITokenRow): JSX.Element {
   const { token, isSelected, onSelect, onRemoveCustomToken } = props
   const { account, chainId, library } = useActiveWeb3React()
-  const tokenBalance = useTokenBalance(token.address, token.decimals, account, library)
+  const networkInfo = useNetworkInfo(chainId)
+  const tokenBalance = useTokenBalance(token.address, token.decimals, account, library, 0, networkInfo)
   const isAdded = useIsUserAddedToken(token)
   const currentNetwork = useNetworkInfo(chainId)
 

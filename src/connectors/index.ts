@@ -1,7 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { TorusConnector } from '@dotoracle/web3-react-torus-connector-casper'
-// import { TorusConnector } from '@web3-react/torus-connector'
 import { NetworkConnector } from './NetworkConnector'
 
 export enum ConnectorNames {
