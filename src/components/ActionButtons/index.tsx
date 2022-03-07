@@ -21,6 +21,7 @@ import Transaction from 'type/Transaction'
 import UnknownSVG from 'assets/images/unknown.svg'
 import { NativeTokenAddress } from '../../constants'
 import Web3 from 'web3'
+import { CLPublicKey } from 'casper-js-sdk'
 
 const TokenAmount = styled.span`
   color: ${props => props.theme.primary};
@@ -214,7 +215,8 @@ function ActionButtons(): JSX.Element {
           }
         }
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
         const message = `Could not transfer this token to our bridge. Please try again.`
@@ -246,20 +248,15 @@ function ActionButtons(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onAccountHashChange = (e: any) => {
     const { value } = e.currentTarget
-    let _accountHash = value
 
-    if (_accountHash.length !== 64 && _accountHash.length !== 77) {
-      setErrorMsg('Invalid Account Hash')
-      setShowAccountHashError(true)
-
-      if (!_accountHash.includes('account-hash-')) {
-        _accountHash = `account-hash-${_accountHash}`
-      }
-    } else {
+    try {
+      setAccountHash(CLPublicKey.fromHex(value).toAccountHashStr())
       setErrorMsg('')
       setShowAccountHashError(false)
+    } catch (error) {
+      setErrorMsg('Invalid Casper Address')
+      setShowAccountHashError(true)
     }
-    setAccountHash(value)
   }
 
   return (
@@ -330,8 +327,12 @@ function ActionButtons(): JSX.Element {
                   ?
                 </p>
                 {targetNetwork.notEVM && (
-                  <EuiFormRow label="Account Hash" isInvalid={showAccountHashError} error={errorMsg}>
-                    <EuiFieldText value={accountHash} onChange={onAccountHashChange} />
+                  <EuiFormRow
+                    label="Your Casper Address (Public Key)"
+                    isInvalid={showAccountHashError}
+                    error={errorMsg}
+                  >
+                    <EuiFieldText onChange={onAccountHashChange} />
                   </EuiFormRow>
                 )}
               </>
