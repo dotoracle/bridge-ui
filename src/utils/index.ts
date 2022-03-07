@@ -96,10 +96,15 @@ export const parseResponseToTransactions = (response: any, account: string | nul
       const requestEllipsis = `${t.requestHash.substring(0, 6)}...${t.requestHash.substring(t.requestHash.length - 4)}`
       const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}${fromNetwork.txUrl}${t.requestHash}` : ''
 
-      const claimEllipsis = t.claimHash
-        ? `${t.claimHash.substring(0, 6)}...${t.claimHash.substring(t.claimHash.length - 4)}`
+      let _claimHash = t.claimHash
+
+      if (toNetwork && toNetwork.notEVM && _claimHash && _claimHash.substring(0, 2) === '0x') {
+        _claimHash = _claimHash.substring(2, _claimHash.length)
+      }
+      const claimEllipsis = _claimHash
+        ? `${_claimHash.substring(0, 6)}...${_claimHash.substring(_claimHash.length - 4)}`
         : ''
-      const claimHashUrl = toNetwork ? `${toNetwork.explorer}${toNetwork.txUrl}${t.claimHash}` : ''
+      const claimHashUrl = toNetwork ? `${toNetwork.explorer}${toNetwork.txUrl}${_claimHash}` : ''
 
       transactions.push({
         ...t,

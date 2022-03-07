@@ -136,6 +136,10 @@ export const Row = styled.div`
 
     > span {
       margin-right: 0.25rem;
+
+      + span {
+        margin: 0;
+      }
     }
   }
 
