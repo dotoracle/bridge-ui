@@ -67,7 +67,7 @@ interface IWalletModalProps {
 
 function WalletModal(props: IWalletModalProps): JSX.Element {
   const { closeModal } = props
-  const { activate, account } = useWeb3React()
+  const { activate } = useWeb3React()
   const [isLoading, setIsLoading] = useState(false)
 
   const onConnectWallet = async (connectorID: ConnectorNames) => {

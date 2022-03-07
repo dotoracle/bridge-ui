@@ -6,16 +6,10 @@ import {
   EuiModalBody,
   EuiModalFooter,
   EuiButton,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiHorizontalRule,
-  EuiIcon,
 } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import { NativeTokenAddress } from '../../constants'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalance } from 'hooks'
-import { useEffect } from 'react'
-import { useState } from 'react'
 
 interface IAccountInfoModal {
   closeModal: () => void

@@ -13,7 +13,7 @@ import {
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-toastify'
 import { toHex } from 'web3-utils'
-import BridgeAppContext from '../../context/BridgeAppContext'
+import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import {
   useAllTransactions,
@@ -22,10 +22,10 @@ import {
   useBridgeAddress,
   useBridgeContract,
   useAllNetworks,
-} from '../../hooks'
-import { parseResponseToTransactions, setupNetwork } from '../../utils'
-import Transaction from '../../type/Transaction'
-import Network from '../../type/Network'
+} from 'hooks'
+import { parseResponseToTransactions, setupNetwork } from 'utils'
+import Transaction from 'type/Transaction'
+import Network from 'type/Network'
 import ClaimCountdown from './ClaimCountdown'
 import {
   TableWrap,
@@ -41,13 +41,14 @@ import {
   StyledClaimButton,
   ConfirmMessage,
 } from './styled'
-import UnknownSVG from '../../assets/images/unknown.svg'
+import UnknownSVG from 'assets/images/unknown.svg'
 import NetworkInfo from './NetworkInfo'
 import { NativeTokenAddress } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
   const { account, chainId: currentChainId } = useActiveWeb3React()
-  const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
+  // const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
+  const { refreshLocal } = useContext(BridgeAppContext)
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)
@@ -56,7 +57,7 @@ function TransactionsTable(): JSX.Element {
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
   const [isDisabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [isProcessing, setIsProcessing] = useState(false)
+  // const [isProcessing, setIsProcessing] = useState(false)
   const [showNetworkModal, setShowNetworkModal] = useState(false)
   const [claimTokenSymbol, setClaimTokenSymbol] = useState('')
   const [toNetwork, setToNetwork] = useState<Network>()
@@ -151,7 +152,7 @@ function TransactionsTable(): JSX.Element {
       // }
       // setRefreshLocal(false)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       setIsLoading(false)
     }
@@ -215,7 +216,7 @@ function TransactionsTable(): JSX.Element {
             <Row>
               Your recipient account hash:&nbsp;
               <a href={`${item.toNetwork?.explorer}/account/${item.account.substring(13, 77)}`} target="__blank">
-                {item.account.substring(13, 64)}
+                {item.account.substring(13, 77)}
               </a>
             </Row>
           )}
@@ -326,7 +327,7 @@ function TransactionsTable(): JSX.Element {
                 setTranstractions(_transactions)
                 localStorage.setItem(`transactions_${account}_${currentChainId}`, JSON.stringify(_transactions))
 
-                setIsProcessing(true)
+                // setIsProcessing(true)
                 // onLoadTransactions(false)
                 onLoadTransactions()
               }

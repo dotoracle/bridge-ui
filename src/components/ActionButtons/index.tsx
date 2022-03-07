@@ -243,6 +243,7 @@ function ActionButtons(): JSX.Element {
     onTransferToken()
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onAccountHashChange = (e: any) => {
     const { value } = e.currentTarget
     let _accountHash = value

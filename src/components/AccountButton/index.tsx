@@ -4,7 +4,6 @@ import styled from 'styled-components/macro'
 import WalletModal from '../WalletModal'
 import AccountInfoModal from '../AccountInfoModal'
 import { useActiveWeb3React, useNetworkInfo } from '../../hooks'
-import Torus from '@toruslabs/casper-embed'
 
 const NetworkLogo = styled.img`
   width: 24px;
@@ -35,7 +34,7 @@ const StyledButton = styled(EuiButton)`
 `
 
 function AccountButton(): JSX.Element {
-  const { account, chainId, connector } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 
   const [showWalletModal, setShowWalletModal] = useState(false)

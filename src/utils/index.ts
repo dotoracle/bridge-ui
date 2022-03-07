@@ -8,6 +8,7 @@ import networks from '../config/networks.json'
 import Token from '../type/Token'
 import Network from '../type/Network'
 import Transaction from '../type/Transaction'
+import { NativeTokenAddress } from '../constants'
 
 export const getContract = (address: string, abi: AbiItem, web3: Web3): Contract | null => {
   try {
@@ -88,7 +89,9 @@ export const parseResponseToTransactions = (response: any, account: string | nul
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
       const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
       const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
-      const amountFormated = `${formatNumber(fromWei(t.amount).toNumber())} ${t.originSymbol}`
+      const amountFormated = `${formatNumber(fromWei(t.amount).toNumber())} ${
+        t.originToken == NativeTokenAddress ? originNetwork.nativeCurrency.symbol : t.originSymbol
+      }`
 
       const requestEllipsis = `${t.requestHash.substring(0, 6)}...${t.requestHash.substring(t.requestHash.length - 4)}`
       const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}${fromNetwork.txUrl}${t.requestHash}` : ''

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@dotoracle/web3-react-core'
-import Torus from '@toruslabs/casper-embed'
 import { injected, torus } from '../connectors'
 import { NetworkContextName, connectorLocalStorageKey } from '../constants'
 
