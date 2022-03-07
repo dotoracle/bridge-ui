@@ -138,7 +138,7 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
               <WalletLogo src={MetaMaskSVG} alt="Metamask" />
             </WalletButton>
             <WalletButton isLoading={isLoading} onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}>
-              <span>Torus</span>
+              <span>Torus (for Casper)</span>
               <WalletLogo src={TorusPNG} alt="Torus" />
             </WalletButton>
           </EuiModalBody>
