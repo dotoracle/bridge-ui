@@ -3,7 +3,7 @@ import { EuiConfirmModal, EuiFieldText, EuiFormRow } from '@elastic/eui'
 import { toast } from 'react-toastify'
 import styled from 'styled-components/macro'
 import { toHex } from 'web3-utils'
-import BridgeAppContext from '../../context/BridgeAppContext'
+import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import WalletModal from '../WalletModal'
 import {
@@ -13,13 +13,15 @@ import {
   useBridgeAddress,
   useBridgeContract,
   useTokenBalance,
-} from '../../hooks'
+  useNetworkInfo,
+} from 'hooks'
 import { StyledButton, UnlockButton } from './styled'
-import { toWei, formatNumber } from '../../utils'
-import Transaction from '../../type/Transaction'
-import UnknownSVG from '../../assets/images/unknown.svg'
+import { toWei, formatNumber } from 'utils'
+import Transaction from 'type/Transaction'
+import UnknownSVG from 'assets/images/unknown.svg'
 import { NativeTokenAddress } from '../../constants'
 import Web3 from 'web3'
+
 const TokenAmount = styled.span`
   color: ${props => props.theme.primary};
   line-height: 2;
@@ -44,6 +46,7 @@ function ActionButtons(): JSX.Element {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, setRefreshLocal } =
     useContext(BridgeAppContext)
   const { account, chainId, library } = useActiveWeb3React()
+  const networkInfo = useNetworkInfo(chainId)
 
   const tokenBalance = useTokenBalance(
     selectedToken ? selectedToken.address : undefined,
@@ -51,6 +54,7 @@ function ActionButtons(): JSX.Element {
     account,
     library,
     tokenAmount,
+    networkInfo,
   )
 
   const [showWalletModal, setShowWalletModal] = useState(false)
