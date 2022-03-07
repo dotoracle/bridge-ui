@@ -31,6 +31,8 @@ export const useEagerConnect = () => {
       activate(torus, undefined, true).catch(() => {
         setTried(true)
       })
+    } else {
+      setTried(true)
     }
   }, [activate])
 
