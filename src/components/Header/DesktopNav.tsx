@@ -1,36 +1,12 @@
 import { EuiFlexGroup, EuiFlexItem, EuiShowFor } from '@elastic/eui'
 import styled from 'styled-components/macro'
+import { useLocation } from 'react-router-dom'
 import NAV_ITEMS from './items'
+import { MenuA, MenuLink } from '../../styled'
 
 const MenuItem = styled(EuiFlexItem)`
   position: relative;
   padding: 0 20px;
-`
-
-const Link = styled.a`
-  position: relative;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: #fff;
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    transition: all 400ms ease;
-    background-color: ${props => props.theme.primary};
-  }
-
-  &:hover {
-    color: ${props => props.theme.primary};
-
-    &::before {
-      width: 100%;
-    }
-  }
 `
 const SubText = styled.span`
   padding: 5px;
@@ -49,14 +25,28 @@ const SubText = styled.span`
 `
 
 function DesktopNav(): JSX.Element {
+  const location = useLocation()
+  const { pathname } = location
+
   return (
     <EuiShowFor sizes={['m', 'l', 'xl']}>
       <EuiFlexGroup gutterSize="none" justifyContent="flexEnd">
         {NAV_ITEMS.map(navItem => (
           <MenuItem key={navItem.label} grow={false}>
-            <Link href={navItem.href ?? '#'} target={navItem.target ?? '_self'}>
-              {navItem.label}
-            </Link>
+            {navItem.href && (
+              <MenuA
+                href={navItem.href}
+                target={navItem.target ?? '_self'}
+                className={`${pathname.includes(navItem.href) && 'active'}`}
+              >
+                {navItem.label}
+              </MenuA>
+            )}
+            {navItem.to && (
+              <MenuLink to={navItem.to} className={`${pathname === navItem.to && 'active'}`}>
+                {navItem.label}
+              </MenuLink>
+            )}
             {navItem.subLabel && <SubText>{navItem.subLabel}</SubText>}
           </MenuItem>
         ))}
