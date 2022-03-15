@@ -43,7 +43,7 @@ const ApproveWrap = styled.div`
   width: 100%;
 `
 
-function ActionButtons(): JSX.Element {
+function TransferButton(): JSX.Element {
   const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, setRefreshLocal } =
     useContext(BridgeAppContext)
   const { account, chainId, library } = useActiveWeb3React()
@@ -352,4 +352,4 @@ function ActionButtons(): JSX.Element {
   )
 }
 
-export default ActionButtons
+export default TransferButton

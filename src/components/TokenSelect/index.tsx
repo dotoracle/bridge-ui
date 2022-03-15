@@ -40,7 +40,12 @@ const SelectButton = styled(EuiButton)`
   }
 `
 
-function TokenSelect(): JSX.Element {
+interface ITokenSelect {
+  showNativeToken: boolean
+}
+
+function TokenSelect(props: ITokenSelect): JSX.Element {
+  const { showNativeToken } = props
   const { selectedToken } = useContext(BridgeAppContext)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -60,7 +65,7 @@ function TokenSelect(): JSX.Element {
           Select a Token
         </SelectButton>
       )}
-      {isModalVisible && <SearchModal closeModal={closeModal} />}
+      {isModalVisible && <SearchModal showNativeToken={showNativeToken} closeModal={closeModal} />}
     </TokenSelectWrapper>
   )
 }

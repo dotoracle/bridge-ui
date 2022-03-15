@@ -1,4 +1,4 @@
-import AppBoxWrap from '../components/AppBox'
+import AppBoxWrap from '../../components/AppBox'
 import { TitleWrapper, Title, TitleShadow, SubHeading } from 'styled'
 
 function Home(): JSX.Element {

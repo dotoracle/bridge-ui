@@ -26,6 +26,7 @@ const useContract = (address?: string, abi?: any) => {
 }
 
 export const useTokenContract = (address?: string): Contract | null => {
+  console.log(address)
   return useContract(address, ERC20_ABI)
 }
 

@@ -18,6 +18,7 @@ import { useDebounce, useToken, useActiveWeb3React } from '../../hooks'
 import { getTokensFromConfig } from '../../utils'
 import TokenList from './TokenList'
 import ImportRow from './ImportRow'
+import { NativeTokenAddress } from '../../constants'
 
 const BreakLine = styled.div`
   margin-top: 15px;
@@ -37,11 +38,12 @@ const NoResultsFound = styled.p`
 `
 
 interface ITokenSearchModalProps {
+  showNativeToken: boolean
   closeModal: () => void
 }
 
 function SearchModal(props: ITokenSearchModalProps): JSX.Element {
-  const { closeModal } = props
+  const { showNativeToken, closeModal } = props
 
   const { library, chainId, account } = useActiveWeb3React()
   const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
@@ -56,7 +58,12 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
     const fetchData = async () => {
       try {
         setFetching(true)
-        setTokenList(await getTokensFromConfig(account, networkId))
+        let _tokenList = await getTokensFromConfig(account, networkId)
+
+        if (!showNativeToken) {
+          _tokenList = _tokenList.filter(t => t.address !== NativeTokenAddress)
+        }
+        setTokenList(_tokenList)
       } catch (error) {
         console.error(error)
       } finally {

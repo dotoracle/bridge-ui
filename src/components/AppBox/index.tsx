@@ -105,7 +105,7 @@ function AppBox(): JSX.Element {
       <AppBoxWrap>
         <FormWrap>
           <FormRow>
-            <TokenSelect />
+            <TokenSelect showNativeToken={true} />
           </FormRow>
 
           <FormRow>

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useMemo } from 'react'
 import Web3 from 'web3'
-import { CasperClient, CLPublicKey } from 'casper-js-sdk'
+import { CasperClient, CLAccountHash, CLPublicKey } from 'casper-js-sdk'
 import { fromWei } from 'utils'
+import { ERC20Client } from 'casper-erc20-js-client'
 import { useTokenContract } from './useContract'
 import { NativeTokenAddress } from '../constants'
 import NetworkInfo from 'type/Network'
@@ -16,7 +17,7 @@ export const useTokenBalance = (
   networkInfo?: NetworkInfo,
 ): number => {
   const [balance, setBalance] = useState(0)
-  const tokenContract = useTokenContract(tokenAddress)
+  const tokenContract = useTokenContract(networkInfo && networkInfo.notEVM ? undefined : tokenAddress)
 
   try {
     useEffect(() => {
@@ -35,7 +36,13 @@ export const useTokenBalance = (
               _balance = Number(ethBalance)
             }
           } else {
-            _balance = await tokenContract?.methods.balanceOf(account).call()
+            if (networkInfo.notEVM) {
+              const erc20 = new ERC20Client(networkInfo.rpcURL, networkInfo.key ?? '', networkInfo.eventStream)
+              await erc20.setContractHash(tokenAddress ?? '')
+              _balance = await erc20.balanceOf(CLPublicKey.fromHex(account))
+            } else {
+              _balance = await tokenContract?.methods.balanceOf(account).call()
+            }
           }
         }
 

@@ -1,10 +1,12 @@
 type Network = {
   name: string
+  key?: string
   chainId: number
   logoURI: string
   explorer: string
   txUrl: string
   rpcURL: string
+  eventStream?: string
   isTestnet: boolean
   bridge: string
   firstBlockCrawl: number
