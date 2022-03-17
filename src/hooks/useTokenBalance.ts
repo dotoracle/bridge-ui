@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useMemo } from 'react'
 import Web3 from 'web3'
-import { CasperClient, CLAccountHash, CLPublicKey } from 'casper-js-sdk'
-import { fromWei } from 'utils'
+import { CasperClient, CLPublicKey } from 'casper-js-sdk'
 import { ERC20Client } from 'casper-erc20-js-client'
+import { fromWei } from 'utils'
 import { useTokenContract } from './useContract'
 import { NativeTokenAddress } from '../constants'
 import NetworkInfo from 'type/Network'

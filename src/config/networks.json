@@ -143,7 +143,7 @@
     "logoURI": "https://assets.coingecko.com/coins/images/15279/large/casper.PNG",
     "explorer": "https://testnet.cspr.live",
     "txUrl": "/deploy/",
-    "rpcURL": "http://3.136.227.9:7777/rpc",
+    "rpcURL": "https://node-clarity-testnet.make.services/rpc",
     "eventStream": "http://16.162.124.124:9999/events/main",
     "isTestnet": true,
     "notEVM": true,
