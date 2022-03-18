@@ -1,13 +1,10 @@
 import { useState, useContext } from 'react'
 import { toast } from 'react-toastify'
-import { ERC20Client } from 'casper-erc20-js-client'
 import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import WalletModal from '../WalletModal'
 import { useActiveWeb3React, useBridgeAddress, useBridgeContract, useTokenBalance, useNetworkInfo } from 'hooks'
 import { StyledButton } from './styled'
-import { toWei } from 'utils'
-import { NativeTokenAddress } from '../../constants'
 import {
   CasperServiceByJsonRPC,
   CLPublicKey,
@@ -15,11 +12,17 @@ import {
   decodeBase16,
   DeployUtil,
   RuntimeArgs,
-  verifyMessageSignature,
 } from 'casper-js-sdk'
 import { SafeEventEmitterProvider } from 'casper-js-sdk/dist/services/ProviderTransport'
+import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib'
+import { toWei } from 'utils'
 
-function TransferButton(): JSX.Element {
+interface TransferButtonProps {
+  receipient: string
+}
+
+function TransferButton(props: TransferButtonProps): JSX.Element {
+  const { receipient } = props
   const { selectedToken, targetNetwork, tokenAmount } = useContext(BridgeAppContext)
   const { account, chainId, library, connector } = useActiveWeb3React()
 
@@ -40,84 +43,54 @@ function TransferButton(): JSX.Element {
   const bridgeAddress = useBridgeAddress(chainId)
   const bridgeContract = useBridgeContract(bridgeAddress)
 
+  const genRanHex = (size: number) => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
+
   const onTransferERC20Token = async () => {
     try {
       setLoading(true)
 
       if (account && selectedToken && connector && networkInfo && bridgeContract) {
-        const amountInWei = toWei(tokenAmount, selectedToken.decimals)
-        const value = '10000000000000000'
-
-        // if (selectedToken.address === NativeTokenAddress) {
-        //   value = amountInWei.toNumber()
-        // }
+        const decimal = selectedToken ? selectedToken.decimals : 18
+        const value = toWei(tokenAmount, decimal)
 
         // @ts-ignore
         const { torus } = connector
-        const erc20 = new ERC20Client(networkInfo.rpcURL, networkInfo.key ?? '', networkInfo.eventStream)
-        await erc20.setContractHash(selectedToken.address ?? '')
+        const senderKey = CLPublicKey.fromHex(account)
+        const casperService = new CasperServiceByJsonRPC(torus?.provider as SafeEventEmitterProvider)
+        const contractHash = selectedToken.address
+        const contractHashAsByteArray = decodeBase16(contractHash)
+        const id = genRanHex(64).toLowerCase()
+        const fee = await contractSimpleGetter(networkInfo.rpcURL, contractHash, ['swap_fee'])
 
-        const _deploy = await erc20.createUnsignedRequestBridgeBack(
-          CLPublicKey.fromHex(account),
-          value.toString(),
-          targetNetwork ? targetNetwork.chainId.toString() : '42',
-          '0x00481E0dE32FecFF1C7ce3AF19cb03E01aFC0e48',
-          '2000000000',
+        const deploy = DeployUtil.makeDeploy(
+          new DeployUtil.DeployParams(senderKey, networkInfo?.key ?? 'casper-test', 1, 1800000),
+          DeployUtil.ExecutableDeployItem.newStoredContractByHash(
+            contractHashAsByteArray,
+            'request_bridge_back',
+            RuntimeArgs.fromMap({
+              amount: CLValueBuilder.u256(value.toString()),
+              fee: CLValueBuilder.u256(fee),
+              to_chainid: CLValueBuilder.u256(targetNetwork ? targetNetwork.chainId.toString() : '42'),
+              receiver_address: CLValueBuilder.string(receipient),
+              id: CLValueBuilder.string(id),
+            }),
+          ),
+          DeployUtil.standardPayment(400000000),
         )
 
-        // const AMOUNT_TO_TRANSFER = 2000000000000
-        // // Time interval in milliseconds after which deploy will not be processed by a node.
-        // const DEPLOY_TTL_MS = 1800000
-        // const DEPLOY_GAS_PAYMENT = 200000000000
-        // const receiverCLPubKey = CLPublicKey.fromHex(
-        //   '02036d0a481019747b6a761651fa907cc62c0d0ebd53f4152e9f965945811aed2ba8',
-        // )
-        // const senderKey = CLPublicKey.fromHex(account)
-        // const casperService = new CasperServiceByJsonRPC(torus?.provider as SafeEventEmitterProvider)
-        // const contractHash = '9EccB15D2001D57c971185D05be97Ac43C2E2bDA5ACd13D47d681B23a0A5979b'
-        // const contractHashAsByteArray = decodeBase16(selectedToken.address ?? '')
-        // const deploy = DeployUtil.makeDeploy(
-        //   new DeployUtil.DeployParams(CLPublicKey.fromHex(account), 'casper-test', 1, DEPLOY_TTL_MS),
-        //   DeployUtil.ExecutableDeployItem.newStoredContractByHash(
-        //     contractHashAsByteArray,
-        //     'request_bridge_back',
-        //     RuntimeArgs.fromMap({
-        //       amount: CLValueBuilder.u256(AMOUNT_TO_TRANSFER),
-        //       recipient: CLValueBuilder.byteArray(receiverCLPubKey.toAccountHash()),
-        //     }),
-        //   ),
-        //   DeployUtil.standardPayment(DEPLOY_GAS_PAYMENT),
-        // )
+        const deployRes = await casperService.deploy(deploy)
 
-        // console.log('deploy', deploy)
-        // console.log('_deploy', _deploy)
-        console.log(JSON.stringify(_deploy.deploy))
-        console.log(DeployUtil.deployToJson(_deploy.deploy))
-        // console.log(DeployUtil.deployToJson(_deploy.deploy))
-        // console.log(DeployUtil.deployFromJson({ deploy: JSON.stringify(_deploy) }))
-
-        // // const torus = new Torus()
-        // console.log(_deploy.hash)
-        const message = Buffer.from(_deploy.hashToSign).toString('hex') // _deploy.hashToSign // Buffer.from(_deploy.hashToSign).toString('hex')
-        const res = await torus?.signMessage({
-          message,
-          from: account,
-        })
-
-        console.log(message)
-
-        if (res?.signature) {
-          // const pubKey = CLPublicKey.fromHex(account)
-          // const isVerified = verifyMessageSignature(pubKey, message, res?.signature)
-          // console.log(res?.signature)
-          // if (isVerified) {
-          // await erc20.putSignatureAndSend({
-          //   publicKey: pubKey,
-          //   deploy: deploy,
-          //   signature: res?.signature,
-          //   nodeAddress: networkInfo.rpcURL,
-          // })
-          // }
+        if (deployRes) {
+          toast.success(
+            <ToastMessage
+              color="success"
+              headerText="Success!"
+              bodyText="Please wait a few minutes to see ERC20 token in your wallet"
+            />,
+            {
+              toastId: 'onTransferToken',
+            },
+          )
         } else {
           toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Invalid signature" />, {
             toastId: 'onTransferToken',
@@ -148,7 +121,7 @@ function TransferButton(): JSX.Element {
             <StyledButton
               fill
               isLoading={isLoading}
-              // isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
+              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
               onClick={onTransferERC20Token}
             >
               Transfer {selectedToken.symbol} to bridge

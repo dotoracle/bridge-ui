@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { TitleWrapper, Title, TitleShadow, SubHeading } from 'styled'
 import styled from 'styled-components/macro'
 import { EuiFieldText } from '@elastic/eui'
@@ -40,11 +40,20 @@ function TransferERC20(): JSX.Element {
   const { account, chainId } = useActiveWeb3React()
   const { sourceNetwork: sourceNetworkContext, targetNetwork: targetNetworkContext } = useContext(BridgeAppContext)
 
+  const [receipient, setReceipient] = useState('')
+
   const sourceNetworkHook = useNetworkInfo(chainId)
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
 
-  const otherNetworks = useOtherNetworks(sourceNetwork, account, chainId)
+  let otherNetworks = useOtherNetworks(sourceNetwork, account, chainId)
+  otherNetworks = otherNetworks.filter(n => n.chainId != sourceNetwork?.chainId)
   const targetNetwork = targetNetworkContext ? targetNetworkContext : otherNetworks[0]
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onReceipientChange = (e: any) => {
+    const { value } = e.target
+    setReceipient(value)
+  }
 
   return (
     <>
@@ -68,7 +77,7 @@ function TransferERC20(): JSX.Element {
               <StyledLabel>To Chain</StyledLabel>
               <NetworkBox
                 selectedNetwork={targetNetwork}
-                otherNetwork={sourceNetwork}
+                otherNetwork={targetNetwork}
                 showDropdown={true}
                 side="TARGET"
               />
@@ -78,12 +87,12 @@ function TransferERC20(): JSX.Element {
           <FormRow>
             <div style={{ width: '100%' }}>
               <StyledLabel>Receiver Address</StyledLabel>
-              <EuiFieldText fullWidth aria-label="Use aria labels when no actual label is in use" />
+              <EuiFieldText fullWidth value={receipient} onChange={onReceipientChange} />
             </div>
           </FormRow>
 
           <FormRow>
-            <TransferButton />
+            <TransferButton receipient={receipient} />
           </FormRow>
         </AppBoxWrap>
       </Container>

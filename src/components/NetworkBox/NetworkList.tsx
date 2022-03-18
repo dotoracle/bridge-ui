@@ -26,7 +26,12 @@ function NetworkList(props: INetworkList): JSX.Element {
   const { chainId } = useActiveWeb3React()
   const currentNetwork = useNetworkInfo(chainId)
 
-  const networks = useAllNetworks(currentNetwork?.isTestnet)
+  let networks = useAllNetworks(currentNetwork?.isTestnet)
+
+  // if current network is Casper
+  if (currentNetwork?.notEVM) {
+    networks = networks.filter(n => n.chainId != currentNetwork.chainId)
+  }
 
   const handleSelectNetwork = (network: Network) => {
     onNetworkSelect(network)
