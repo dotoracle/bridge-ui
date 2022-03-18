@@ -214,9 +214,9 @@ function TransactionsTable(): JSX.Element {
           </Row>
           {item.account !== item.txCreator && (
             <Row>
-              Your recipient account hash:&nbsp;
-              <a href={`${item.toNetwork?.explorer}/account/${item.account.substring(13, 77)}`} target="__blank">
-                {item.account.substring(13, 77)}
+              {item.toNetwork?.notEVM ? 'Your recipient account hash:' : 'Your recipient account address:'}&nbsp;
+              <a href={`${item.accountUrl}`} target="__blank">
+                {item.account}
               </a>
             </Row>
           )}

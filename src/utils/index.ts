@@ -93,8 +93,13 @@ export const parseResponseToTransactions = (response: any, account: string | nul
         t.originToken == NativeTokenAddress ? originNetwork.nativeCurrency.symbol : t.originSymbol
       }`
 
-      const requestEllipsis = `${t.requestHash.substring(0, 6)}...${t.requestHash.substring(t.requestHash.length - 4)}`
-      const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}${fromNetwork.txUrl}${t.requestHash}` : ''
+      let _requestHash = t.requestHash
+
+      if (fromNetwork && fromNetwork.notEVM && _requestHash && _requestHash.substring(0, 2) === '0x') {
+        _requestHash = _requestHash.substring(2, _requestHash.length)
+      }
+      const requestEllipsis = `${_requestHash.substring(0, 6)}...${_requestHash.substring(_requestHash.length - 4)}`
+      const requestHashUrl = fromNetwork ? `${fromNetwork.explorer}${fromNetwork.txUrl}${_requestHash}` : ''
 
       let _claimHash = t.claimHash
 
@@ -106,12 +111,21 @@ export const parseResponseToTransactions = (response: any, account: string | nul
         : ''
       const claimHashUrl = toNetwork ? `${toNetwork.explorer}${toNetwork.txUrl}${_claimHash}` : ''
 
+      let _account = t.account
+      let _accountUrl = `${toNetwork?.explorer}/address/${_account}`
+      if (toNetwork && toNetwork.notEVM) {
+        _account = _account.substring(13, 77)
+        _accountUrl = `${toNetwork?.explorer}/account/${_account}`
+      }
+
       transactions.push({
         ...t,
         fromNetwork,
         toNetwork,
         originNetwork,
         amountFormated,
+        account: _account,
+        accountUrl: _accountUrl,
         requestHashLink: {
           networkName: fromNetwork.name,
           explorerLogo: fromNetwork ? fromNetwork.logoURI : '',

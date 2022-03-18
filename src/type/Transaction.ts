@@ -8,6 +8,7 @@ type Transaction = {
   toNetwork: Network | undefined
   toChainId: number
   account: string
+  accountUrl: string
   txCreator: string
   amount: string
   amountFormated: string
