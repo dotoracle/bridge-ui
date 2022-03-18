@@ -1,8 +1,9 @@
-import { EuiExpression, EuiButtonIcon, EuiIcon } from '@elastic/eui'
+import { useEffect, useState } from 'react'
+import { EuiExpression, EuiButtonIcon, EuiIcon, EuiLoadingContent } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import Token from '../../type/Token'
 import UnknownSVG from '../../assets/images/unknown.svg'
-import { useTokenBalance, useActiveWeb3React, useIsUserAddedToken, useNetworkInfo } from '../../hooks'
+import { useActiveWeb3React, useIsUserAddedToken, useNetworkInfo, useTokenBalanceCallback } from '../../hooks'
 import { formatNumber } from '../../utils'
 
 const Row = styled.div`
@@ -77,9 +78,23 @@ function TokenRow(props: ITokenRow): JSX.Element {
   const { token, isSelected, onSelect, onRemoveCustomToken } = props
   const { account, chainId, library } = useActiveWeb3React()
   const networkInfo = useNetworkInfo(chainId)
-  const tokenBalance = useTokenBalance(token.address, token.decimals, account, library, 0, networkInfo)
   const isAdded = useIsUserAddedToken(token)
   const currentNetwork = useNetworkInfo(chainId)
+
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false)
+  const [tokenBalance, setTokenBalance] = useState(0)
+  const tokenBalanceCallback = useTokenBalanceCallback(token.address, token.decimals, account, library, 0, networkInfo)
+
+  const loadTokenBalance = async () => {
+    setIsLoadingBalance(true)
+    const _tokenBalance = await tokenBalanceCallback()
+    setTokenBalance(_tokenBalance)
+    setIsLoadingBalance(false)
+  }
+
+  useEffect(() => {
+    loadTokenBalance()
+  }, [account, chainId])
 
   const handleRemoveCustomToken = () => {
     let _tokens = [] as Token[]
@@ -120,7 +135,13 @@ function TokenRow(props: ITokenRow): JSX.Element {
         )}
       </TokenNameWrap>
       {tokenBalance >= 0 ? (
-        <Balance description={formatNumber(tokenBalance)} textWrap="truncate" color="subdued" />
+        <>
+          {isLoadingBalance ? (
+            <EuiLoadingContent lines={1} />
+          ) : (
+            <Balance description={formatNumber(tokenBalance)} textWrap="truncate" color="subdued" />
+          )}
+        </>
       ) : (
         <Balance description="" />
       )}

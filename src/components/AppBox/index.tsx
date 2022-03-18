@@ -81,7 +81,6 @@ function AppBox(): JSX.Element {
     if (targetNetwork) {
       setTargetNetwork(targetNetwork)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceNetwork, targetNetwork, account, chainId])
 
   // refresh context if change account
@@ -97,7 +96,6 @@ function AppBox(): JSX.Element {
     if (targetNetwork && _networks.length > 0 && targetNetwork.chainId !== _networks[0].chainId) {
       setTargetNetwork(_networks[0])
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, chainId])
 
   return (

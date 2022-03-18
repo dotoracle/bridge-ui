@@ -6,10 +6,12 @@ import {
   EuiModalBody,
   EuiModalFooter,
   EuiButton,
+  EuiLoadingContent,
 } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import { NativeTokenAddress } from '../../constants'
-import { useActiveWeb3React, useNetworkInfo, useTokenBalance } from 'hooks'
+import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
+import { useEffect, useState } from 'react'
 
 interface IAccountInfoModal {
   closeModal: () => void
@@ -24,9 +26,11 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
   const { closeModal } = props
 
   const { account, deactivate, chainId, library } = useActiveWeb3React()
-
   const networkInfo = useNetworkInfo(chainId)
-  const tokenBalance = useTokenBalance(
+
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false)
+  const [tokenBalance, setTokenBalance] = useState(0)
+  const tokenBalanceCallback = useTokenBalanceCallback(
     NativeTokenAddress,
     networkInfo?.nativeCurrency.decimals,
     account,
@@ -34,6 +38,17 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
     0,
     networkInfo,
   )
+
+  const loadTokenBalance = async () => {
+    setIsLoadingBalance(true)
+    const _tokenBalance = await tokenBalanceCallback()
+    setTokenBalance(_tokenBalance)
+    setIsLoadingBalance(false)
+  }
+
+  useEffect(() => {
+    loadTokenBalance()
+  }, [account, chainId])
 
   return (
     <>
@@ -47,9 +62,13 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
 
           <EuiModalBody>
             <AccountAddress>{account}</AccountAddress>
-            <p>
-              Balance: {tokenBalance} {networkInfo?.nativeCurrency.symbol}
-            </p>
+            {isLoadingBalance ? (
+              <EuiLoadingContent lines={1} />
+            ) : (
+              <p>
+                Balance: {tokenBalance} {networkInfo?.nativeCurrency.symbol}
+              </p>
+            )}
           </EuiModalBody>
 
           <EuiModalFooter>

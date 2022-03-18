@@ -24,12 +24,10 @@ const useTokenAllowance = (token?: Token, owner?: string, spender?: string): Big
     if (token?.address !== NativeTokenAddress) {
       fetchAllowance()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   return useMemo(() => {
     return allowance
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, allowance])
 }
 

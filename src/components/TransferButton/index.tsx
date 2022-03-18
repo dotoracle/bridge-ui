@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import WalletModal from '../WalletModal'
-import { useActiveWeb3React, useBridgeAddress, useBridgeContract, useTokenBalance, useNetworkInfo } from 'hooks'
+import { useActiveWeb3React, useBridgeAddress, useBridgeContract, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import { StyledButton } from './styled'
 import {
   CasperServiceByJsonRPC,
@@ -28,7 +28,9 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
 
   const networkInfo = useNetworkInfo(chainId)
 
-  const tokenBalance = useTokenBalance(
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false)
+  const [tokenBalance, setTokenBalance] = useState(0)
+  const tokenBalanceCallback = useTokenBalanceCallback(
     selectedToken ? selectedToken.address : undefined,
     selectedToken ? selectedToken.decimals : undefined,
     account,
@@ -42,6 +44,17 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
 
   const bridgeAddress = useBridgeAddress(chainId)
   const bridgeContract = useBridgeContract(bridgeAddress)
+
+  const loadTokenBalance = async () => {
+    setIsLoadingBalance(true)
+    const _tokenBalance = await tokenBalanceCallback()
+    setTokenBalance(_tokenBalance)
+    setIsLoadingBalance(false)
+  }
+
+  useEffect(() => {
+    loadTokenBalance()
+  }, [account, chainId, selectedToken])
 
   const genRanHex = (size: number) => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
 
@@ -120,7 +133,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
           {selectedToken ? (
             <StyledButton
               fill
-              isLoading={isLoading}
+              isLoading={isLoading || isLoadingBalance}
               isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
               onClick={onTransferERC20Token}
             >

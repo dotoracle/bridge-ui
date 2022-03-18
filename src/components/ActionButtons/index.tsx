@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { EuiConfirmModal, EuiFieldText, EuiFormRow } from '@elastic/eui'
 import { toast } from 'react-toastify'
 import styled from 'styled-components/macro'
@@ -12,8 +12,8 @@ import {
   useActiveWeb3React,
   useBridgeAddress,
   useBridgeContract,
-  useTokenBalance,
   useNetworkInfo,
+  useTokenBalanceCallback,
 } from 'hooks'
 import { StyledButton, UnlockButton } from './styled'
 import { toWei, formatNumber } from 'utils'
@@ -49,7 +49,9 @@ function ActionButtons(): JSX.Element {
   const { account, chainId, library } = useActiveWeb3React()
   const networkInfo = useNetworkInfo(chainId)
 
-  const tokenBalance = useTokenBalance(
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false)
+  const [tokenBalance, setTokenBalance] = useState(0)
+  const tokenBalanceCallback = useTokenBalanceCallback(
     selectedToken ? selectedToken.address : undefined,
     selectedToken ? selectedToken.decimals : undefined,
     account,
@@ -77,6 +79,17 @@ function ActionButtons(): JSX.Element {
     bridgeAddress,
   )
   const [needApprove, setNeedApprove] = useState(true)
+
+  const loadTokenBalance = async () => {
+    setIsLoadingBalance(true)
+    const _tokenBalance = await tokenBalanceCallback()
+    setTokenBalance(_tokenBalance)
+    setIsLoadingBalance(false)
+  }
+
+  useEffect(() => {
+    loadTokenBalance()
+  }, [account, chainId, selectedToken])
 
   const approveToken = async (infinity?: boolean) => {
     try {
@@ -269,7 +282,7 @@ function ActionButtons(): JSX.Element {
               {!needApprove || approval === ApprovalState.APPROVED ? (
                 <StyledButton
                   fill
-                  isLoading={isLoading}
+                  isLoading={isLoading || isLoadingBalance}
                   isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
                   onClick={onOpenConfirmModal}
                 >

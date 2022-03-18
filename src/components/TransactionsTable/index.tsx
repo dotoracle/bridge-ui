@@ -169,7 +169,6 @@ function TransactionsTable(): JSX.Element {
     }
 
     fetchTransactions()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, currentChainId, refreshLocal])
 
   const toggleDetails = (item: Transaction) => {

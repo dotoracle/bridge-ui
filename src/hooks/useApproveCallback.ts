@@ -34,7 +34,6 @@ export const useApproveCallback = (
 
     // amountToApprove will be defined if currentAllowance is
     return currentAllowance.lt(amountToApprove) ? ApprovalState.NOT_APPROVED : ApprovalState.APPROVED
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountToApprove, currentAllowance, spender])
 
   const tokenContract = useTokenContract(token?.address)
@@ -77,7 +76,6 @@ export const useApproveCallback = (
         .approve(spender, infinity ? infiniteAmount.toString(10) : amountToApprove.toString(10))
         .send({ chainId: toHex(chainId), from: account })
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [approvalState, token, tokenContract, amountToApprove, spender],
   )
 

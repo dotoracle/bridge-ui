@@ -24,7 +24,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 0,
     // React
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 0,
     'react/react-in-jsx-scope': 0,
     'react/prop-types': 0,
     'react/jsx-props-no-spreading': 0,

@@ -72,13 +72,10 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
     }
 
     fetchData()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [library, chainId, account])
 
   const filteredTokens: Token[] = useMemo(() => {
     return filterTokens(tokenList, debouncedQuery)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenList, debouncedQuery])
 
   const onEscKeydown = (e: React.KeyboardEvent) => {
