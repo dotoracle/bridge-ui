@@ -43,10 +43,11 @@ import {
 } from './styled'
 import UnknownSVG from 'assets/images/unknown.svg'
 import NetworkInfo from './NetworkInfo'
-import { NativeTokenAddress } from '../../constants'
+import { ConnectorNames, injected } from 'connectors'
+import { connectorLocalStorageKey, NativeTokenAddress } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
-  const { account, chainId: currentChainId } = useActiveWeb3React()
+  const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
   // const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
   const { refreshLocal } = useContext(BridgeAppContext)
   const currentNetwork = useNetworkInfo(currentChainId)
@@ -364,6 +365,17 @@ function TransactionsTable(): JSX.Element {
       let hasSetup = false
 
       if (toNetwork) {
+        if (currentNetwork?.notEVM) {
+          window.localStorage.removeItem(connectorLocalStorageKey)
+          deactivate()
+
+          window.localStorage.setItem(connectorLocalStorageKey, ConnectorNames.Injected)
+          await activate(injected, async (error: Error) => {
+            console.error(error)
+          })
+
+          window.location.reload()
+        }
         hasSetup = await setupNetwork(toNetwork)
 
         if (!toNetwork || !hasSetup) {
