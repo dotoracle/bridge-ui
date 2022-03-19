@@ -23,7 +23,7 @@ interface TransferButtonProps {
 
 function TransferButton(props: TransferButtonProps): JSX.Element {
   const { receipient } = props
-  const { selectedToken, targetNetwork, tokenAmount } = useContext(BridgeAppContext)
+  const { selectedToken, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId, library, connector } = useActiveWeb3React()
 
   const networkInfo = useNetworkInfo(chainId)
@@ -104,6 +104,8 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
               toastId: 'onTransferToken',
             },
           )
+
+          setTokenAmount(0)
         } else {
           toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Invalid signature" />, {
             toastId: 'onTransferToken',

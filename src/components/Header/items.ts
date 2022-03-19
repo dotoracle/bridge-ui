@@ -10,10 +10,6 @@ const NAV_ITEMS: Array<NavItem> = [
     href: 'https://faucet.dotoracle.network',
     target: '__blank',
   },
-  {
-    label: 'Transfer ERC20 Token',
-    to: '/transfer',
-  },
 ]
 
 export default NAV_ITEMS

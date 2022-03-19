@@ -12,7 +12,6 @@ import PageBackgroundPNG from './assets/images/page-bg.png'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import '@elastic/eui/dist/eui_theme_dark.css'
 import './assets/fonts/stylesheet.css'
-import TransferERC20 from 'pages/TransferERC20'
 import Home from 'pages/Home'
 
 const PageContainer = styled.div`
@@ -66,7 +65,6 @@ function App(): JSX.Element {
           <PageContainer>
             <Routes>
               <Route path="/" element={<Home />} />
-              {chainId === 96945816564243 && <Route path="/transfer" element={<TransferERC20 />} />}
             </Routes>
           </PageContainer>
           <Footer />

@@ -46,7 +46,7 @@ export const useToken = (tokenAddress?: string): Token | undefined => {
       ...tokenInfo,
       address: tokenAddress,
     } as Token
-  }, [tokenAddress, tokenInfo]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [tokenAddress, tokenInfo])
 }
 
 export const useIsUserAddedToken = (token: Token): boolean => {

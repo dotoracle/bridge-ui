@@ -1,16 +1,18 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { EuiFieldText } from '@elastic/eui'
 import styled from 'styled-components/macro'
+import TransferButton from 'components/TransferButton'
 import Container from '../Container'
 import TokenSelect from '../TokenSelect'
 import NetworkBox from '../NetworkBox'
 import AmountInput from '../AmountInput'
 import ActionButtons from '../ActionButtons'
 import TransactionsTable from '../TransactionsTable'
-import BridgeAppContext from '../../context/BridgeAppContext'
+import BridgeAppContext from 'context/BridgeAppContext'
 import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hooks'
-import ArrowSVG from '../../assets/images/arrow-right.svg'
-import networks from '../../config/networks.json'
-import Network from '../../type/Network'
+import ArrowSVG from 'assets/images/arrow-right.svg'
+import networks from 'config/networks.json'
+import Network from 'type/Network'
 
 const AppBoxWrap = styled.div`
   display: flex;
@@ -59,6 +61,7 @@ const StyledLabel = styled.label`
 
 function AppBox(): JSX.Element {
   const { account, chainId } = useActiveWeb3React()
+  const [receipient, setReceipient] = useState('')
   const {
     sourceNetwork: sourceNetworkContext,
     targetNetwork: targetNetworkContext,
@@ -98,12 +101,18 @@ function AppBox(): JSX.Element {
     }
   }, [account, chainId])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onReceipientChange = (e: any) => {
+    const { value } = e.target
+    setReceipient(value)
+  }
+
   return (
     <Container>
       <AppBoxWrap>
         <FormWrap>
           <FormRow>
-            <TokenSelect showNativeToken={true} />
+            <TokenSelect showNativeToken={sourceNetwork && sourceNetwork.notEVM ? false : true} />
           </FormRow>
 
           <FormRow>
@@ -136,9 +145,16 @@ function AppBox(): JSX.Element {
             <AmountInput />
           </FormRow>
 
-          <FormRow>
-            <ActionButtons />
-          </FormRow>
+          {sourceNetwork?.notEVM && (
+            <FormRow>
+              <div style={{ width: '100%' }}>
+                <StyledLabel>Receiver Address</StyledLabel>
+                <EuiFieldText fullWidth value={receipient} onChange={onReceipientChange} />
+              </div>
+            </FormRow>
+          )}
+
+          <FormRow>{sourceNetwork?.notEVM ? <TransferButton receipient={receipient} /> : <ActionButtons />}</FormRow>
         </FormWrap>
 
         <TableWrap>

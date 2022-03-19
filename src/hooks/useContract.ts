@@ -22,7 +22,7 @@ const useContract = (address?: string, abi?: any) => {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, abi, library, account]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [address, abi, library, account])
 }
 
 export const useTokenContract = (address?: string): Contract | null => {
