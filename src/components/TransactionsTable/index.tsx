@@ -225,13 +225,15 @@ function TransactionsTable(): JSX.Element {
               <Row>
                 This token was deployed on <NetworkInfo network={item.originNetwork} />
               </Row>
-              {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) && item.account !== item.txCreator && (
-                <Row>
-                  Contrach hash on &nbsp;
-                  <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
-                  {` ${item.casperContractHash}`}
-                </Row>
-              )}
+              {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) &&
+                item.account !== item.txCreator &&
+                item.casperContractHash && (
+                  <Row>
+                    Contrach hash on &nbsp;
+                    <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
+                    {` ${item.casperContractHash}`}
+                  </Row>
+                )}
             </>
           )}
         </CollapseWrap>

@@ -15,7 +15,8 @@ import {
 } from 'casper-js-sdk'
 import { SafeEventEmitterProvider } from 'casper-js-sdk/dist/services/ProviderTransport'
 import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib'
-import { toWei } from 'utils'
+import { toPlainString, toWei } from 'utils'
+import BigNumber from 'bignumber.js'
 
 interface TransferButtonProps {
   receipient: string
@@ -81,7 +82,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
             contractHashAsByteArray,
             'request_bridge_back',
             RuntimeArgs.fromMap({
-              amount: CLValueBuilder.u256(value.toString()),
+              amount: CLValueBuilder.u256(toPlainString(value)),
               fee: CLValueBuilder.u256(fee),
               to_chainid: CLValueBuilder.u256(targetNetwork ? targetNetwork.chainId.toString() : '42'),
               receiver_address: CLValueBuilder.string(receipient),
