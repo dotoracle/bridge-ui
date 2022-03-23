@@ -9,6 +9,7 @@
   {
     "name": "BNB",
     "address": "e97b72e5094fe3fb852c00c17eaa2a0e0303edc5f5c16606e87be50caef84362",
+    "originContractAddress": "0x1111111111111111111111111111111111111111",
     "symbol": "BNB",
     "decimals": 18,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png"
@@ -16,6 +17,7 @@
   {
     "name": "ChainLink Token",
     "address": "bddd43141ded6c7e15c097e9ff65dc7fed5217e8448b3f48c9d73179097ed4db",
+    "originContractAddress": "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
     "symbol": "LINK",
     "decimals": 18,
     "logoURI": "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png"
@@ -23,6 +25,7 @@
   {
     "name": "ERC20Mock",
     "address": "ecefa6841d5901f196bdbaa7ec83bcf123a890da31c0f4235c7f4a72b853558b",
+    "originContractAddress": "0xFCfa8B2E2596F81b260218Ea3CE2D6Af0578f2Ae",
     "symbol": "ERC20Mock",
     "decimals": 18,
     "logoURI": ""
@@ -30,6 +33,7 @@
   {
     "name": "ERC20Mock",
     "address": "578667174fa620dc1f2cbb2593f6f0a963dbbebbafaa654c7c0994709850aea8",
+    "originContractAddress": "0x51c87aBA0AD711331bB4d09AE314a10E93aaa7eb",
     "symbol": "ERC20Mock",
     "decimals": 18,
     "logoURI": ""

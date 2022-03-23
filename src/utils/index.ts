@@ -46,6 +46,7 @@ export const getTokensFromConfig = async (account: string | null | undefined, ch
         tokens.push({
           name: t.name,
           address: t.address,
+          originContractAddress: t.originContractAddress ? t.originContractAddress : '',
           symbol: t.symbol,
           decimals: t.decimals,
           logoURI: t.logoURI,
@@ -77,15 +78,21 @@ export const toWei = (number: string | number, decimals?: number): BigNumber => 
   return result
 }
 
-export const parseResponseToTransactions = (response: any, account: string | null | undefined, chainId?: number) => {
+export const parseResponseToTransactions = async (
+  response: any,
+  account: string | null | undefined,
+  chainId?: number,
+) => {
   const transactions = [] as Transaction[]
 
   if (!response) {
     return []
   }
 
+  const tokens = (await import(`../config/${chainId}.json`)).default as Token[]
+
   if (response.status === 200 && response.data.transactions && response.data.total) {
-    response.data.transactions.forEach((t: Transaction) => {
+    response.data.transactions.forEach(async (t: Transaction) => {
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
       const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
       const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
@@ -117,6 +124,9 @@ export const parseResponseToTransactions = (response: any, account: string | nul
         _account = _account.substring(13, 77)
         _accountUrl = `${toNetwork?.explorer}/account/${_account}`
       }
+      const tokenOnCasper = tokens.find(
+        _token => _token.originContractAddress?.toLowerCase() === t.originToken.toLowerCase(),
+      )
 
       transactions.push({
         ...t,
@@ -138,6 +148,7 @@ export const parseResponseToTransactions = (response: any, account: string | nul
           claimHash: claimEllipsis,
           claimHashUrl,
         },
+        casperContractHash: tokenOnCasper?.address,
       })
     })
 

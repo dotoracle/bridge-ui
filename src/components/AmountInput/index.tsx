@@ -3,7 +3,6 @@ import { EuiFieldNumber, EuiButton, EuiLoadingContent } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import BridgeAppContext from 'context/BridgeAppContext'
-import { formatNumber } from 'utils'
 
 const AmountInputWrapper = styled.div`
   width: 100%;

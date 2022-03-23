@@ -143,7 +143,7 @@ function TransactionsTable(): JSX.Element {
       // if (!_transactions || (isHardRefresh && !isProcessing)) {
       setIsLoading(true)
       const response = await transactionCallback()
-      setTranstractions(parseResponseToTransactions(response, account, currentChainId))
+      setTranstractions(await parseResponseToTransactions(response, account, currentChainId))
       // } else {
       //   setIsLoading(true)
       //   setTimeout(() => {
@@ -220,10 +220,19 @@ function TransactionsTable(): JSX.Element {
               </a>
             </Row>
           )}
-          {item.originNetwork && item.originToken !== NativeTokenAddress && (
-            <Row>
-              This token was deployed on <NetworkInfo network={item.originNetwork} />
-            </Row>
+          {item.originNetwork && (
+            <>
+              <Row>
+                This token was deployed on <NetworkInfo network={item.originNetwork} />
+              </Row>
+              {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) && item.account !== item.txCreator && (
+                <Row>
+                  Contrach hash on &nbsp;
+                  <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
+                  {` ${item.casperContractHash}`}
+                </Row>
+              )}
+            </>
           )}
         </CollapseWrap>
       )

@@ -25,6 +25,7 @@ type Transaction = {
   claimHashLink: { networkName: string; explorerLogo: string; claimHash: string; claimHashUrl: string }
   claimId: string
   claimed: boolean
+  casperContractHash?: string
 }
 
 export default Transaction
