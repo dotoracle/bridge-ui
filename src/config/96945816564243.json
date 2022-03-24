@@ -33,7 +33,7 @@
   {
     "name": "ERC20Mock",
     "address": "578667174fa620dc1f2cbb2593f6f0a963dbbebbafaa654c7c0994709850aea8",
-    "originContractAddress": "0x51c87aBA0AD711331bB4d09AE314a10E93aaa7eb",
+    "originContractAddress": "0x51c87aba0ad711331bb4d09ae314a10e93aaa7eb",
     "symbol": "ERC20Mock",
     "decimals": 18,
     "logoURI": ""

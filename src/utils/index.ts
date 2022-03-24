@@ -93,6 +93,7 @@ export const parseResponseToTransactions = async (
 
   if (response.status === 200 && response.data.transactions && response.data.total) {
     response.data.transactions.forEach(async (t: Transaction) => {
+      const currentNetwork = networks.find(n => n.chainId === chainId) as Network
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
       const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
       const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
@@ -124,9 +125,15 @@ export const parseResponseToTransactions = async (
         _account = _account.substring(13, 77)
         _accountUrl = `${toNetwork?.explorer}/account/${_account}`
       }
-      const tokenOnCasper = tokens.find(
+      let tokenOnCasper = tokens.find(
         _token => _token.originContractAddress?.toLowerCase() === t.originToken.toLowerCase(),
       )
+      let casperContractAddress = tokenOnCasper?.address
+
+      if (!currentNetwork.notEVM && toNetwork.notEVM) {
+        tokenOnCasper = tokens.find(_token => _token.address.toLowerCase() === t.originToken.toLowerCase())
+        casperContractAddress = tokenOnCasper?.originContractAddress
+      }
 
       transactions.push({
         ...t,
@@ -148,7 +155,7 @@ export const parseResponseToTransactions = async (
           claimHash: claimEllipsis,
           claimHashUrl,
         },
-        casperContractHash: tokenOnCasper?.address,
+        casperContractHash: casperContractAddress,
       })
     })
 
