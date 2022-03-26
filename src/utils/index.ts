@@ -4,7 +4,8 @@ import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'web3-eth-contract'
-import networks from '../config/networks.json'
+import axios from 'axios'
+import networks from 'config/networks.json'
 import Token from '../type/Token'
 import Network from '../type/Network'
 import Transaction from '../type/Transaction'
@@ -40,13 +41,29 @@ export const getTokensFromConfig = async (account: string | null | undefined, ch
         })
       }
 
-      const response = (await import(`../config/${chainId}.json`)).default as Token[]
+      const network = networks.find(n => n.chainId === chainId) as Network
+      let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
 
-      response.forEach(t => {
+      if (network.notEVM) {
+        const response = await axios.get(
+          'https://raw.githubusercontent.com/dotoracle/casper-contract-hash/master/config.json',
+        )
+
+        if (response.status === 200) {
+          if (network.isTestnet) {
+            tokenList = response.data.testnet.tokens
+          } else {
+            tokenList = response.data.mainnet.tokens
+          }
+        }
+      }
+
+      tokenList.forEach(t => {
         tokens.push({
           name: t.name,
-          address: t.address,
+          address: network.notEVM ? t.contractHash ?? '' : t.address,
           originContractAddress: t.originContractAddress ? t.originContractAddress : '',
+          contractHash: t.contractHash ? t.contractHash : '',
           symbol: t.symbol,
           decimals: t.decimals,
           logoURI: t.logoURI,
@@ -89,11 +106,25 @@ export const parseResponseToTransactions = async (
     return []
   }
 
-  const tokens = (await import(`../config/${chainId}.json`)).default as Token[]
+  let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
+  const currentNetwork = networks.find(n => n.chainId === chainId) as Network
+
+  if (currentNetwork.notEVM) {
+    const tokensResponse = await axios.get(
+      'https://raw.githubusercontent.com/dotoracle/casper-contract-hash/master/config.json',
+    )
+
+    if (response.status === 200) {
+      if (currentNetwork.isTestnet) {
+        tokenList = tokensResponse.data.testnet.tokens
+      } else {
+        tokenList = tokensResponse.data.mainnet.tokens
+      }
+    }
+  }
 
   if (response.status === 200 && response.data.transactions && response.data.total) {
     response.data.transactions.forEach(async (t: Transaction) => {
-      const currentNetwork = networks.find(n => n.chainId === chainId) as Network
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
       const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
       const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
@@ -125,14 +156,14 @@ export const parseResponseToTransactions = async (
         _account = _account.substring(13, 77)
         _accountUrl = `${toNetwork?.explorer}/account/${_account}`
       }
-      let tokenOnCasper = tokens.find(
+      let tokenOnCasper = tokenList.find(
         _token => _token.originContractAddress?.toLowerCase() === t.originToken.toLowerCase(),
       )
-      let casperContractAddress = tokenOnCasper?.address
+      let contractHash = tokenOnCasper?.contractHash
 
       if (!currentNetwork.notEVM && toNetwork.notEVM) {
-        tokenOnCasper = tokens.find(_token => _token.address.toLowerCase() === t.originToken.toLowerCase())
-        casperContractAddress = tokenOnCasper?.originContractAddress
+        tokenOnCasper = tokenList.find(_token => _token.address.toLowerCase() === t.originToken.toLowerCase())
+        contractHash = tokenOnCasper?.contractHash
       }
 
       transactions.push({
@@ -155,7 +186,7 @@ export const parseResponseToTransactions = async (
           claimHash: claimEllipsis,
           claimHashUrl,
         },
-        casperContractHash: casperContractAddress,
+        contractHash: contractHash,
       })
     })
 

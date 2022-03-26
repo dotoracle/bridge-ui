@@ -227,11 +227,11 @@ function TransactionsTable(): JSX.Element {
               </Row>
               {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) &&
                 item.account !== item.txCreator &&
-                item.casperContractHash && (
+                item.contractHash && (
                   <Row>
                     Contrach hash on &nbsp;
                     <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
-                    {` ${item.casperContractHash}`}
+                    {` ${item.contractHash}`}
                   </Row>
                 )}
             </>

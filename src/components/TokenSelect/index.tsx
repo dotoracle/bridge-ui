@@ -58,7 +58,7 @@ function TokenSelect(props: ITokenSelect): JSX.Element {
       {selectedToken ? (
         <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>
           <TokenLogo src={selectedToken.logoURI ? selectedToken.logoURI : UnknownSVG} alt={selectedToken.symbol} />
-          {selectedToken.symbol}
+          {selectedToken.symbol ?? selectedToken.name}
         </SelectButton>
       ) : (
         <SelectButton iconType="arrowRight" iconSide="right" onClick={showModal}>

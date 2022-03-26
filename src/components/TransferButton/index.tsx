@@ -16,7 +16,6 @@ import {
 import { SafeEventEmitterProvider } from 'casper-js-sdk/dist/services/ProviderTransport'
 import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib'
 import { toPlainString, toWei } from 'utils'
-import BigNumber from 'bignumber.js'
 
 interface TransferButtonProps {
   receipient: string
