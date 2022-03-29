@@ -1,0 +1,16 @@
+[
+  {
+    "name": "MATIC",
+    "address": "0x1111111111111111111111111111111111111111",
+    "symbol": "MATIC",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png"
+  },
+  {
+    "name": "ERC20 Mock",
+    "address": "0x52e8c6695cdefc13a8b30f92b03d3256e9660c2c",
+    "symbol": "ERC20Mock",
+    "decimals": 18,
+    "logoURI": ""
+  }
+]
