@@ -1,0 +1,16 @@
+[
+  {
+    "name": "GLMR",
+    "address": "0x1111111111111111111111111111111111111111",
+    "symbol": "GLMR",
+    "decimals": 18,
+    "logoURI": "https://assets.coingecko.com/coins/images/15279/large/casper.PNG"
+  },
+  {
+    "name": "ERC20 Mock",
+    "address": "0x58a976cffa50ae2485d9fe3b16a84d0da2a17075",
+    "symbol": "ERC20Mock",
+    "decimals": 18,
+    "logoURI": ""
+  }
+]
