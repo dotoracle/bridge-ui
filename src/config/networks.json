@@ -104,7 +104,7 @@
     "name": "Avalanche Testnet",
     "chainId": 43113,
     "logoURI": "https://assets.coingecko.com/coins/images/12559/large/coin-round-red.png",
-    "explorer": "https://cchain.explorer.avax-test.network/",
+    "explorer": "https://testnet.snowtrace.io/",
     "txUrl": "/tx/",
     "rpcURL": "https://api.avax-test.network/ext/bc/C/rpc",
     "isTestnet": true,
