@@ -107,6 +107,10 @@ function AppBox(): JSX.Element {
     setReceipient(value)
   }
 
+  const onClearInput = () => {
+    setReceipient('')
+  }
+
   return (
     <Container>
       <AppBoxWrap>
@@ -154,7 +158,13 @@ function AppBox(): JSX.Element {
             </FormRow>
           )}
 
-          <FormRow>{sourceNetwork?.notEVM ? <TransferButton receipient={receipient} /> : <ActionButtons />}</FormRow>
+          <FormRow>
+            {sourceNetwork?.notEVM ? (
+              <TransferButton receipient={receipient} onRefresh={onClearInput} />
+            ) : (
+              <ActionButtons />
+            )}
+          </FormRow>
         </FormWrap>
 
         <TableWrap>

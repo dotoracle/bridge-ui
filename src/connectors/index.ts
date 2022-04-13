@@ -2,11 +2,13 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { TorusConnector } from '@dotoracle/web3-react-torus-connector-casper'
 import { NetworkConnector } from './NetworkConnector'
+import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connector'
 
 export enum ConnectorNames {
   Injected = 'injected',
   WalletConnect = 'walletconnect',
   TorusWallet = 'torus',
+  CasperSigner = 'caspersigner',
 }
 
 const NETWORK_CHAIN_ID = Number(process.env.REACT_APP_CHAIN_ID)
@@ -67,9 +69,14 @@ export const torus = new TorusConnector({
   },
 })
 
+export const caspersigner = new CasperSignerConnector({
+  chainId: '96945816564243',
+})
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.TorusWallet]: torus,
+  [ConnectorNames.CasperSigner]: caspersigner,
 }

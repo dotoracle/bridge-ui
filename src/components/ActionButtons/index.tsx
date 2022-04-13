@@ -254,9 +254,15 @@ function ActionButtons(): JSX.Element {
     setLoading(false)
   }
 
-  const onConfirmTransfer = async () => {
-    setShowConfirmModal(false)
-    onTransferToken()
+  const onConfirmTransfer = () => {
+    if (accountHash) {
+      setShowConfirmModal(false)
+      onTransferToken()
+    } else {
+      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Invalid Casper account" />, {
+        toastId: 'onTransferToken',
+      })
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -342,7 +348,7 @@ function ActionButtons(): JSX.Element {
                 </p>
                 {targetNetwork.notEVM && (
                   <EuiFormRow
-                    label="Your Casper Address (Public Key)"
+                    label="Your Casper Address (Public Key)1"
                     isInvalid={showAccountHashError}
                     error={errorMsg}
                   >

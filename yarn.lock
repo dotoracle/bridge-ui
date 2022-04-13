@@ -1423,6 +1423,14 @@
   resolved "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-10.1.0.tgz"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@dotoracle/web3-react-caspersigner-connector@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@dotoracle/web3-react-caspersigner-connector/-/web3-react-caspersigner-connector-0.0.2.tgz#0c1a994fe26f00c4de29664d495c9ba8dc4ed11a"
+  integrity sha512-8/ZgZDfuu46Y2HQph8bxS1u+JRbnnf0Y+F3KR4PmU+xlZwDACUZR8P9z4ezvuuNGW/ddHIDqzkiDtOjAiLxHFg==
+  dependencies:
+    "@web3-react/abstract-connector" "^6.0.7"
+    "@web3-react/types" "^6.0.7"
+
 "@dotoracle/web3-react-core@^0.0.2":
   version "0.0.2"
   resolved "https://registry.npmjs.org/@dotoracle/web3-react-core/-/web3-react-core-0.0.2.tgz"
@@ -4873,7 +4881,7 @@ caseless@~0.12.0:
 "casper-erc20-js-client@file:./packages/erc20-client":
   version "0.1.0"
   dependencies:
-    casper-js-client-helper "file:../../../../Users/hka/Library/Caches/Yarn/v6/npm-casper-erc20-js-client-0.1.0-1d725df0-4165-448c-bbc6-ec885424d715-1647409657141/node_modules/client-helper"
+    casper-js-client-helper "file:../../../../Users/hka/Library/Caches/Yarn/v6/npm-casper-erc20-js-client-0.1.0-6a92af23-9f3c-4f58-81eb-ff782be806bd-1649836050934/node_modules/client-helper"
     casper-js-sdk "2.8.0"
 
 "casper-js-client-helper@file:./packages/client-helper", "casper-js-client-helper@file:packages/client-helper":

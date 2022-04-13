@@ -6,6 +6,7 @@ import WalletModal from '../WalletModal'
 import { useActiveWeb3React, useBridgeAddress, useBridgeContract, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import { StyledButton } from './styled'
 import {
+  CasperClient,
   CasperServiceByJsonRPC,
   CLPublicKey,
   CLValueBuilder,
@@ -16,13 +17,15 @@ import {
 import { SafeEventEmitterProvider } from 'casper-js-sdk/dist/services/ProviderTransport'
 import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib'
 import { toPlainString, toWei } from 'utils'
+import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connector'
 
 interface TransferButtonProps {
   receipient: string
+  onRefresh: () => void
 }
 
 function TransferButton(props: TransferButtonProps): JSX.Element {
-  const { receipient } = props
+  const { receipient, onRefresh } = props
   const { selectedToken, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId, library, connector } = useActiveWeb3React()
 
@@ -65,18 +68,16 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
       if (account && selectedToken && connector && networkInfo && bridgeContract) {
         const decimal = selectedToken ? selectedToken.decimals : 18
         const value = toWei(tokenAmount, decimal)
-
-        // @ts-ignore
-        const { torus } = connector
         const senderKey = CLPublicKey.fromHex(account)
-        const casperService = new CasperServiceByJsonRPC(torus?.provider as SafeEventEmitterProvider)
+        const deployParams = new DeployUtil.DeployParams(senderKey, networkInfo?.key ?? 'casper-test', 1, 1800000)
         const contractHash = selectedToken.address
         const contractHashAsByteArray = decodeBase16(contractHash)
         const id = genRanHex(64).toLowerCase()
         const fee = await contractSimpleGetter(networkInfo.rpcURL, contractHash, ['swap_fee'])
+        let deployRes
 
         const deploy = DeployUtil.makeDeploy(
-          new DeployUtil.DeployParams(senderKey, networkInfo?.key ?? 'casper-test', 1, 1800000),
+          deployParams,
           DeployUtil.ExecutableDeployItem.newStoredContractByHash(
             contractHashAsByteArray,
             'request_bridge_back',
@@ -91,7 +92,23 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
           DeployUtil.standardPayment(400000000),
         )
 
-        const deployRes = await casperService.deploy(deploy)
+        if (connector instanceof CasperSignerConnector) {
+          const json = DeployUtil.deployToJson(deploy)
+          const casperClient = new CasperClient(networkInfo.rpcURL)
+
+          // Sign transcation using casper-signer.
+          const signature = await window.casperlabsHelper.sign(json, account, account)
+          const deployObject = DeployUtil.deployFromJson(signature)
+
+          if (deployObject.val instanceof DeployUtil.Deploy) {
+            deployRes = await casperClient.putDeploy(deployObject.val)
+          }
+        } else {
+          // @ts-ignore
+          const { torus } = connector
+          const casperService = new CasperServiceByJsonRPC(torus?.provider as SafeEventEmitterProvider)
+          deployRes = await casperService.deploy(deploy)
+        }
 
         if (deployRes) {
           toast.success(
@@ -112,6 +129,8 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
           })
           setLoading(false)
         }
+
+        onRefresh()
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

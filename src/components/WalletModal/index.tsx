@@ -25,6 +25,7 @@ import { ConnectorNames, connectorsByName } from '../../connectors'
 import { connectorLocalStorageKey } from '../../constants'
 import MetaMaskSVG from '../../assets/images/metamask.svg'
 import TorusPNG from '../../assets/images/torus.png'
+import CasperPNG from '../../assets/images/casper.png'
 
 const WalletButton = styled(EuiButton)`
   margin-bottom: 1rem;
@@ -68,14 +69,22 @@ interface IWalletModalProps {
 function WalletModal(props: IWalletModalProps): JSX.Element {
   const { closeModal } = props
   const { activate } = useWeb3React()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingTorus, setIsLoadingTorus] = useState(false)
+  const [isLoadingCasper, setIsLoadingCasper] = useState(false)
 
   const onConnectWallet = async (connectorID: ConnectorNames) => {
     const connector = connectorsByName[connectorID]
 
     if (connector) {
       window.localStorage.setItem(connectorLocalStorageKey, connectorID)
-      setIsLoading(true)
+
+      if (connectorID == ConnectorNames.TorusWallet) {
+        setIsLoadingTorus(true)
+      }
+
+      if (connectorID == ConnectorNames.CasperSigner) {
+        setIsLoadingCasper(true)
+      }
 
       await activate(connector, async (error: Error) => {
         if (error instanceof UnsupportedChainIdError) {
@@ -106,7 +115,7 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
           })
         }
       })
-      setIsLoading(false)
+      setIsLoadingTorus(false)
     } else {
       toast.error(<ToastMessage color="danger" headerText="Can't find connector" />, {
         toastId: connectorID,
@@ -137,9 +146,13 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
               <span>Metamask</span>
               <WalletLogo src={MetaMaskSVG} alt="Metamask" />
             </WalletButton>
-            <WalletButton isLoading={isLoading} onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}>
+            <WalletButton isLoading={isLoadingTorus} onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}>
               <span>Torus (for Casper)</span>
               <WalletLogo src={TorusPNG} alt="Torus" />
+            </WalletButton>
+            <WalletButton isLoading={isLoadingCasper} onClick={() => onConnectWallet(ConnectorNames.CasperSigner)}>
+              <span>Casper Signer</span>
+              <WalletLogo src={CasperPNG} alt="Casper Signer" />
             </WalletButton>
           </EuiModalBody>
         </EuiModal>

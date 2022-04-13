@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dotoracle/web3-react-caspersigner-connector": "0.0.2",
     "@dotoracle/web3-react-core": "^0.0.5",
     "@dotoracle/web3-react-torus-connector-casper": "0.0.6",
     "@elastic/datemath": "^5.0.3",
