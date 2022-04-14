@@ -45,7 +45,7 @@ export const useTokenBalanceCallback = (
 
     if (_balance >= 0 && decimals) {
       const _balanceBN = fromWei(_balance, decimals)
-      _balance = Number(_balanceBN.toFixed(3))
+      _balance = _balanceBN.toNumber()
     }
     return _balance
   }, [account, decimals, tokenAddress, tokenContract])

@@ -331,7 +331,7 @@ function ActionButtons(): JSX.Element {
                 <p style={{ lineHeight: 2 }}>
                   Are you sure you want to transfer{' '}
                   <TokenAmount>
-                    {tokenAmount} {selectedToken.symbol}
+                    {tokenAmount.toFixed(4)} {selectedToken.symbol}
                   </TokenAmount>
                   <br />
                   from{' '}
