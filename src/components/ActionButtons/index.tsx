@@ -255,13 +255,13 @@ function ActionButtons(): JSX.Element {
   }
 
   const onConfirmTransfer = () => {
-    if (accountHash) {
-      setShowConfirmModal(false)
-      onTransferToken()
-    } else {
-      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Invalid Casper account" />, {
+    if (!accountHash && (sourceNetwork?.notEVM || targetNetwork?.notEVM)) {
+      toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Invalid Casper Address" />, {
         toastId: 'onTransferToken',
       })
+    } else {
+      setShowConfirmModal(false)
+      onTransferToken()
     }
   }
 
