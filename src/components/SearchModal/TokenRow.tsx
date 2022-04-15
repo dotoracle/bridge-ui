@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { EuiExpression, EuiButtonIcon, EuiIcon, EuiLoadingContent } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import Token from '../../type/Token'
@@ -85,6 +85,8 @@ function TokenRow(props: ITokenRow): JSX.Element {
   const [tokenBalance, setTokenBalance] = useState(0)
   const tokenBalanceCallback = useTokenBalanceCallback(token.address, token.decimals, account, library, 0, networkInfo)
 
+  const componentMounted = useRef(true)
+
   const loadTokenBalance = async () => {
     setIsLoadingBalance(true)
     const _tokenBalance = await tokenBalanceCallback()
@@ -93,7 +95,13 @@ function TokenRow(props: ITokenRow): JSX.Element {
   }
 
   useEffect(() => {
-    loadTokenBalance()
+    if (componentMounted.current) {
+      loadTokenBalance()
+    }
+
+    return () => {
+      componentMounted.current = false
+    }
   }, [account, chainId])
 
   const handleRemoveCustomToken = () => {
