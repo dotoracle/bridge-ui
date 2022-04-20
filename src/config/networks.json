@@ -20,7 +20,7 @@
     "rpcURL": "https://kovan.infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": true,
     "notEVM": false,
-    "bridge": "0x5920F911F724308814EC8e69f9a8f744Aa2BDf1b",
+    "bridge": "0xF1f62E51766037BDc5202CfDED157fF688A09C5f",
     "nativeCurrency": {
       "name": "ETH",
       "symbol": "ETH",
@@ -37,7 +37,7 @@
     "txUrl": "/tx/",
     "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true,
-    "bridge": "0x029E8A613Fe2010324A2817722F3e36C04826039",
+    "bridge": "0x9927e816cCF2964a18AB0444A22B91cCe8a1f29D",
     "nativeCurrency": {
       "name": "BNB",
       "symbol": "BNB",
@@ -55,7 +55,7 @@
     "rpcURL": "https://rpc.testnet.tomochain.com",
     "isTestnet": true,
     "notEVM": false,
-    "bridge": "0xa0633284f94f1C0B21985648f268C36B40217fF9",
+    "bridge": "0xeB7B94C34412f0415F468dC1854A8Cc0Ff7771d6",
     "nativeCurrency": {
       "name": "TOMO",
       "symbol": "TOMO",
@@ -91,7 +91,7 @@
     "rpcURL": "https://rpc-mumbai.maticvigil.com/",
     "isTestnet": true,
     "notEVM": false,
-    "bridge": "0xDA7483DE7b9Bb7Ae7689ECe729f0AdAdC34ee67E",
+    "bridge": "0xAbB7ae870c54b893d20f75143BB8Fc389799ff42",
     "nativeCurrency": {
       "name": "Matic",
       "symbol": "Matic",
@@ -109,7 +109,7 @@
     "rpcURL": "https://api.avax-test.network/ext/bc/C/rpc",
     "isTestnet": true,
     "notEVM": false,
-    "bridge": "0x547CA8E548ef43F3408cECD025979311AEFf262D",
+    "bridge": "0x7e3226239dbfd6bea1ce22208001dc28194cbec2",
     "nativeCurrency": {
       "name": "AVAX",
       "symbol": "AVAX",
@@ -127,7 +127,7 @@
     "rpcURL": "https://rpc.testnet.moonbeam.network",
     "isTestnet": true,
     "notEVM": false,
-    "bridge": "0xBc1224E1fb7c1d696663FfEFF5a19E80282bba60",
+    "bridge": "0xEdB7b5c85B3ad1f309f02a5cc9D035FEb0F9A213",
     "nativeCurrency": {
       "name": "DEV",
       "symbol": "DEV",
