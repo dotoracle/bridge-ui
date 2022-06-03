@@ -155,8 +155,8 @@
     "notEVM": true,
     "bridge": "0xEE0E49BBa80cA6b11bd78355FbDacB9A77184e5b",
     "nativeCurrency": {
-      "name": "fCSPR",
-      "symbol": "fCSPR",
+      "name": "CSPR",
+      "symbol": "CSPR",
       "decimals": 9
     },
     "confirmations": 15,

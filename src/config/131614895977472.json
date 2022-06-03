@@ -1,8 +1,8 @@
 [
   {
-    "name": "fCSPR",
+    "name": "CSPR",
     "address": "0x1111111111111111111111111111111111111111",
-    "symbol": "fCSPR",
+    "symbol": "CSPR",
     "decimals": 9,
     "logoURI": ""
   },
