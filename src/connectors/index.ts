@@ -41,7 +41,7 @@ const CASPER_CHAINS = {
 const SUPPORTED_NETWORKS = {
   [CASPER_CHAINS.CASPER_MAINNET]: {
     blockExplorerUrl: 'https://cspr.live',
-    chainId: '96945816564244',
+    chainId: '131614895977472',
     displayName: 'Casper Mainnet',
     logo: 'https://cspr.live/assets/icons/logos/cspr-live-full.svg',
     rpcTarget: 'https://casper-node.tor.us',
@@ -62,15 +62,16 @@ const SUPPORTED_NETWORKS = {
 }
 
 export const torus = new TorusConnector({
-  chainId: '96945816564243',
+  chainId: '131614895977472', // '96945816564243',
   initOptions: {
     showTorusButton: false,
-    network: SUPPORTED_NETWORKS[CASPER_CHAINS.CASPER_TESTNET],
+    // network: SUPPORTED_NETWORKS[CASPER_CHAINS.CASPER_TESTNET],
+    network: SUPPORTED_NETWORKS[CASPER_CHAINS.CASPER_MAINNET],
   },
 })
 
 export const caspersigner = new CasperSignerConnector({
-  chainId: '96945816564243',
+  chainId: '131614895977472', // '96945816564243',
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

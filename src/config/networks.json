@@ -1,6 +1,6 @@
 [
   {
-    "name": "Ethereum Mainnet",
+    "name": "Ethereum",
     "chainId": 1,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
     "explorer": "https://etherscan.io",
@@ -8,6 +8,12 @@
     "rpcURL": "https://infura.io/v3/468031fc706e435eb5f32f89a4077d56",
     "isTestnet": false,
     "notEVM": false,
+    "bridge": "0x02b758ce469af940C57A42aD1dE5D404122bc283",
+    "nativeCurrency": {
+      "name": "ETH",
+      "symbol": "ETH",
+      "decimals": 18
+    },
     "confirmations": 6,
     "blockTime": 15
   },
@@ -135,6 +141,26 @@
     },
     "confirmations": 6,
     "blockTime": 12
+  },
+  {
+    "name": "Casper",
+    "key": "casper",
+    "chainId": 131614895977472,
+    "logoURI": "https://assets.coingecko.com/coins/images/15279/large/casper.PNG",
+    "explorer": "https://cspr.live",
+    "txUrl": "/deploy/",
+    "rpcURL": "https://casper-node.tor.us",
+    "eventStream": "http://16.162.124.124:9999/events/main",
+    "isTestnet": false,
+    "notEVM": true,
+    "bridge": "0xEE0E49BBa80cA6b11bd78355FbDacB9A77184e5b",
+    "nativeCurrency": {
+      "name": "fCSPR",
+      "symbol": "fCSPR",
+      "decimals": 9
+    },
+    "confirmations": 15,
+    "blockTime": 15
   },
   {
     "name": "Casper Testnet",

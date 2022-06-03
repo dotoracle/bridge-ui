@@ -1,0 +1,17 @@
+[
+  {
+    "name": "fCSPR",
+    "address": "0x1111111111111111111111111111111111111111",
+    "symbol": "fCSPR",
+    "decimals": 9,
+    "logoURI": ""
+  },
+  {
+    "name": "ETH",
+    "address": "e97b72e5094fe3fb852c00c17eaa2a0e0303edc5f5c16606e87be50caef84362",
+    "originContractAddress": "0x1111111111111111111111111111111111111111",
+    "symbol": "ETH",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png"
+  }
+]
