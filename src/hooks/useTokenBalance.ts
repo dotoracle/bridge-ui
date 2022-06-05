@@ -5,7 +5,7 @@ import { CasperClient, CLPublicKey } from 'casper-js-sdk'
 import { ERC20Client } from 'casper-erc20-js-client'
 import { fromWei } from 'utils'
 import { useTokenContract } from './useContract'
-import { NativeTokenAddress } from '../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../constants'
 import NetworkInfo from 'type/Network'
 
 export const useTokenBalanceCallback = (
@@ -22,7 +22,7 @@ export const useTokenBalanceCallback = (
     let _balance = 0
 
     if (account && networkInfo) {
-      if (tokenAddress === NativeTokenAddress) {
+      if (tokenAddress === NATIVE_TOKEN_ADDERSS) {
         if (networkInfo.notEVM) {
           const casper = new CasperClient(networkInfo.rpcURL)
           const casperBalance = await casper.balanceOfByPublicKey(CLPublicKey.fromHex(account))

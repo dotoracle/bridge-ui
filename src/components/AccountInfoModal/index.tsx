@@ -9,7 +9,7 @@ import {
   EuiLoadingContent,
 } from '@elastic/eui'
 import styled from 'styled-components/macro'
-import { NativeTokenAddress } from '../../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import { useEffect, useState } from 'react'
 
@@ -31,7 +31,7 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
   const [isLoadingBalance, setIsLoadingBalance] = useState(false)
   const [tokenBalance, setTokenBalance] = useState(0)
   const tokenBalanceCallback = useTokenBalanceCallback(
-    NativeTokenAddress,
+    NATIVE_TOKEN_ADDERSS,
     networkInfo?.nativeCurrency.decimals,
     account,
     library,

@@ -9,7 +9,7 @@ import networks from 'config/networks.json'
 import Token from '../type/Token'
 import Network from '../type/Network'
 import Transaction from '../type/Transaction'
-import { NativeTokenAddress } from '../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../constants'
 
 export const getContract = (address: string, abi: AbiItem, web3: Web3): Contract | null => {
   try {
@@ -128,8 +128,8 @@ export const parseResponseToTransactions = async (
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
       const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
       const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
-      const amountFormated = `${formatNumber(fromWei(t.amount).toNumber())} ${
-        t.originToken == NativeTokenAddress ? originNetwork.nativeCurrency.symbol : t.originSymbol
+      const amountFormated = `${formatNumber(fromWei(t.amount, t.originDecimals).toNumber())} ${
+        t.originToken == NATIVE_TOKEN_ADDERSS ? originNetwork.nativeCurrency.symbol : t.originSymbol
       }`
 
       let _requestHash = t.requestHash

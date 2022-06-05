@@ -5,7 +5,7 @@ import { useActiveWeb3React } from './useWeb3'
 import useTokenAllowance from './useTokenAllowance'
 import { useTokenContract } from './useContract'
 import Token from '../type/Token'
-import { NativeTokenAddress } from '../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../constants'
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -25,7 +25,7 @@ export const useApproveCallback = (
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     // native token
-    if (token?.address === NativeTokenAddress) return ApprovalState.APPROVED
+    if (token?.address === NATIVE_TOKEN_ADDERSS) return ApprovalState.APPROVED
 
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
 

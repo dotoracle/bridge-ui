@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import Token from '../type/Token'
 import { useTokenContract } from './useContract'
-import { NativeTokenAddress } from '../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../constants'
 
 const useTokenAllowance = (token?: Token, owner?: string, spender?: string): BigNumber | undefined => {
   const [allowance, setAllowance] = useState<BigNumber>(new BigNumber(0))
@@ -21,7 +21,7 @@ const useTokenAllowance = (token?: Token, owner?: string, spender?: string): Big
   }
 
   useEffect(() => {
-    if (token?.address !== NativeTokenAddress) {
+    if (token?.address !== NATIVE_TOKEN_ADDERSS) {
       fetchAllowance()
     }
   }, [token])

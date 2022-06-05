@@ -18,7 +18,7 @@ import { useDebounce, useToken, useActiveWeb3React } from '../../hooks'
 import { getTokensFromConfig } from '../../utils'
 import TokenList from './TokenList'
 import ImportRow from './ImportRow'
-import { NativeTokenAddress } from '../../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 const BreakLine = styled.div`
   margin-top: 15px;
@@ -61,7 +61,7 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
         let _tokenList = await getTokensFromConfig(account, networkId)
 
         if (!showNativeToken) {
-          _tokenList = _tokenList.filter(t => t.address !== NativeTokenAddress)
+          _tokenList = _tokenList.filter(t => t.address !== NATIVE_TOKEN_ADDERSS)
         }
         setTokenList(_tokenList)
       } catch (error) {

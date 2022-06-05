@@ -19,7 +19,7 @@ import { StyledButton, UnlockButton } from './styled'
 import { toWei, formatNumber } from 'utils'
 import Transaction from 'type/Transaction'
 import UnknownSVG from 'assets/images/unknown.svg'
-import { NativeTokenAddress } from '../../constants'
+import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import Web3 from 'web3'
 import { CLPublicKey } from 'casper-js-sdk'
 
@@ -145,7 +145,7 @@ function ActionButtons(): JSX.Element {
         const amountInWei = toWei(tokenAmount, selectedToken.decimals)
         let value = 0
 
-        if (account && selectedToken.address === NativeTokenAddress) {
+        if (account && selectedToken.address === NATIVE_TOKEN_ADDERSS) {
           value = amountInWei.toNumber()
         }
 

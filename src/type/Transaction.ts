@@ -16,6 +16,7 @@ type Transaction = {
   originNetwork: Network | undefined
   originSymbol: string
   originToken: string
+  originDecimals: number
   requestBlock: number
   requestHash: string
   requestHashLink: { networkName: string; explorerLogo: string; requestHash: string; requestHashUrl: string }

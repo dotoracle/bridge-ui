@@ -44,7 +44,7 @@ import {
 import UnknownSVG from 'assets/images/unknown.svg'
 import NetworkInfo from './NetworkInfo'
 import { ConnectorNames, injected } from 'connectors'
-import { connectorLocalStorageKey, NativeTokenAddress } from '../../constants'
+import { connectorLocalStorageKey, NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
   const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
@@ -185,7 +185,7 @@ function TransactionsTable(): JSX.Element {
               <span>Transfer</span>
               {item.originNetwork ? (
                 <>
-                  {item.originToken === NativeTokenAddress ? (
+                  {item.originToken === NATIVE_TOKEN_ADDERSS ? (
                     <span>{item.amountFormated}</span>
                   ) : (
                     <Wrapper>
