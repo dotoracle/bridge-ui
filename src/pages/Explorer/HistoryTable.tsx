@@ -122,7 +122,7 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
       width: '15%',
       render: function (claimed: boolean): JSX.Element {
         const color = claimed ? 'success' : 'warning'
-        const label = claimed ? 'Success' : 'Pending'
+        const label = claimed ? 'Success' : 'Processing'
         return <EuiHealth color={color}>{label}</EuiHealth>
       },
     },
@@ -162,7 +162,7 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
       {
         type: 'field_value_selection',
         field: 'claimed',
-        name: 'Pending',
+        name: 'Processing',
         multiSelect: false,
         options: [
           {
@@ -172,8 +172,8 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
           },
           {
             value: false,
-            name: 'Pending',
-            view: <EuiHealth color="warning">Pending</EuiHealth>,
+            name: 'Processing',
+            view: <EuiHealth color="warning">Processing</EuiHealth>,
           },
         ],
       },
