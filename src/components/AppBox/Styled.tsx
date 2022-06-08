@@ -54,6 +54,6 @@ export const Reminder = styled.div`
 
   li {
     list-style-type: disc;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 `

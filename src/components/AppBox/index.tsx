@@ -14,6 +14,7 @@ import ArrowSVG from 'assets/images/arrow-right.svg'
 import networks from 'config/networks.json'
 import Network from 'type/Network'
 import { AppBoxWrap, ArrowImage, FormRow, FormWrap, NetworkItem, Reminder, StyledLabel, TableWrap } from './Styled'
+import { fromWei } from 'utils'
 
 function AppBox(): JSX.Element {
   const { account, chainId } = useActiveWeb3React()
@@ -26,7 +27,7 @@ function AppBox(): JSX.Element {
     setTargetNetwork,
   } = useContext(BridgeAppContext)
 
-  const [minAmount, setMinAmount] = useState(0)
+  const [minBridge, setMinBridge] = useState('0')
 
   const sourceNetworkHook = useNetworkInfo(chainId)
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
@@ -46,7 +47,8 @@ function AppBox(): JSX.Element {
   }, [sourceNetwork, targetNetwork, account, chainId])
 
   useEffect(() => {
-    console.log(selectedToken)
+    const _minBridge = selectedToken ? selectedToken.minBridge ?? '0' : '0'
+    setMinBridge(_minBridge)
   }, [selectedToken])
 
   // refresh context if change account
@@ -136,7 +138,12 @@ function AppBox(): JSX.Element {
             </div>
             <ul>
               <li>Bridge Fee: 0.1%</li>
-              {selectedToken && <li>Minimum Bridge Amount is {12} USDC</li>}
+              {selectedToken && minBridge != '0' && (
+                <li>
+                  Minimum Bridge Amount is {fromWei(minBridge, selectedToken.decimals).toNumber()}{' '}
+                  {selectedToken.symbol.toUpperCase()}
+                </li>
+              )}
               <li>Estimated Time of Crosschain Arrival is 10-30 mins</li>
             </ul>
           </Reminder>

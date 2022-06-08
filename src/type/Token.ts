@@ -6,6 +6,7 @@ type Token = {
   symbol: string
   decimals: number
   logoURI: string
+  minBridge?: string
 }
 
 export default Token

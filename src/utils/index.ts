@@ -67,6 +67,7 @@ export const getTokensFromConfig = async (account: string | null | undefined, ch
           symbol: t.symbol,
           decimals: t.decimals,
           logoURI: t.logoURI,
+          minBridge: t.minBridge ? t.minBridge : '0',
         })
       })
     }
