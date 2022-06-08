@@ -30,9 +30,7 @@ function Explorer(): JSX.Element {
         <TitleShadow>Explorer</TitleShadow>
       </TitleWrapper>
       <Container>
-        <BoxWrap>
-          <HistoryTable transactions={transactions} />
-        </BoxWrap>
+        <BoxWrap>{error ? <span>Failed to load data</span> : <HistoryTable transactions={transactions} />}</BoxWrap>
       </Container>
     </>
   )

@@ -1,14 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
-import { EuiBasicTableColumn, EuiHealth, EuiInMemoryTable, EuiToolTip, Pagination, Search } from '@elastic/eui'
+import {
+  EuiBasicTableColumn,
+  EuiButtonIcon,
+  EuiHealth,
+  EuiInMemoryTable,
+  EuiToolTip,
+  Pagination,
+  Search,
+} from '@elastic/eui'
 import { formatDistanceToNow, lightFormat, toDate } from 'date-fns'
 import NetworkInfo from 'components/TransactionsTable/NetworkInfo'
-import { ExplorerLogo, FakeLink, Link, StyledSpan, Wrapper } from 'components/TransactionsTable/styled'
+import {
+  CollapseWrap,
+  ExplorerLogo,
+  FakeLink,
+  Link,
+  Row,
+  StyledSpan,
+  Wrapper,
+} from 'components/TransactionsTable/styled'
 import { useActiveWeb3React, useAllNetworks, useNetworkInfo } from 'hooks'
 import Network from 'type/Network'
 import Transaction from 'type/Transaction'
 import UnknownSVG from 'assets/images/unknown.svg'
 import { ExplorerTableWrap } from './styled'
+import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 interface HistoryTableProps {
   transactions: Transaction[]
@@ -18,6 +35,78 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
   const { transactions } = props
   const { chainId: currentChainId } = useActiveWeb3React()
   const currentNetwork = useNetworkInfo(currentChainId)
+
+  const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
+
+  const toggleDetails = (item: Transaction) => {
+    const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
+
+    if (itemIdToExpandedRowMapValues[item._id]) {
+      delete itemIdToExpandedRowMapValues[item._id]
+    } else {
+      itemIdToExpandedRowMapValues[item._id] = (
+        <CollapseWrap>
+          <Row>
+            <div>
+              <span>Transfer</span>
+              {item.originNetwork ? (
+                <>
+                  {item.originToken === NATIVE_TOKEN_ADDERSS ? (
+                    <span>{item.amountFormated}</span>
+                  ) : (
+                    <Wrapper>
+                      <a
+                        href={`${item.originNetwork.explorer}/token/${item.originToken}`}
+                        target="__blank"
+                        rel="noopener noreferrer nofollow"
+                      >
+                        {item.amountFormated}
+                      </a>
+                    </Wrapper>
+                  )}
+                </>
+              ) : (
+                <span>{item.amountFormated}</span>
+              )}
+            </div>
+            <div>
+              <span>From</span>
+              <NetworkInfo network={item.fromNetwork} />
+            </div>
+            <div>
+              <span>To</span>
+              <NetworkInfo network={item.toNetwork} />
+            </div>
+          </Row>
+          {item.account !== item.txCreator && (
+            <Row>
+              {item.toNetwork?.notEVM ? 'Recipient account hash:' : 'Recipient account address:'}&nbsp;
+              <a href={`${item.accountUrl}`} target="__blank">
+                {item.account}
+              </a>
+            </Row>
+          )}
+          {item.originNetwork && item.originToken !== NATIVE_TOKEN_ADDERSS && (
+            <>
+              <Row>
+                This token was deployed on <NetworkInfo network={item.originNetwork} />
+              </Row>
+              {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) &&
+                item.account !== item.txCreator &&
+                item.contractHash && (
+                  <Row>
+                    Contrach hash on &nbsp;
+                    <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
+                    {` ${item.contractHash}`}
+                  </Row>
+                )}
+            </>
+          )}
+        </CollapseWrap>
+      )
+    }
+    setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues)
+  }
 
   const columns: EuiBasicTableColumn<any>[] = [
     {
@@ -126,6 +215,18 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
         return <EuiHealth color={color}>{label}</EuiHealth>
       },
     },
+    {
+      align: 'right',
+      width: '40px',
+      isExpander: true,
+      render: (item: Transaction) => (
+        <EuiButtonIcon
+          onClick={() => toggleDetails(item)}
+          aria-label={itemIdToExpandedRowMap[item._id] ? 'Collapse' : 'Expand'}
+          iconType={itemIdToExpandedRowMap[item._id] ? 'arrowUp' : 'arrowDown'}
+        />
+      ),
+    },
   ]
 
   // pagination
@@ -218,9 +319,11 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
   return (
     <ExplorerTableWrap>
       <EuiInMemoryTable
-        itemID="_id"
+        itemId="_id"
         items={transactions}
         columns={columns}
+        isExpandable={true}
+        itemIdToExpandedRowMap={itemIdToExpandedRowMap}
         hasActions={false}
         tableLayout="fixed"
         pagination={pagination}

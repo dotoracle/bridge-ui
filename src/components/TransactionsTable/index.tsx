@@ -45,7 +45,9 @@ import { ConnectorNames, injected } from 'connectors'
 import { connectorLocalStorageKey, NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
-  const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
+  const account = '0xd4a5bdc7eef008c388ede924f46d597239b15ccf'
+  const { chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
+  // const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)
@@ -60,6 +62,76 @@ function TransactionsTable(): JSX.Element {
 
   const [transactions, setTranstractions] = useState<Transaction[]>([])
   const { data: response, error: srwError } = useAllTransactions(account, currentChainId, 200)
+
+  const toggleDetails = (item: Transaction) => {
+    const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
+
+    if (itemIdToExpandedRowMapValues[item._id]) {
+      delete itemIdToExpandedRowMapValues[item._id]
+    } else {
+      itemIdToExpandedRowMapValues[item._id] = (
+        <CollapseWrap>
+          <Row>
+            <div>
+              <span>Transfer</span>
+              {item.originNetwork ? (
+                <>
+                  {item.originToken === NATIVE_TOKEN_ADDERSS ? (
+                    <span>{item.amountFormated}</span>
+                  ) : (
+                    <Wrapper>
+                      <a
+                        href={`${item.originNetwork.explorer}/token/${item.originToken}`}
+                        target="__blank"
+                        rel="noopener noreferrer nofollow"
+                      >
+                        {item.amountFormated}
+                      </a>
+                    </Wrapper>
+                  )}
+                </>
+              ) : (
+                <span>{item.amountFormated}</span>
+              )}
+            </div>
+            <div>
+              <span>From</span>
+              <NetworkInfo network={item.fromNetwork} />
+            </div>
+            <div>
+              <span>To</span>
+              <NetworkInfo network={item.toNetwork} />
+            </div>
+          </Row>
+          {item.account !== item.txCreator && (
+            <Row>
+              {item.toNetwork?.notEVM ? 'Your recipient account hash:' : 'Your recipient account address:'}&nbsp;
+              <a href={`${item.accountUrl}`} target="__blank">
+                {item.account}
+              </a>
+            </Row>
+          )}
+          {item.originNetwork && item.originToken !== NATIVE_TOKEN_ADDERSS && (
+            <>
+              <Row>
+                This token was deployed on <NetworkInfo network={item.originNetwork} />
+              </Row>
+              {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) &&
+                item.account !== item.txCreator &&
+                item.contractHash && (
+                  <Row>
+                    Contrach hash on &nbsp;
+                    <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
+                    {` ${item.contractHash}`}
+                  </Row>
+                )}
+            </>
+          )}
+        </CollapseWrap>
+      )
+    }
+    setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues)
+  }
 
   const columns: EuiBasicTableColumn<any>[] = [
     {
@@ -298,76 +370,6 @@ function TransactionsTable(): JSX.Element {
 
     fetchTransactions()
   }, [account, currentChainId, response])
-
-  const toggleDetails = (item: Transaction) => {
-    const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
-
-    if (itemIdToExpandedRowMapValues[item._id]) {
-      delete itemIdToExpandedRowMapValues[item._id]
-    } else {
-      itemIdToExpandedRowMapValues[item._id] = (
-        <CollapseWrap>
-          <Row>
-            <div>
-              <span>Transfer</span>
-              {item.originNetwork ? (
-                <>
-                  {item.originToken === NATIVE_TOKEN_ADDERSS ? (
-                    <span>{item.amountFormated}</span>
-                  ) : (
-                    <Wrapper>
-                      <a
-                        href={`${item.originNetwork.explorer}/token/${item.originToken}`}
-                        target="__blank"
-                        rel="noopener noreferrer nofollow"
-                      >
-                        {item.amountFormated}
-                      </a>
-                    </Wrapper>
-                  )}
-                </>
-              ) : (
-                <span>{item.amountFormated}</span>
-              )}
-            </div>
-            <div>
-              <span>From</span>
-              <NetworkInfo network={item.fromNetwork} />
-            </div>
-            <div>
-              <span>To</span>
-              <NetworkInfo network={item.toNetwork} />
-            </div>
-          </Row>
-          {item.account !== item.txCreator && (
-            <Row>
-              {item.toNetwork?.notEVM ? 'Your recipient account hash:' : 'Your recipient account address:'}&nbsp;
-              <a href={`${item.accountUrl}`} target="__blank">
-                {item.account}
-              </a>
-            </Row>
-          )}
-          {item.originNetwork && (
-            <>
-              <Row>
-                This token was deployed on <NetworkInfo network={item.originNetwork} />
-              </Row>
-              {(item.fromNetwork?.notEVM || item.toNetwork?.notEVM) &&
-                item.account !== item.txCreator &&
-                item.contractHash && (
-                  <Row>
-                    Contrach hash on &nbsp;
-                    <NetworkInfo network={item.fromNetwork?.notEVM ? item.fromNetwork : item.toNetwork} />
-                    {` ${item.contractHash}`}
-                  </Row>
-                )}
-            </>
-          )}
-        </CollapseWrap>
-      )
-    }
-    setItemIdToExpandedRowMap(itemIdToExpandedRowMapValues)
-  }
 
   const changeButtonText = (button: HTMLElement, text: string) => {
     const textTag = button.getElementsByClassName('euiButtonEmpty__text')[0]
