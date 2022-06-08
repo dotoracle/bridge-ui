@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { EuiFieldText } from '@elastic/eui'
-import styled from 'styled-components/macro'
+import { BsLightbulb } from 'react-icons/bs'
 import TransferButton from 'components/TransferButton'
 import Container from '../Container'
 import TokenSelect from '../TokenSelect'
@@ -13,61 +13,20 @@ import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hook
 import ArrowSVG from 'assets/images/arrow-right.svg'
 import networks from 'config/networks.json'
 import Network from 'type/Network'
-
-const AppBoxWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 3rem auto 0;
-  border-radius: 40px;
-  padding: 2rem 0;
-  background-color: #0f0f1e;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
-
-  @media (min-width: 1200px) {
-    flex-direction: row;
-  }
-`
-const FormWrap = styled.div`
-  flex: 0 0 40%;
-  padding-right: 1rem;
-  padding-left: 2rem;
-`
-const TableWrap = styled.div`
-  flex: 0 0 60%;
-  padding-left: 1rem;
-  padding-right: 2rem;
-`
-const FormRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-`
-const NetworkItem = styled.div`
-  flex: 1 1 0;
-`
-const ArrowImage = styled.img`
-  margin: 0 1rem;
-  width: 30px;
-
-  @media (min-width: 768px) {
-    margin: 0 1.15rem;
-  }
-`
-const StyledLabel = styled.label`
-  display: block;
-  margin-bottom: 1rem;
-  color: #aeaeb3;
-`
+import { AppBoxWrap, ArrowImage, FormRow, FormWrap, NetworkItem, Reminder, StyledLabel, TableWrap } from './Styled'
 
 function AppBox(): JSX.Element {
   const { account, chainId } = useActiveWeb3React()
   const [receipient, setReceipient] = useState('')
   const {
+    selectedToken,
     sourceNetwork: sourceNetworkContext,
     targetNetwork: targetNetworkContext,
     setSourceNetwork,
     setTargetNetwork,
   } = useContext(BridgeAppContext)
+
+  const [minAmount, setMinAmount] = useState(0)
 
   const sourceNetworkHook = useNetworkInfo(chainId)
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
@@ -85,6 +44,10 @@ function AppBox(): JSX.Element {
       setTargetNetwork(targetNetwork)
     }
   }, [sourceNetwork, targetNetwork, account, chainId])
+
+  useEffect(() => {
+    console.log(selectedToken)
+  }, [selectedToken])
 
   // refresh context if change account
   useEffect(() => {
@@ -165,6 +128,18 @@ function AppBox(): JSX.Element {
               <ActionButtons />
             )}
           </FormRow>
+
+          <Reminder>
+            <div>
+              <BsLightbulb color="#e2007a" />
+              <span>&nbsp;Reminder:</span>
+            </div>
+            <ul>
+              <li>Bridge Fee: 0.1%</li>
+              {selectedToken && <li>Minimum Bridge Amount is {12} USDC</li>}
+              <li>Estimated Time of Crosschain Arrival is 10-30 mins</li>
+            </ul>
+          </Reminder>
         </FormWrap>
 
         <TableWrap>
