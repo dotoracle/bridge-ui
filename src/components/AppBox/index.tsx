@@ -13,7 +13,7 @@ import { useActiveWeb3React, useOtherNetworks, useNetworkInfo } from '../../hook
 import ArrowSVG from 'assets/images/arrow-right.svg'
 import networks from 'config/networks.json'
 import Network from 'type/Network'
-import { AppBoxWrap, ArrowImage, FormRow, FormWrap, NetworkItem, Reminder, StyledLabel, TableWrap } from './Styled'
+import { AppBoxWrap, ArrowImage, FormRow, FormWrap, NetworkItem, Reminder, StyledLabel, TableWrap } from './styled'
 import { fromWei } from 'utils'
 
 function AppBox(): JSX.Element {

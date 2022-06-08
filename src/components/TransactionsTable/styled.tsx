@@ -31,37 +31,37 @@ export const TableTitle = styled.h2`
   letter-spacing: 0.1em;
   color: #fff;
 `
-export const RefreshButton = styled(EuiButtonEmpty)`
-  display: block;
-  margin-top: 1.5rem;
-  border-radius: 5px;
-  height: 30px;
-  text-transform: none;
-  color: #adadb4;
-  border-color: #adadb4;
+// export const RefreshButton = styled(EuiButtonEmpty)`
+//   display: block;
+//   margin-top: 1.5rem;
+//   border-radius: 5px;
+//   height: 30px;
+//   text-transform: none;
+//   color: #adadb4;
+//   border-color: #adadb4;
 
-  &.euiButton {
-  }
+//   &.euiButton {
+//   }
 
-  &:active,
-  &:focus,
-  &:hover {
-    color: #fff;
-    border-color: #fff;
-    background-color: #ffffff1f;
-  }
+//   &:active,
+//   &:focus,
+//   &:hover {
+//     color: #fff;
+//     border-color: #fff;
+//     background-color: #ffffff1f;
+//   }
 
-  &:disabled {
-    border-color: #4c4e51;
-  }
+//   &:disabled {
+//     border-color: #4c4e51;
+//   }
 
-  @media (min-width: 768px) {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-top: -7px;
-  }
-`
+//   @media (min-width: 768px) {
+//     position: absolute;
+//     right: 0;
+//     top: 0;
+//     margin-top: -7px;
+//   }
+// `
 export const StyledSpan = styled.span`
   font-size: 0.75rem;
 `

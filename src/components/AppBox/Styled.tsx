@@ -6,6 +6,7 @@ export const AppBoxWrap = styled.div`
   margin: 3rem auto 0;
   border-radius: 40px;
   padding: 2rem 0;
+  width: 100%;
   background-color: #0f0f1e;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
 

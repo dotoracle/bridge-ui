@@ -45,15 +45,15 @@ export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => 
       let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
 
       if (network.notEVM) {
-        const response = await axios.get(
+        const response2 = await axios.get(
           'https://raw.githubusercontent.com/dotoracle/casper-contract-hash/master/config.json',
         )
 
-        if (response.status === 200) {
+        if (response2.status === 200) {
           if (network.isTestnet) {
-            tokenList = response.data.testnet.tokens
+            tokenList = response2.data.testnet.tokens
           } else {
-            tokenList = response.data.mainnet.tokens
+            tokenList = response2.data.mainnet.tokens
           }
         }
       }
@@ -96,11 +96,7 @@ export const toWei = (number: string | number, decimals?: number): BigNumber => 
   return result
 }
 
-export const parseResponseToTransactions = async (
-  response: any,
-  account: string | null | undefined,
-  chainId?: number,
-) => {
+export const parseResponseToTransactions = async (response: any, chainId?: number) => {
   const transactions = [] as Transaction[]
 
   if (!response) {
@@ -124,8 +120,8 @@ export const parseResponseToTransactions = async (
     }
   }
 
-  if (response.status === 200 && response.data.transactions && response.data.total) {
-    response.data.transactions.forEach(async (t: Transaction) => {
+  if (response.transactions && response.total) {
+    response.transactions.forEach(async (t: Transaction) => {
       const fromNetwork = networks.find(n => n.chainId === t.fromChainId) as Network
       const toNetwork = networks.find(n => n.chainId === t.toChainId) as Network
       const originNetwork = networks.find(n => n.chainId === t.originChainId) as Network
@@ -157,11 +153,16 @@ export const parseResponseToTransactions = async (
         _account = _account.substring(13, 77)
         _accountUrl = `${toNetwork?.explorer}/account/${_account}`
       }
+
+      // Find contract hash on Casper
       let tokenOnCasper = tokenList.find(
-        _token => _token.originContractAddress?.toLowerCase() === t.originToken.toLowerCase(),
+        _token =>
+          _token.originContractAddress?.toLowerCase() === t.originToken.toLowerCase() &&
+          _token?.originChainId === t.originChainId,
       )
       let contractHash = tokenOnCasper?.contractHash
 
+      // From EVM to Casper
       if (!currentNetwork.notEVM && toNetwork.notEVM) {
         tokenOnCasper = tokenList.find(_token => _token.address.toLowerCase() === t.originToken.toLowerCase())
         contractHash = tokenOnCasper?.contractHash
@@ -191,7 +192,23 @@ export const parseResponseToTransactions = async (
       })
     })
 
-    localStorage.setItem(`transactions_${account}_${chainId}`, JSON.stringify(transactions))
+    // localStorage.setItem(`transactions_${account}_${chainId}`, JSON.stringify(transactions))
+  }
+
+  return transactions
+}
+
+export const parseResponseToTransactionsAllChain = async (response: any, isTestnet?: boolean) => {
+  const _networks = (isTestnet ? networks.filter(n => n.isTestnet) : networks.filter(n => !n.isTestnet)) as Network[]
+  let transactions: Transaction[] = []
+
+  for (let i = 0; i < _networks.length; i++) {
+    const network = _networks[i]
+    const _txns = await parseResponseToTransactions(response, network.chainId)
+    transactions.concat(_txns)
+
+    // Sort by date
+    transactions = transactions.sort((a, b) => a.requestTime - b.requestTime)
   }
 
   return transactions

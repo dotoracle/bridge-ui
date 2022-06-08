@@ -2,6 +2,7 @@ type Token = {
   name: string
   address: string
   originContractAddress?: string
+  originChainId?: number
   contractHash?: string
   symbol: string
   decimals: number

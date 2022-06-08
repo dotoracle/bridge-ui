@@ -4881,7 +4881,7 @@ caseless@~0.12.0:
 "casper-erc20-js-client@file:./packages/erc20-client":
   version "0.1.0"
   dependencies:
-    casper-js-client-helper "file:../../../../Users/hka/Library/Caches/Yarn/v6/npm-casper-erc20-js-client-0.1.0-418861a2-9566-4735-9c3f-fc8fab48e731-1654661559344/node_modules/client-helper"
+    casper-js-client-helper "file:../../../../Users/hka/Library/Caches/Yarn/v6/npm-casper-erc20-js-client-0.1.0-6f58b2c0-2ecf-4ce1-bd47-ed7ac1848136-1654678928239/node_modules/client-helper"
     casper-js-sdk "2.8.0"
 
 "casper-js-client-helper@file:./packages/client-helper", "casper-js-client-helper@file:packages/client-helper":
@@ -15343,6 +15343,11 @@ swarm-js@^0.1.40:
     setimmediate "^1.0.5"
     tar "^4.0.2"
     xhr-request "^1.0.1"
+
+swr@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-1.3.0.tgz#c6531866a35b4db37b38b72c45a63171faf9f4e8"
+  integrity sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==
 
 symbol-tree@^3.2.4:
   version "3.2.4"

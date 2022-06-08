@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   EuiInMemoryTable,
@@ -13,7 +13,6 @@ import {
 import { toDate, lightFormat, formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-toastify'
 import { toHex } from 'web3-utils'
-import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import {
   useAllTransactions,
@@ -30,7 +29,6 @@ import ClaimCountdown from './ClaimCountdown'
 import {
   TableWrap,
   TableTitle,
-  RefreshButton,
   StyledSpan,
   Wrapper,
   ExplorerLogo,
@@ -47,9 +45,8 @@ import { ConnectorNames, injected } from 'connectors'
 import { connectorLocalStorageKey, NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
-  const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
-  // const { refreshLocal, setRefreshLocal } = useContext(BridgeAppContext)
-  const { refreshLocal } = useContext(BridgeAppContext)
+  const account = '0xd4a5bdc7eef008c388ede924f46d597239b15ccf'
+  const { chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)
@@ -58,13 +55,12 @@ function TransactionsTable(): JSX.Element {
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})
   const [isDisabled, setIsDisabled] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  // const [isProcessing, setIsProcessing] = useState(false)
   const [showNetworkModal, setShowNetworkModal] = useState(false)
   const [claimTokenSymbol, setClaimTokenSymbol] = useState('')
   const [toNetwork, setToNetwork] = useState<Network>()
 
   const [transactions, setTranstractions] = useState<Transaction[]>([])
-  const transactionCallback = useAllTransactions(account, currentChainId, 200, 1)
+  const { data: transactionsData, error: srwError } = useAllTransactions(account, currentChainId, 200)
 
   // pagination
   const [pageIndex, setPageIndex] = useState(0)
@@ -135,23 +131,12 @@ function TransactionsTable(): JSX.Element {
     setSortDirection(_sortDirection)
   }
 
-  // const onLoadTransactions = async (isHardRefresh: boolean) => {
   const onLoadTransactions = async () => {
     try {
-      // const _transactions = localStorage.getItem(`transactions_${account}_${currentChainId}`)
-
-      // if (!_transactions || (isHardRefresh && !isProcessing)) {
       setIsLoading(true)
-      const response = await transactionCallback()
-      setTranstractions(await parseResponseToTransactions(response, account, currentChainId))
-      // } else {
-      //   setIsLoading(true)
-      //   setTimeout(() => {
-      //     setTranstractions(JSON.parse(_transactions))
-      //     setIsLoading(false)
-      //   }, 500)
-      // }
-      // setRefreshLocal(false)
+      const _txns = await parseResponseToTransactions(transactionsData, currentChainId)
+      console.log(_txns)
+      setTranstractions(_txns)
     } catch (error) {
       console.error(error)
     } finally {
@@ -161,16 +146,11 @@ function TransactionsTable(): JSX.Element {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      // onLoadTransactions(false)
       onLoadTransactions()
-
-      // if (refreshLocal) {
-      //   setIsProcessing(true)
-      // }
     }
 
     fetchTransactions()
-  }, [account, currentChainId, refreshLocal])
+  }, [account, currentChainId, transactionsData])
 
   const toggleDetails = (item: Transaction) => {
     const itemIdToExpandedRowMapValues = { ...itemIdToExpandedRowMap }
@@ -313,35 +293,6 @@ function TransactionsTable(): JSX.Element {
                   toastId: 'onClaimToken',
                 },
               )
-
-              // Update storage
-              const data = localStorage.getItem(`transactions_${account}_${currentChainId}`)
-
-              if (data) {
-                const _transactions = JSON.parse(data) as Transaction[]
-                const _item = _transactions.find(t => t._id === item._id)
-                if (_item && _item.toNetwork) {
-                  const claimHashEllipsis = `${receipt.transactionHash.substring(
-                    0,
-                    6,
-                  )}...${receipt.transactionHash.substring(receipt.transactionHash.length - 4)}`
-
-                  _item.claimed = true
-                  _item.claimHash = receipt.transactionHash
-                  _item.claimHashLink = {
-                    networkName: _item.toNetwork.name,
-                    explorerLogo: _item.toNetwork.logoURI,
-                    claimHash: claimHashEllipsis,
-                    claimHashUrl: `${_item.toNetwork.explorer}${_item.toNetwork.txUrl}${receipt.transactionHash}`,
-                  }
-                }
-                setTranstractions(_transactions)
-                localStorage.setItem(`transactions_${account}_${currentChainId}`, JSON.stringify(_transactions))
-
-                // setIsProcessing(true)
-                // onLoadTransactions(false)
-                onLoadTransactions()
-              }
             }
           }
         } else {
@@ -558,27 +509,26 @@ function TransactionsTable(): JSX.Element {
   return (
     <>
       <TableWrap>
-        <TableTitle>
-          Latest Transactions
-          <RefreshButton isLoading={isLoading} iconType="refresh" onClick={() => onLoadTransactions()}>
-            Refresh
-          </RefreshButton>
-        </TableTitle>
-        <EuiInMemoryTable
-          loading={isLoading}
-          itemId="_id"
-          items={transactions}
-          columns={columns}
-          isExpandable={true}
-          itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-          hasActions={false}
-          tableLayout="fixed"
-          pagination={pagination}
-          // @ts-ignore
-          sorting={sorting}
-          search={search}
-          onTableChange={onTableChange}
-        />
+        <TableTitle>Latest Transactions</TableTitle>
+        {srwError ? (
+          <span>Could not load data</span>
+        ) : (
+          <EuiInMemoryTable
+            loading={isLoading}
+            itemId="_id"
+            items={transactions}
+            columns={columns}
+            isExpandable={true}
+            itemIdToExpandedRowMap={itemIdToExpandedRowMap}
+            hasActions={false}
+            tableLayout="fixed"
+            pagination={pagination}
+            // @ts-ignore
+            sorting={sorting}
+            search={search}
+            onTableChange={onTableChange}
+          />
+        )}
       </TableWrap>
       {showNetworkModal && toNetwork && (
         <EuiConfirmModal
