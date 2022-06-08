@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import '@elastic/eui/dist/eui_theme_dark.css'
 import './assets/fonts/stylesheet.css'
 import Home from 'pages/Home'
+import Explorer from 'pages/Explorer'
 
 const PageContainer = styled.div`
   min-height: calc(100vh - 160px);
@@ -27,7 +28,6 @@ function App(): JSX.Element {
   const [tokenAmount, setTokenAmount] = useState(0)
   const [sourceNetwork, setSourceNetwork] = useState<Network>()
   const [targetNetwork, setTargetNetwork] = useState<Network>()
-  const [refreshLocal, setRefreshLocal] = useState(false)
   const { chainId, account } = useWeb3React()
 
   useEffect(() => {
@@ -55,8 +55,6 @@ function App(): JSX.Element {
           setSourceNetwork,
           targetNetwork,
           setTargetNetwork,
-          refreshLocal,
-          setRefreshLocal,
         }}
       >
         <GlobalStyle />
@@ -65,6 +63,7 @@ function App(): JSX.Element {
           <PageContainer>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/explorer" element={<Explorer />} />
             </Routes>
           </PageContainer>
           <Footer />

@@ -2,6 +2,7 @@ import Network from './Network'
 
 type Transaction = {
   _id: string
+  tokenSymbol: string
   fromNetwork: Network | undefined
   fromChainId: number
   index: number

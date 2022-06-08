@@ -16,8 +16,7 @@ import {
   useTokenBalanceCallback,
 } from 'hooks'
 import { StyledButton, UnlockButton } from './styled'
-import { toWei, formatNumber } from 'utils'
-import Transaction from 'type/Transaction'
+import { toWei } from 'utils'
 import UnknownSVG from 'assets/images/unknown.svg'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import Web3 from 'web3'
@@ -44,8 +43,7 @@ const ApproveWrap = styled.div`
 `
 
 function ActionButtons(): JSX.Element {
-  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, setRefreshLocal } =
-    useContext(BridgeAppContext)
+  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId, library } = useActiveWeb3React()
   const networkInfo = useNetworkInfo(chainId)
 
@@ -183,49 +181,6 @@ function ActionButtons(): JSX.Element {
           // Reset approve state
           if (!infinityApprove) {
             setNeedApprove(true)
-          }
-
-          // Update storage
-          const data = localStorage.getItem(`transactions_${account}_${chainId}`)
-
-          if (data) {
-            const _transactions = JSON.parse(data) as Transaction[]
-            const requestHashEllipsis = `${receipt.transactionHash.substring(
-              0,
-              6,
-            )}...${receipt.transactionHash.substring(receipt.transactionHash.length - 4)}`
-            const newTransaction = {
-              _id: Date.now().toString(),
-              fromNetwork: sourceNetwork,
-              fromChainId: sourceNetwork.chainId,
-              toNetwork: targetNetwork,
-              toChainId: targetNetwork.chainId,
-              account,
-              amount: amountInWei.toString(10),
-              amountFormated: `${formatNumber(tokenAmount)} ${selectedToken.symbol}`,
-              requestHash: receipt.transactionHash,
-              requestHashLink: {
-                networkName: sourceNetwork.name,
-                explorerLogo: sourceNetwork.logoURI,
-                requestHash: requestHashEllipsis,
-                requestHashUrl: `${sourceNetwork.explorer}${sourceNetwork.txUrl}${receipt.transactionHash}`,
-              },
-              requestTime: Date.now() / 1000,
-              claimHash: '',
-              claimHashLink: {
-                networkName: targetNetwork.name,
-                explorerLogo: targetNetwork.logoURI,
-                claimHash: '',
-                claimHashUrl: `${targetNetwork.explorer}${targetNetwork.txUrl}`,
-              },
-              claimed: false,
-            } as Transaction
-
-            _transactions.unshift(newTransaction)
-
-            localStorage.setItem(`transactions_${account}_${chainId}`, JSON.stringify(_transactions))
-
-            setRefreshLocal(true)
           }
         }
       }

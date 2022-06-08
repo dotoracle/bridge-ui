@@ -25,22 +25,6 @@ export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => 
 
   try {
     if (chainId) {
-      // get token from local storage first
-      // const data = localStorage.getItem(`tokens_${account}_${chainId}`)
-      // if (data) {
-      //   const customTokens = JSON.parse(data) as Token[]
-
-      //   customTokens.forEach(t => {
-      //     tokens.push({
-      //       name: t.name,
-      //       address: t.address,
-      //       symbol: t.symbol,
-      //       decimals: Number(t.decimals),
-      //       logoURI: t.logoURI,
-      //     })
-      //   })
-      // }
-
       const network = networks.find(n => n.chainId === chainId) as Network
       let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
 
@@ -170,6 +154,7 @@ export const parseResponseToTransactions = async (response: any, chainId?: numbe
 
       transactions.push({
         ...t,
+        tokenSymbol: t.originToken == NATIVE_TOKEN_ADDERSS ? originNetwork.nativeCurrency.symbol : t.originSymbol,
         fromNetwork,
         toNetwork,
         originNetwork,
@@ -189,6 +174,7 @@ export const parseResponseToTransactions = async (response: any, chainId?: numbe
           claimHashUrl,
         },
         contractHash: contractHash,
+        claimed: typeof t.claimed == 'undefined' ? false : t.claimed,
       })
     })
 
@@ -205,7 +191,8 @@ export const parseResponseToTransactionsAllChain = async (response: any, isTestn
   for (let i = 0; i < _networks.length; i++) {
     const network = _networks[i]
     const _txns = await parseResponseToTransactions(response, network.chainId)
-    transactions.concat(_txns)
+    const set = new Set(transactions.map(t => t._id))
+    transactions = [...transactions, ..._txns.filter(t => !set.has(t._id))] // Array.from(new Set([...transactions, ..._txns]))
 
     // Sort by date
     transactions = transactions.sort((a, b) => a.requestTime - b.requestTime)

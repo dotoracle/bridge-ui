@@ -12,8 +12,6 @@ type BridgeAppContextType = {
   setSourceNetwork: (value: Network) => void
   targetNetwork: Network | undefined
   setTargetNetwork: (value: Network) => void
-  refreshLocal: boolean
-  setRefreshLocal: (value: boolean) => void
 }
 
 const BridgeAppContext = createContext<BridgeAppContextType>({
@@ -25,7 +23,5 @@ const BridgeAppContext = createContext<BridgeAppContextType>({
   setSourceNetwork: () => {},
   targetNetwork: undefined,
   setTargetNetwork: () => {},
-  refreshLocal: false,
-  setRefreshLocal: () => {},
 })
 export default BridgeAppContext
