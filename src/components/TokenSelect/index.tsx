@@ -1,9 +1,12 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { EuiButton } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import BridgeAppContext from '../../context/BridgeAppContext'
 import SearchModal from '../SearchModal'
+import { getTokensFromConfig } from 'utils'
+import { useActiveWeb3React } from 'hooks'
+import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 const Label = styled.label`
   display: block;
@@ -46,11 +49,26 @@ interface ITokenSelect {
 
 function TokenSelect(props: ITokenSelect): JSX.Element {
   const { showNativeToken } = props
-  const { selectedToken } = useContext(BridgeAppContext)
+  const { chainId } = useActiveWeb3React()
+  const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
+  const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const closeModal = () => setIsModalVisible(false)
   const showModal = () => setIsModalVisible(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const tokens = await getTokensFromConfig(networkId)
+
+      if (tokens.length > 0) {
+        const nativeToken = tokens.find(t => t.address === NATIVE_TOKEN_ADDERSS)
+        setSelectedToken(nativeToken)
+      }
+    }
+
+    fetchData()
+  }, [networkId])
 
   return (
     <TokenSelectWrapper>

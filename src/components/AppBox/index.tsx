@@ -144,7 +144,7 @@ function AppBox(): JSX.Element {
                   {selectedToken.symbol.toUpperCase()}
                 </li>
               )}
-              <li>Estimated Time of Crosschain Arrival is 10-30 mins</li>
+              <li>Estimated Time of Crosschain Arrival is 3-10 mins</li>
             </ul>
           </Reminder>
         </FormWrap>
