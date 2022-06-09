@@ -256,14 +256,13 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
   const search = {
     box: {
       incremental: true,
-      schema: true,
       placeholder: 'Enter the transaction hash...',
     },
     filters: [
       {
         type: 'field_value_selection',
         field: 'claimed',
-        name: 'Processing',
+        name: 'Status',
         multiSelect: false,
         options: [
           {
