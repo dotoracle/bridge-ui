@@ -138,13 +138,19 @@ function AppBox(): JSX.Element {
             </div>
             <ul>
               <li>Bridge Fee: 0.1%</li>
-              {selectedToken && minBridge != '0' && (
+              {selectedToken && minBridge != '0' && !sourceNetwork?.notEVM && (
                 <li>
-                  Minimum Bridge Amount is {fromWei(minBridge, selectedToken.decimals).toNumber()}{' '}
+                  Minimum Bridge Amount: {fromWei(minBridge, selectedToken.decimals).toNumber()}{' '}
                   {selectedToken.symbol.toUpperCase()}
                 </li>
               )}
-              <li>Estimated Time of Crosschain Arrival is 3-10 mins</li>
+              <li>Estimated Time of Crosschain Arrival: 3-10 mins</li>
+              {!targetNetwork.notEVM && (
+                <li>
+                  There is no minimum cross-chain transfer amount to {targetNetwork.name}, you should always claim your
+                  tokens to {targetNetwork.name}
+                </li>
+              )}
             </ul>
           </Reminder>
         </FormWrap>
