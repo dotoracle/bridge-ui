@@ -11,6 +11,7 @@ export const useAllTransactions = (account?: string | null | undefined, chainId?
     fetcher,
     {
       refreshInterval: 60000,
+      refreshWhenHidden: true,
     },
   )
   return { data, error }
