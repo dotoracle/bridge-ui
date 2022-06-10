@@ -211,7 +211,7 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
       width: '15%',
       render: function (claimed: boolean): JSX.Element {
         const color = claimed ? 'success' : 'warning'
-        const label = claimed ? 'Success' : 'Awaiting for claim'
+        const label = claimed ? 'Success' : 'Awaiting claim'
         return <EuiHealth color={color}>{label}</EuiHealth>
       },
     },
@@ -272,8 +272,8 @@ function HistoryTable(props: HistoryTableProps): JSX.Element {
           },
           {
             value: false,
-            name: 'Awaiting for claim',
-            view: <EuiHealth color="warning">Awaiting for claim</EuiHealth>,
+            name: 'Awaiting claim',
+            view: <EuiHealth color="warning">Awaiting claim</EuiHealth>,
           },
         ],
       },
