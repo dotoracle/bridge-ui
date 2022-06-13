@@ -18,6 +18,7 @@ import { SafeEventEmitterProvider } from 'casper-js-sdk/dist/services/ProviderTr
 import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib'
 import { toPlainString, toWei } from 'utils'
 import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connector'
+import { isAddress } from 'web3-utils'
 
 interface TransferButtonProps {
   receipient: string
@@ -28,6 +29,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
   const { receipient, onRefresh } = props
   const { selectedToken, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId, library, connector } = useActiveWeb3React()
+  const [isValidAddress, setIsValidAddress] = useState(false)
 
   const networkInfo = useNetworkInfo(chainId)
 
@@ -57,6 +59,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
 
   useEffect(() => {
     loadTokenBalance()
+    setIsValidAddress(isAddress(receipient))
   }, [account, chainId, selectedToken])
 
   const genRanHex = (size: number) => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
@@ -155,10 +158,10 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
             <StyledButton
               fill
               isLoading={isLoading || isLoadingBalance}
-              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !receipient}
+              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !isValidAddress}
               onClick={onTransferERC20Token}
             >
-              {receipient ? `Transfer ${selectedToken.symbol} to bridge` : 'Invalid receipient'}
+              {isValidAddress ? `Transfer ${selectedToken.symbol} to bridge` : 'Invalid receipient'}
             </StyledButton>
           ) : (
             <StyledButton fill isDisabled>
