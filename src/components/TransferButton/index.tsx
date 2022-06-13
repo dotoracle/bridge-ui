@@ -60,7 +60,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
   useEffect(() => {
     loadTokenBalance()
     setIsValidAddress(isAddress(receipient))
-  }, [account, chainId, selectedToken])
+  }, [account, chainId, selectedToken, receipient])
 
   const genRanHex = (size: number) => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
 
@@ -161,7 +161,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
               isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !isValidAddress}
               onClick={onTransferERC20Token}
             >
-              {isValidAddress ? `Transfer ${selectedToken.symbol} to bridge` : 'Invalid receipient'}
+              {isValidAddress ? `Transfer ${selectedToken.symbol} to bridge` : 'Invalid receipient address'}
             </StyledButton>
           ) : (
             <StyledButton fill isDisabled>
