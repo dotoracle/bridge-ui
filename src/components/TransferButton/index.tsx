@@ -155,10 +155,10 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
             <StyledButton
               fill
               isLoading={isLoading || isLoadingBalance}
-              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
+              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !receipient}
               onClick={onTransferERC20Token}
             >
-              Transfer {selectedToken.symbol} to bridge
+              {receipient ? `Transfer ${selectedToken.symbol} to bridge` : 'Invalid receipient'}
             </StyledButton>
           ) : (
             <StyledButton fill isDisabled>
