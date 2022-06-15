@@ -30,5 +30,21 @@
     "decimals": 18,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
     "minBridge": "15000000000000000000"
+  },
+  {
+    "name": "DotOracle",
+    "address": "0xb57420fad6731b004309d5a0ec7c6c906adb8df7",
+    "symbol": "DTO",
+    "decimals": 18,
+    "logoURI": "https://assets.coingecko.com/coins/images/19527/large/84438129.png",
+    "minBridge": "500000000000000000000"
+  },
+  {
+    "name": "Frax",
+    "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+    "symbol": "FRAX",
+    "decimals": 18,
+    "logoURI": "https://assets.coingecko.com/coins/images/13422/large/frax_logo.png",
+    "minBridge": "15000000000000000000"
   }
 ]
