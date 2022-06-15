@@ -29,16 +29,24 @@ export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => 
       let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
 
       if (network.notEVM) {
-        const response2 = await axios.get(
+        const response = await axios.get(
           'https://raw.githubusercontent.com/dotoracle/casper-contract-hash/master/config.json',
         )
 
-        if (response2.status === 200) {
+        if (response.status === 200) {
           if (network.isTestnet) {
-            tokenList = response2.data.testnet.tokens
+            tokenList = response.data.testnet.tokens
           } else {
-            tokenList = response2.data.mainnet.tokens
+            tokenList = response.data.mainnet.tokens
           }
+        }
+      } else {
+        const response2 = await axios.get(
+          `https://raw.githubusercontent.com/dotoracle/evm-contract-lists/main/${chainId}.json`,
+        )
+
+        if (response2.status === 200) {
+          tokenList = response2.data
         }
       }
 
@@ -101,6 +109,14 @@ export const parseResponseToTransactions = async (response: any, chainId?: numbe
       } else {
         tokenList = tokensResponse.data.mainnet.tokens
       }
+    }
+  } else {
+    const response2 = await axios.get(
+      `https://raw.githubusercontent.com/dotoracle/evm-contract-lists/main/${chainId}.json`,
+    )
+
+    if (response2.status === 200) {
+      tokenList = response2.data
     }
   }
 
