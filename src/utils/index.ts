@@ -26,7 +26,7 @@ export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => 
   try {
     if (chainId) {
       const network = networks.find(n => n.chainId === chainId) as Network
-      let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
+      let tokenList: Token[] = [] // = (await import(`../config/${chainId}.json`)).default as Token[]
 
       if (network.notEVM) {
         const response = await axios.get(
@@ -95,8 +95,8 @@ export const parseResponseToTransactions = async (response: any, chainId?: numbe
     return []
   }
 
-  let tokenList = (await import(`../config/${chainId}.json`)).default as Token[]
   const currentNetwork = networks.find(n => n.chainId === chainId) as Network
+  let tokenList: Token[] = [] // = (await import(`../config/${chainId}.json`)).default as Token[]
 
   if (currentNetwork.notEVM) {
     const tokensResponse = await axios.get(

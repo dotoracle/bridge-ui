@@ -18,6 +18,59 @@
     "blockTime": 15
   },
   {
+    "name": "Binance Smart Chain",
+    "chainId": 56,
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png",
+    "explorer": "https://bscscan.com",
+    "txUrl": "/tx/",
+    "rpcURL": "https://bsc-dataseed1.binance.org/",
+    "isTestnet": false,
+    "bridge": "0x328A523B71545ddE8CD12a685318F2777D68798D",
+    "nativeCurrency": {
+      "name": "BNB",
+      "symbol": "BNB",
+      "decimals": 18
+    },
+    "confirmations": 6,
+    "blockTime": 3
+  },
+  {
+    "name": "Avalanche",
+    "chainId": 43114,
+    "logoURI": "https://assets.coingecko.com/coins/images/12559/large/coin-round-red.png",
+    "explorer": "https://testnet.snowtrace.io/",
+    "txUrl": "/tx/",
+    "rpcURL": "https://api.avax.network/ext/bc/C/rpc",
+    "isTestnet": false,
+    "notEVM": false,
+    "bridge": "0x328A523B71545ddE8CD12a685318F2777D68798D",
+    "nativeCurrency": {
+      "name": "AVAX",
+      "symbol": "AVAX",
+      "decimals": 18
+    },
+    "confirmations": 6,
+    "blockTime": 16
+  },
+  {
+    "name": "Moonbeam",
+    "chainId": 1284,
+    "logoURI": "https://docs.moonbeam.network/assets/images/Moonbeam-Favicon-50.png",
+    "explorer": "https://moonbase.moonscan.io/",
+    "txUrl": "/tx/",
+    "rpcURL": "https://rpc.api.moonbeam.network",
+    "isTestnet": false,
+    "notEVM": false,
+    "bridge": "0x328A523B71545ddE8CD12a685318F2777D68798D",
+    "nativeCurrency": {
+      "name": "GLMR",
+      "symbol": "GLMR",
+      "decimals": 18
+    },
+    "confirmations": 6,
+    "blockTime": 12
+  },
+  {
     "name": "Kovan Test Network",
     "chainId": 42,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
