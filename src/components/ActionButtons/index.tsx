@@ -151,7 +151,7 @@ function ActionButtons(): JSX.Element {
         let encoded = web3.eth.abi.encodeParameters(['string'], [account?.toLowerCase()])
 
         if (targetNetwork.notEVM) {
-          encoded = web3.eth.abi.encodeParameters(['string'], [accountHash.toLocaleLowerCase()])
+          encoded = web3.eth.abi.encodeParameters(['string'], [accountHash.toLowerCase()])
         }
 
         const receipt = await bridgeContract.methods
@@ -176,6 +176,7 @@ function ActionButtons(): JSX.Element {
             },
           )
 
+          loadTokenBalance()
           setTokenAmount(0)
 
           // Reset approve state
@@ -247,7 +248,9 @@ function ActionButtons(): JSX.Element {
                   isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
                   onClick={onOpenConfirmModal}
                 >
-                  Transfer {selectedToken.symbol} to bridge
+                  {tokenAmount > 0 && tokenAmount < tokenBalance
+                    ? `Transfer ${selectedToken.symbol} to bridge`
+                    : 'Insufficient balance'}
                 </StyledButton>
               ) : (
                 <ApproveWrap>

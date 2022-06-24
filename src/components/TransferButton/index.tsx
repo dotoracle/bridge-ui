@@ -125,6 +125,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
             },
           )
 
+          loadTokenBalance()
           setTokenAmount(0)
         } else {
           toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Invalid signature" />, {
@@ -158,10 +159,14 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
             <StyledButton
               fill
               isLoading={isLoading || isLoadingBalance}
-              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !isValidAddress}
+              // isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !isValidAddress}
               onClick={onTransferERC20Token}
             >
-              {isValidAddress ? `Transfer ${selectedToken.symbol} to bridge` : 'Invalid receipient address'}
+              {isValidAddress
+                ? tokenAmount > 0 && tokenAmount < tokenBalance
+                  ? `Transfer ${selectedToken.symbol} to bridge`
+                  : 'Insufficient balance'
+                : 'Invalid receipient address'}
             </StyledButton>
           ) : (
             <StyledButton fill isDisabled>
