@@ -1,10 +1,11 @@
 import { useState, useContext, useEffect } from 'react'
 import { toast } from 'react-toastify'
+import { EuiConfirmModal } from '@elastic/eui'
 import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
 import WalletModal from '../WalletModal'
 import { useActiveWeb3React, useBridgeAddress, useBridgeContract, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
-import { StyledButton } from './styled'
+import { NetworkLogo, StyledButton, TokenAmount } from './styled'
 import {
   CasperClient,
   CasperServiceByJsonRPC,
@@ -19,6 +20,8 @@ import { contractSimpleGetter } from 'casper-js-client-helper/dist/helpers/lib'
 import { toPlainString, toWei } from 'utils'
 import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connector'
 import { isAddress } from 'web3-utils'
+import UnknownSVG from 'assets/images/unknown.svg'
+import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 interface TransferButtonProps {
   receipient: string
@@ -27,7 +30,7 @@ interface TransferButtonProps {
 
 function TransferButton(props: TransferButtonProps): JSX.Element {
   const { receipient, onRefresh } = props
-  const { selectedToken, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
+  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
   const { account, chainId, library, connector } = useActiveWeb3React()
   const [isValidAddress, setIsValidAddress] = useState(false)
 
@@ -46,9 +49,12 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
 
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const bridgeAddress = useBridgeAddress(chainId)
   const bridgeContract = useBridgeContract(bridgeAddress)
+
+  const originNetwork = useNetworkInfo(selectedToken?.originChainId)
 
   const loadTokenBalance = async () => {
     setIsLoadingBalance(true)
@@ -151,6 +157,27 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
     }
   }
 
+  const onOpenConfirmModal = () => {
+    setLoading(true)
+
+    if (
+      selectedToken &&
+      originNetwork &&
+      targetNetwork &&
+      selectedToken.originContractAddress == NATIVE_TOKEN_ADDERSS &&
+      originNetwork.chainId != targetNetwork.chainId
+    ) {
+      setShowConfirmModal(true)
+    } else {
+      onTransferERC20Token()
+    }
+  }
+
+  const onCancelTransfer = () => {
+    setShowConfirmModal(false)
+    setLoading(false)
+  }
+
   return (
     <>
       {account ? (
@@ -159,8 +186,8 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
             <StyledButton
               fill
               isLoading={isLoading || isLoadingBalance}
-              // isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !isValidAddress}
-              onClick={onTransferERC20Token}
+              isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance || !isValidAddress}
+              onClick={onOpenConfirmModal}
             >
               {isValidAddress
                 ? tokenAmount > 0 && tokenAmount < tokenBalance
@@ -182,6 +209,54 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
           {showWalletModal && <WalletModal closeModal={() => setShowWalletModal(false)} />}
         </>
       )}
+      {showConfirmModal &&
+        selectedToken &&
+        tokenAmount > 0 &&
+        originNetwork &&
+        sourceNetwork &&
+        targetNetwork &&
+        selectedToken.originContractAddress == NATIVE_TOKEN_ADDERSS &&
+        originNetwork.chainId != targetNetwork.chainId && (
+          <EuiConfirmModal
+            title="Note!"
+            onCancel={onCancelTransfer}
+            onConfirm={onTransferERC20Token}
+            cancelButtonText="No, don't do it"
+            confirmButtonText="Yes, do it"
+          >
+            <>
+              <p style={{ lineHeight: 2 }}>
+                You are transfering{' '}
+                <TokenAmount>
+                  {tokenAmount} {selectedToken.symbol}
+                </TokenAmount>{' '}
+                from{' '}
+                <strong>
+                  <NetworkLogo src={sourceNetwork.logoURI ? sourceNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                  {sourceNetwork.name}
+                </strong>{' '}
+                to{' '}
+                <strong>
+                  <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                  {targetNetwork.name}
+                </strong>
+                .
+                <br />
+                This token was deployed originally on
+                <strong>
+                  <NetworkLogo src={originNetwork.logoURI ? originNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                  {originNetwork.name}
+                </strong>
+                , you will receive DotOralce Wrapped {originNetwork.nativeCurrency.symbol} on
+                <strong>
+                  <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                  {targetNetwork.name}
+                </strong>
+                . Do you want to continue?
+              </p>
+            </>
+          </EuiConfirmModal>
+        )}
     </>
   )
 }

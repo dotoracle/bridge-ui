@@ -27,3 +27,18 @@ export const UnlockButton = styled(EuiButton)`
     }
   }
 `
+
+export const TokenAmount = styled.span`
+  color: ${props => props.theme.primary};
+  line-height: 2;
+  font-weight: 500;
+`
+export const NetworkLogo = styled.img`
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+  margin-bottom: 0 !important;
+  display: inline-block !important;
+  vertical-align: baseline !important;
+  height: 18px !important;
+  width: 18px !important;
+`

@@ -76,6 +76,7 @@ function ActionButtons(): JSX.Element {
     sourceNetwork?.chainId,
     bridgeAddress,
   )
+  const originNetwork = useNetworkInfo(selectedToken?.originChainId)
   const [needApprove, setNeedApprove] = useState(true)
 
   const loadTokenBalance = async () => {
@@ -277,7 +278,7 @@ function ActionButtons(): JSX.Element {
               Select a token to transfer
             </StyledButton>
           )}
-          {showConfirmModal && selectedToken && tokenAmount && sourceNetwork && targetNetwork && (
+          {showConfirmModal && selectedToken && tokenAmount > 0 && originNetwork && sourceNetwork && targetNetwork && (
             <EuiConfirmModal
               title="Note!"
               onCancel={onCancelTransfer}
@@ -290,8 +291,7 @@ function ActionButtons(): JSX.Element {
                   Are you sure you want to transfer{' '}
                   <TokenAmount>
                     {tokenAmount} {selectedToken.symbol}
-                  </TokenAmount>
-                  <br />
+                  </TokenAmount>{' '}
                   from{' '}
                   <strong>
                     <NetworkLogo src={sourceNetwork.logoURI ? sourceNetwork.logoURI : UnknownSVG}></NetworkLogo>
@@ -303,6 +303,23 @@ function ActionButtons(): JSX.Element {
                     {targetNetwork.name}
                   </strong>{' '}
                   ?
+                  <br />
+                  <>
+                    {selectedToken.address == NATIVE_TOKEN_ADDERSS && originNetwork.chainId != targetNetwork.chainId && (
+                      <span>
+                        This token was deployed originally on
+                        <strong>
+                          <NetworkLogo src={originNetwork.logoURI ? originNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                          {originNetwork.name}
+                        </strong>
+                        , you will receive DotOralce Wrapped {originNetwork.nativeCurrency.symbol} on
+                        <strong>
+                          <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
+                          {targetNetwork.name}
+                        </strong>
+                      </span>
+                    )}
+                  </>
                 </p>
                 {targetNetwork.notEVM && (
                   <EuiFormRow

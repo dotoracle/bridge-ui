@@ -54,12 +54,13 @@ export const getTokensFromConfig = async (chainId: number): Promise<Token[]> => 
         tokens.push({
           name: t.name,
           address: network.notEVM ? t.contractHash ?? '' : t.address,
-          originContractAddress: t.originContractAddress ? t.originContractAddress : '',
-          contractHash: t.contractHash ? t.contractHash : '',
+          originContractAddress: t.originContractAddress ?? '',
+          originChainId: t.originChainId ?? Number(process.env.REACT_APP_CHAIN_ID),
+          contractHash: t.contractHash ?? '',
           symbol: t.symbol,
           decimals: t.decimals,
           logoURI: t.logoURI,
-          minBridge: t.minBridge ? t.minBridge : '0',
+          minBridge: t.minBridge ?? '0',
         })
       })
     }
