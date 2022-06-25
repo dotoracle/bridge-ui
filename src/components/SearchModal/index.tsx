@@ -146,7 +146,7 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
                   {filteredTokens.length > 0 ? (
                     <TokenList
                       tokenList={filteredTokens}
-                      onTokenSelect={handleSelect}
+                      onSelectToken={handleSelect}
                       onRemoveCustomToken={handleRemoveCustomToken}
                     />
                   ) : searchToken ? (

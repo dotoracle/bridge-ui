@@ -13,17 +13,17 @@ const TokenListDiv = styled.div`
 interface ITokenListProps {
   tokenList: Token[]
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
-  onTokenSelect: (token: Token) => void
+  onSelectToken: (token: Token) => void
   onRemoveCustomToken: (token: Token) => void
 }
 
 function TokenList(props: ITokenListProps): JSX.Element {
-  const { tokenList, onTokenSelect, onRemoveCustomToken } = props
+  const { tokenList, onSelectToken, onRemoveCustomToken } = props
   const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
 
   return (
     <>
-      {tokenList.length && (
+      {tokenList.length > 0 && (
         <TokenListDiv>
           <div className="eui-yScrollWithShadows">
             {tokenList.map(token => (
@@ -33,7 +33,7 @@ function TokenList(props: ITokenListProps): JSX.Element {
                 isSelected={Boolean(token && selectedToken && token.address === selectedToken.address)}
                 onSelect={() => {
                   if (token) {
-                    onTokenSelect(token)
+                    onSelectToken(token)
                     setSelectedToken(token)
                   }
                 }}

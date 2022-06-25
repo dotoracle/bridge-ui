@@ -16,6 +16,7 @@ const Row = styled.div`
   justify-content: space-between;
   padding: 5px 15px;
   height: 56px;
+  cursor: pointer;
 
   &:hover {
     background-color: #2c2f36;
@@ -33,9 +34,6 @@ const TokenLogo = styled.img`
   width: 24px;
   height: 24px;
   border-radius: 100%;
-`
-const TokenNameWrap = styled.div`
-  cursor: pointer;
 `
 const TokenName = styled.span`
   display: block;
@@ -119,9 +117,9 @@ function TokenRow(props: ITokenRow): JSX.Element {
   }
 
   return (
-    <Row className={isSelected ? 'disabled' : ''}>
+    <Row className={isSelected ? 'disabled' : ''} onClick={() => (isSelected ? null : onSelect())}>
       <TokenLogo src={token.logoURI ? token.logoURI : UnknownSVG} alt={token.name} />
-      <TokenNameWrap className="token-name-wrap" onClick={() => (isSelected ? null : onSelect())}>
+      <div className="token-name-wrap">
         <p>{token.symbol}</p>
         {isAdded ? (
           <TokenName>
@@ -141,7 +139,7 @@ function TokenRow(props: ITokenRow): JSX.Element {
         ) : (
           <TokenName>{token.name}</TokenName>
         )}
-      </TokenNameWrap>
+      </div>
       {tokenBalance >= 0 ? (
         <>
           {isLoadingBalance ? (
