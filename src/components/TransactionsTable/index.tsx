@@ -497,7 +497,7 @@ function TransactionsTable(): JSX.Element {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {
         toast.error(<ToastMessage color="danger" headerText="Error!" bodyText="Could not setup network" />, {
-          toastId: 'claimToken',
+          toastId: 'setupNetwork',
         })
         console.error(error)
       }

@@ -66,7 +66,7 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
               <EuiLoadingContent lines={1} />
             ) : (
               <p>
-                Balance: {tokenBalance.toFixed(4)} {networkInfo?.nativeCurrency.symbol}
+                Balance: {tokenBalance > 0 ? tokenBalance.toFixed(4) : 0} {networkInfo?.nativeCurrency.symbol}
               </p>
             )}
           </EuiModalBody>

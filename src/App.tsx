@@ -1,7 +1,6 @@
 import styled from 'styled-components/macro'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import BridgeAppContext from './context/BridgeAppContext'
-import { useWeb3React } from '@dotoracle/web3-react-core'
 import Token from './type/Token'
 import Network from './type/Network'
 import GlobalStyle from './theme/global'
@@ -28,20 +27,6 @@ function App(): JSX.Element {
   const [tokenAmount, setTokenAmount] = useState(0)
   const [sourceNetwork, setSourceNetwork] = useState<Network>()
   const [targetNetwork, setTargetNetwork] = useState<Network>()
-  const { chainId, account } = useWeb3React()
-
-  useEffect(() => {
-    // @ts-ignore
-    const { ethereum } = window
-
-    if (ethereum) {
-      ethereum.on('chainChanged', () => {
-        // clear local storage
-        localStorage.removeItem(`transactions_${account}_${chainId}`)
-        window.location.reload()
-      })
-    }
-  }, [chainId, account])
 
   return (
     <Web3ReactManager>
