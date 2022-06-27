@@ -190,7 +190,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
               onClick={onOpenConfirmModal}
             >
               {isValidAddress
-                ? tokenAmount > 0 && tokenAmount < tokenBalance
+                ? tokenAmount > 0 && tokenAmount <= tokenBalance
                   ? `Transfer ${selectedToken.symbol} to bridge`
                   : 'Insufficient balance'
                 : 'Invalid receipient address'}

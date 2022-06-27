@@ -249,7 +249,7 @@ function ActionButtons(): JSX.Element {
                   isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
                   onClick={onOpenConfirmModal}
                 >
-                  {tokenAmount > 0 && tokenAmount < tokenBalance
+                  {tokenAmount > 0 && tokenAmount <= tokenBalance
                     ? `Transfer ${selectedToken.symbol} to bridge`
                     : 'Insufficient balance'}
                 </StyledButton>
