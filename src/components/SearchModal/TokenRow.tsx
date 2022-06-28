@@ -15,7 +15,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 5px 15px;
-  height: 56px;
+  min-height: 56px;
   cursor: pointer;
 
   &:hover {
@@ -39,6 +39,7 @@ const TokenName = styled.span`
   display: block;
   margin-top: 10px;
   font-size: 12px;
+  line-height: 1.2;
   color: #6c7284;
 
   a {

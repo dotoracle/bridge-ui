@@ -1,49 +1,51 @@
 import { useMemo, useState, useEffect } from 'react'
-import { getTokensFromConfig } from 'utils'
-// import { Contract } from 'web3-eth-contract'
+// import { getTokensFromConfig } from 'utils'
+import { Contract } from 'web3-eth-contract'
 import Token from '../type/Token'
-// import { useTokenContract } from './useContract'
+import { useTokenContract } from './useContract'
 import { useActiveWeb3React } from './useWeb3'
 
 // undefined if invalid or does not exist
 // otherwise returns the token
-// const getTokenInfo = async (tokenContract: Contract | null): Promise<Token | undefined> => {
-//   try {
-//     const tokenName = await tokenContract?.methods.name().call()
-//     const symbol = await tokenContract?.methods.symbol().call()
-//     const decimals = await tokenContract?.methods.decimals().call()
+const getTokenInfo = async (tokenContract: Contract | null): Promise<Token | undefined> => {
+  try {
+    const tokenName = await tokenContract?.methods.name().call()
+    const symbol = await tokenContract?.methods.symbol().call()
+    const decimals = await tokenContract?.methods.decimals().call()
 
-//     if (!decimals || !symbol || !tokenName) return undefined
+    if (!decimals || !symbol || !tokenName) return undefined
 
-//     return {
-//       name: tokenName,
-//       symbol,
-//       decimals,
-//       logoURI: '',
-//     } as Token
-//   } catch (error) {
-//     return undefined
-//   }
-// }
+    return {
+      name: tokenName,
+      symbol,
+      decimals,
+      logoURI: '',
+    } as Token
+  } catch (error) {
+    return undefined
+  }
+}
 
-export const useToken = (chainId: number, tokenAddress?: string): Token | undefined => {
+// export const useToken = (chainId: number, tokenAddress?: string): Token | undefined => {
+export const useToken = (tokenAddress?: string): Token | undefined => {
   const [tokenInfo, setTokenInfo] = useState<Token>()
 
-  // const tokenContract = useTokenContract(tokenAddress)
+  const tokenContract = useTokenContract(tokenAddress)
+
   useEffect(() => {
     const fetchData = async () => {
-      // const result = await getTokenInfo(tokenContract)
-      // setTokenInfo(result)
-      const tokens = await getTokensFromConfig(chainId)
-      const _token = tokens.find(t => t.address === tokenAddress)
+      const result = await getTokenInfo(tokenContract)
+      setTokenInfo(result)
+      // const tokens = await getTokensFromConfig(chainId)
+      // const _token = tokens.find(t => t.address === tokenAddress)
 
-      if (_token) {
-        setTokenInfo(_token)
-      }
+      // if (_token) {
+      //   setTokenInfo(_token)
+      // }
     }
 
     fetchData()
-  }, [tokenAddress])
+  }, [tokenAddress, tokenContract])
 
   return useMemo(() => {
     if (!tokenInfo) return undefined
@@ -52,7 +54,7 @@ export const useToken = (chainId: number, tokenAddress?: string): Token | undefi
       ...tokenInfo,
       address: tokenAddress,
     } as Token
-  }, [tokenAddress])
+  }, [tokenAddress, tokenInfo])
 }
 
 export const useIsUserAddedToken = (token: Token): boolean => {

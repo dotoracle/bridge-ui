@@ -52,13 +52,14 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
-  const searchToken = useToken(networkId, isAddress(debouncedQuery) ? debouncedQuery : undefined)
+  // const searchToken = useToken(networkId, isAddress(debouncedQuery) ? debouncedQuery : undefined)
+  const searchToken = useToken(isAddress(debouncedQuery) ? debouncedQuery : undefined)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setFetching(true)
-        let _tokenList = await getTokensFromConfig(networkId)
+        let _tokenList = await getTokensFromConfig(account, networkId)
 
         if (!showNativeToken) {
           _tokenList = _tokenList.filter(t => t.address !== NATIVE_TOKEN_ADDERSS)
@@ -111,12 +112,12 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
     }
 
     setSearchQuery('')
-    setTokenList(await getTokensFromConfig(networkId))
+    setTokenList(await getTokensFromConfig(account, networkId))
   }
 
   const handleRemoveCustomToken = async () => {
     setSearchQuery('')
-    setTokenList(await getTokensFromConfig(networkId))
+    setTokenList(await getTokensFromConfig(account, networkId))
   }
 
   return (
