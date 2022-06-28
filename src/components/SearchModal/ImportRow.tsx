@@ -12,7 +12,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 5px 15px;
-  height: 56px;
+  min-height: 56px;
   cursor: pointer;
 
   &:hover {

@@ -18,7 +18,7 @@ const getTokenInfo = async (tokenContract: Contract | null): Promise<Token | und
     return {
       name: tokenName,
       symbol,
-      decimals,
+      decimals: Number(decimals),
       logoURI: '',
     } as Token
   } catch (error) {
