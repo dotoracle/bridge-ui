@@ -71,6 +71,24 @@
     "blockTime": 12
   },
   {
+    "name": "OKXChain Mainnet",
+    "chainId": 66,
+    "logoURI": "https://assets.coingecko.com/markets/images/96/small/WeChat_Image_20220117220452.png",
+    "explorer": "https://www.oklink.com/en/okc/",
+    "txUrl": "/tx/",
+    "rpcURL": "https://exchainrpc.okex.org",
+    "isTestnet": false,
+    "notEVM": false,
+    "bridge": "0x328A523B71545ddE8CD12a685318F2777D68798D",
+    "nativeCurrency": {
+      "name": "OKT",
+      "symbol": "OKT",
+      "decimals": 18
+    },
+    "confirmations": 6,
+    "blockTime": 12
+  },
+  {
     "name": "Kovan Test Network",
     "chainId": 42,
     "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png",
