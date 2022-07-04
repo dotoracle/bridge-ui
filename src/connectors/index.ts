@@ -3,6 +3,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { TorusConnector } from '@dotoracle/web3-react-torus-connector-casper'
 import { NetworkConnector } from './NetworkConnector'
 import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connector'
+import networks from 'config/networks.json'
 
 export enum ConnectorNames {
   Injected = 'injected',
@@ -18,8 +19,12 @@ if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
 }
 
+const supportedChainIds = Object.values(networks)
+  .filter(n => !n.notEVM)
+  .map(n => n.chainId)
+
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 56, 43114, 1284, 66, 42, 89, 97, 1287, 4002, 43113, 80001],
+  supportedChainIds: supportedChainIds,
 })
 
 export const walletconnect = new WalletConnectConnector({
