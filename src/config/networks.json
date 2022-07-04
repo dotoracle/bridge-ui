@@ -71,7 +71,7 @@
     "blockTime": 12
   },
   {
-    "name": "OKXChain Mainnet",
+    "name": "OKC",
     "chainId": 66,
     "logoURI": "https://assets.coingecko.com/markets/images/96/small/WeChat_Image_20220117220452.png",
     "explorer": "https://www.oklink.com/en/okc/",
