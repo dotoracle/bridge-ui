@@ -24,6 +24,7 @@ import ToastMessage from '../ToastMessage'
 import { ConnectorNames, connectorsByName } from '../../connectors'
 import { connectorLocalStorageKey } from '../../constants'
 import MetaMaskSVG from '../../assets/images/metamask.svg'
+import OXKJPED from '../../assets/images/okx-wallet.jpeg'
 import TorusPNG from '../../assets/images/torus.png'
 import CasperPNG from '../../assets/images/casper.png'
 
@@ -69,6 +70,7 @@ interface IWalletModalProps {
 function WalletModal(props: IWalletModalProps): JSX.Element {
   const { closeModal } = props
   const { activate } = useWeb3React()
+  const [isLoadingOKX, setIsLoadingOKX] = useState(false)
   const [isLoadingTorus, setIsLoadingTorus] = useState(false)
   const [isLoadingCasper, setIsLoadingCasper] = useState(false)
 
@@ -78,12 +80,16 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
     if (connector) {
       window.localStorage.setItem(connectorLocalStorageKey, connectorID)
 
-      if (connectorID == ConnectorNames.TorusWallet) {
+      if (connectorID === ConnectorNames.TorusWallet) {
         setIsLoadingTorus(true)
       }
 
-      if (connectorID == ConnectorNames.CasperSigner) {
+      if (connectorID === ConnectorNames.CasperSigner) {
         setIsLoadingCasper(true)
+      }
+
+      if (connectorID === ConnectorNames.OKXWallet) {
+        setIsLoadingOKX(true)
       }
 
       await activate(connector, async (error: Error) => {
@@ -145,6 +151,10 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
             <WalletButton onClick={() => onConnectWallet(ConnectorNames.Injected)}>
               <span>Metamask</span>
               <WalletLogo src={MetaMaskSVG} alt="Metamask" />
+            </WalletButton>
+            <WalletButton isLoading={isLoadingOKX} onClick={() => onConnectWallet(ConnectorNames.OKXWallet)}>
+              <span>OKX Wallet</span>
+              <WalletLogo src={OXKJPED} alt="OKX Wallet" />
             </WalletButton>
             <WalletButton isLoading={isLoadingTorus} onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}>
               <span>Torus (for Casper)</span>

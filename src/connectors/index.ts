@@ -1,5 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { InjectedConnector as OKXConnector } from 'web3-react-okexchain-connector'
 import { TorusConnector } from '@dotoracle/web3-react-torus-connector-casper'
 import { NetworkConnector } from './NetworkConnector'
 import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connector'
@@ -7,6 +8,7 @@ import networks from 'config/networks.json'
 
 export enum ConnectorNames {
   Injected = 'injected',
+  OKXWallet = 'okxwallet',
   WalletConnect = 'walletconnect',
   TorusWallet = 'torus',
   CasperSigner = 'caspersigner',
@@ -24,6 +26,10 @@ const supportedChainIds = Object.values(networks)
   .map(n => n.chainId)
 
 export const injected = new InjectedConnector({
+  supportedChainIds: supportedChainIds,
+})
+
+export const okxConnector = new OKXConnector({
   supportedChainIds: supportedChainIds,
 })
 
@@ -82,6 +88,7 @@ export const caspersigner = new CasperSignerConnector({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.Injected]: injected,
+  [ConnectorNames.OKXWallet]: okxConnector,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.TorusWallet]: torus,
   [ConnectorNames.CasperSigner]: caspersigner,
