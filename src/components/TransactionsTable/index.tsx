@@ -45,8 +45,6 @@ import { ConnectorNames, injected } from 'connectors'
 import { connectorLocalStorageKey, NATIVE_TOKEN_ADDERSS } from '../../constants'
 
 function TransactionsTable(): JSX.Element {
-  // const account = '0xd4a5bdc7eef008c388ede924f46d597239b15ccf'
-  // const { chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
   const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
   const currentNetwork = useNetworkInfo(currentChainId)
 

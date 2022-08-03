@@ -13,6 +13,7 @@ import { NATIVE_TOKEN_ADDERSS } from '../constants'
 
 export const getContract = (address: string, abi: AbiItem, web3: Web3): Contract | null => {
   try {
+    // @ts-ignore
     return new web3.eth.Contract(abi, address)
   } catch (error) {
     console.error('Failed to get contract', error)
@@ -288,3 +289,5 @@ export const toPlainString = (num: any) => {
     return e < 0 ? b + '0.' + Array(1 - e - c.length).join('0') + c + d : b + c + d + Array(e - d.length + 1).join('0')
   })
 }
+
+export const isDev = process.env.NODE_ENV !== 'production'

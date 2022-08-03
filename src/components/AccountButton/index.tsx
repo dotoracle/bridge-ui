@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { EuiTextAlign, EuiButton } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import WalletModal from '../WalletModal'
@@ -6,6 +6,7 @@ import AccountInfoModal from '../AccountInfoModal'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import SupportedNetworksModal from 'components/SupportedNetworksModal'
+import BridgeAppContext from 'context/BridgeAppContext'
 
 const NetworkLogo = styled.img`
   width: 24px;
@@ -45,14 +46,6 @@ const NetworkButtonInner = styled.div`
 const ButtonWrap = styled.div`
   display: flex;
   align-items: center;
-
-  @media (min-width: 992px) {
-    margin-left: 1.25rem;
-  }
-
-  @media (min-width: 1200px) {
-    margin-left: 2rem;
-  }
 `
 const TokenBalance = styled.div`
   display: none;
@@ -73,6 +66,7 @@ const StyledButton = styled(EuiButton)`
 
 function AccountButton(): JSX.Element {
   const { account, chainId, library } = useActiveWeb3React()
+  const { sourceNetwork } = useContext(BridgeAppContext)
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 
   const [showWalletModal, setShowWalletModal] = useState(false)
@@ -102,15 +96,18 @@ function AccountButton(): JSX.Element {
 
   return (
     <>
+      <>
+        <NetworkButton color="text" onClick={() => setShowSupportedNetworkModal(true)}>
+          <NetworkButtonInner>
+            {networkInfo && networkInfo.logoURI && <NetworkLogo src={networkInfo.logoURI} alt={networkInfo.name} />}
+            <span>{networkInfo && networkInfo.name}</span>
+          </NetworkButtonInner>
+        </NetworkButton>
+        {showSupportedNetworkModal && <SupportedNetworksModal closeModal={() => setShowSupportedNetworkModal(false)} />}
+      </>
       {account ? (
         <>
           <ButtonWrap>
-            <NetworkButton color="text" onClick={() => setShowSupportedNetworkModal(true)}>
-              <NetworkButtonInner>
-                {networkInfo && networkInfo.logoURI && <NetworkLogo src={networkInfo.logoURI} alt={networkInfo.name} />}
-                <span>{networkInfo && networkInfo.name}</span>
-              </NetworkButtonInner>
-            </NetworkButton>
             <TokenBalance>
               {tokenBalance > 0 ? tokenBalance.toFixed(4) : 0} {networkInfo?.nativeCurrency.symbol}
             </TokenBalance>
@@ -119,9 +116,6 @@ function AccountButton(): JSX.Element {
             </StyledButton>
           </ButtonWrap>
           {showAccountModal && <AccountInfoModal closeModal={() => setShowAccountModal(false)} />}
-          {showSupportedNetworkModal && (
-            <SupportedNetworksModal closeModal={() => setShowSupportedNetworkModal(false)} />
-          )}
         </>
       ) : (
         <>

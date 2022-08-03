@@ -21,31 +21,37 @@ export const useTokenBalanceCallback = (
   const getTokenBalance = useCallback(async (): Promise<number> => {
     let _balance = 0
 
-    if (account && networkInfo) {
-      if (tokenAddress === NATIVE_TOKEN_ADDERSS) {
-        if (networkInfo.notEVM) {
-          const casper = new CasperClient(networkInfo.rpcURL)
-          const casperBalance = await casper.balanceOfByPublicKey(CLPublicKey.fromHex(account))
-          _balance = casperBalance.toNumber()
+    try {
+      if (account && networkInfo) {
+        if (tokenAddress === NATIVE_TOKEN_ADDERSS) {
+          if (networkInfo.notEVM) {
+            const casper = new CasperClient(networkInfo.rpcURL)
+            const casperBalance = await casper.balanceOfByPublicKey(CLPublicKey.fromHex(account))
+            _balance = casperBalance.toNumber()
+          } else {
+            const web3 = new Web3(library)
+            const ethBalance = await web3.eth.getBalance(account)
+            _balance = Number(ethBalance)
+          }
         } else {
-          const web3 = new Web3(library)
-          const ethBalance = await web3.eth.getBalance(account)
-          _balance = Number(ethBalance)
-        }
-      } else {
-        if (networkInfo.notEVM) {
-          const erc20 = new ERC20Client(networkInfo.rpcURL, networkInfo.key ?? '', networkInfo.eventStream)
-          await erc20.setContractHash(tokenAddress ?? '')
-          _balance = await erc20.balanceOf(CLPublicKey.fromHex(account))
-        } else {
-          _balance = await tokenContract?.methods.balanceOf(account).call()
+          if (networkInfo.notEVM) {
+            const erc20 = new ERC20Client(networkInfo.rpcURL, networkInfo.key ?? '', networkInfo.eventStream)
+            await erc20.setContractHash(tokenAddress ?? '')
+            _balance = await erc20.balanceOf(CLPublicKey.fromHex(account))
+          } else {
+            _balance = await tokenContract?.methods.balanceOf(account).call()
+          }
         }
       }
-    }
 
-    if (_balance >= 0 && decimals) {
-      const _balanceBN = fromWei(_balance, decimals)
-      _balance = _balanceBN.toNumber()
+      if (_balance >= 0 && decimals) {
+        const _balanceBN = fromWei(_balance, decimals)
+        _balance = _balanceBN.toNumber()
+      }
+    } catch (error) {
+      console.log(error)
+      console.log(networkInfo)
+      _balance = 0
     }
     return _balance
   }, [account, decimals, tokenAddress, tokenContract])
