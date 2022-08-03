@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -18,15 +18,21 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
+import AppEth from '@ledgerhq/hw-app-eth'
 import { toast } from 'react-toastify'
 import styled from 'styled-components/macro'
 import ToastMessage from '../ToastMessage'
-import { ConnectorNames, connectorsByName } from '../../connectors'
+import { ConnectorNames, connectorsByName, network } from 'connectors'
 import { connectorLocalStorageKey } from '../../constants'
 import MetaMaskSVG from '../../assets/images/metamask.svg'
 import OXKJPED from '../../assets/images/okx-wallet.jpeg'
 import TorusPNG from '../../assets/images/torus.png'
 import CasperPNG from '../../assets/images/casper.png'
+import LedgerPNG from '../../assets/images/ledger-wallet.png'
+import LedgerWarningModal from 'components/LedgerWarningModal'
+import BridgeAppContext from 'context/BridgeAppContext'
+import { setupNetwork } from 'utils'
 
 const WalletButton = styled(EuiButton)`
   margin-bottom: 1rem;
@@ -56,6 +62,16 @@ const WalletButton = styled(EuiButton)`
   &:last-child {
     margin-bottom: 0;
   }
+
+  &.euiButton-isDisabled {
+    .euiButton__text {
+      color: #757678;
+    }
+
+    img {
+      opacity: 0.4;
+    }
+  }
 `
 
 const WalletLogo = styled.img`
@@ -69,13 +85,20 @@ interface IWalletModalProps {
 
 function WalletModal(props: IWalletModalProps): JSX.Element {
   const { closeModal } = props
+  const { sourceNetwork } = useContext(BridgeAppContext)
   const { activate } = useWeb3React()
   const [isLoadingOKX, setIsLoadingOKX] = useState(false)
   const [isLoadingTorus, setIsLoadingTorus] = useState(false)
   const [isLoadingCasper, setIsLoadingCasper] = useState(false)
+  const [isLoadingLedger, setIsLoadingLedger] = useState(false)
+  const [showLedgerWarning, setShowLedgerWarning] = useState(false)
 
   const onConnectWallet = async (connectorID: ConnectorNames) => {
     const connector = connectorsByName[connectorID]
+
+    if (sourceNetwork && connectorID != ConnectorNames.Ledger) {
+      await setupNetwork(sourceNetwork)
+    }
 
     if (connector) {
       window.localStorage.setItem(connectorLocalStorageKey, connectorID)
@@ -90,6 +113,12 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
 
       if (connectorID === ConnectorNames.OKXWallet) {
         setIsLoadingOKX(true)
+      }
+
+      if (connectorID === ConnectorNames.Ledger) {
+        setIsLoadingLedger(true)
+        setShowLedgerWarning(true)
+        return
       }
 
       await activate(connector, async (error: Error) => {
@@ -148,26 +177,43 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
           </EuiModalHeader>
 
           <EuiModalBody>
-            <WalletButton onClick={() => onConnectWallet(ConnectorNames.Injected)}>
+            <WalletButton isDisabled={sourceNetwork?.notEVM} onClick={() => onConnectWallet(ConnectorNames.Injected)}>
               <span>Metamask</span>
               <WalletLogo src={MetaMaskSVG} alt="Metamask" />
             </WalletButton>
-            <WalletButton isLoading={isLoadingOKX} onClick={() => onConnectWallet(ConnectorNames.OKXWallet)}>
+            <WalletButton
+              isDisabled={sourceNetwork?.notEVM}
+              isLoading={isLoadingOKX}
+              onClick={() => onConnectWallet(ConnectorNames.OKXWallet)}
+            >
               <span>OKX Wallet</span>
               <WalletLogo src={OXKJPED} alt="OKX Wallet" />
             </WalletButton>
-            <WalletButton isLoading={isLoadingTorus} onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}>
+            <WalletButton
+              isDisabled={!sourceNetwork?.notEVM}
+              isLoading={isLoadingTorus}
+              onClick={() => onConnectWallet(ConnectorNames.TorusWallet)}
+            >
               <span>Torus (for Casper)</span>
               <WalletLogo src={TorusPNG} alt="Torus" />
             </WalletButton>
-            <WalletButton isLoading={isLoadingCasper} onClick={() => onConnectWallet(ConnectorNames.CasperSigner)}>
+            <WalletButton
+              isDisabled={!sourceNetwork?.notEVM}
+              isLoading={isLoadingCasper}
+              onClick={() => onConnectWallet(ConnectorNames.CasperSigner)}
+            >
               <span>Casper Signer</span>
               <WalletLogo src={CasperPNG} alt="Casper Signer" />
+            </WalletButton>
+            <WalletButton isLoading={isLoadingLedger} onClick={() => onConnectWallet(ConnectorNames.Ledger)}>
+              <span>Ledger Wallet</span>
+              <WalletLogo src={LedgerPNG} alt="Ledger Wallet" />
             </WalletButton>
           </EuiModalBody>
         </EuiModal>
       </EuiOutsideClickDetector>
       <EuiWindowEvent event="keydown" handler={onEscKeydown} />
+      {showLedgerWarning && <LedgerWarningModal closeModal={() => setShowLedgerWarning(false)} />}
     </>
   )
 }

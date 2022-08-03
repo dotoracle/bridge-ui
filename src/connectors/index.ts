@@ -12,6 +12,7 @@ export enum ConnectorNames {
   WalletConnect = 'walletconnect',
   TorusWallet = 'torus',
   CasperSigner = 'caspersigner',
+  Ledger = 'ledger',
 }
 
 const NETWORK_CHAIN_ID = Number(process.env.REACT_APP_CHAIN_ID)
@@ -92,4 +93,5 @@ export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.TorusWallet]: torus,
   [ConnectorNames.CasperSigner]: caspersigner,
+  [ConnectorNames.Ledger]: 'ledger',
 }

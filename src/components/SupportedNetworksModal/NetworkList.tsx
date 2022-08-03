@@ -1,5 +1,5 @@
-import { useActiveWeb3React, useNetworkInfo } from 'hooks'
-import { MutableRefObject } from 'react'
+import { useActiveWeb3React } from 'hooks'
+import { MutableRefObject, useContext } from 'react'
 import { FixedSizeList } from 'react-window'
 import styled from 'styled-components/macro'
 import Network from 'type/Network'
@@ -9,6 +9,7 @@ import { caspersigner, ConnectorNames, injected, torus } from 'connectors'
 import { setupNetwork } from 'utils'
 import ToastMessage from 'components/ToastMessage'
 import { toast } from 'react-toastify'
+import BridgeAppContext from 'context/BridgeAppContext'
 
 const NetworkListDiv = styled.div`
   height: 280px;
@@ -23,15 +24,29 @@ interface INetworkListProps {
 
 function NetworkList(props: INetworkListProps): JSX.Element {
   const { networkList, onSelectNetwork } = props
-  const { chainId, deactivate, activate } = useActiveWeb3React()
-  const currentNetwork = useNetworkInfo(chainId)
+  const {
+    setSourceNetwork,
+    setTargetNetwork,
+    sourceNetwork,
+    targetNetwork: targetNetworkContext,
+  } = useContext(BridgeAppContext)
+  const { account, deactivate, activate } = useActiveWeb3React()
 
   const onSetupNetwork = async (network: Network) => {
     try {
+      if (targetNetworkContext?.chainId == network.chainId && sourceNetwork) {
+        setTargetNetwork(sourceNetwork)
+      }
+      setSourceNetwork(network)
+
+      if (!account) {
+        return
+      }
+
       let hasSetup = false
 
       // if current network is Casper
-      if (currentNetwork?.notEVM) {
+      if (sourceNetwork?.notEVM) {
         window.localStorage.removeItem(connectorLocalStorageKey)
         deactivate()
 
@@ -92,7 +107,7 @@ function NetworkList(props: INetworkListProps): JSX.Element {
               <NetworkRow
                 key={network.chainId}
                 network={network}
-                isSelected={Boolean(network && currentNetwork && network.chainId === currentNetwork.chainId)}
+                isSelected={Boolean(network && network.chainId === sourceNetwork?.chainId)}
                 onSelect={() => {
                   if (network) {
                     onSetupNetwork(network)

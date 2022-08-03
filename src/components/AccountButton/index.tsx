@@ -96,15 +96,19 @@ function AccountButton(): JSX.Element {
 
   return (
     <>
-      <>
-        <NetworkButton color="text" onClick={() => setShowSupportedNetworkModal(true)}>
-          <NetworkButtonInner>
-            {networkInfo && networkInfo.logoURI && <NetworkLogo src={networkInfo.logoURI} alt={networkInfo.name} />}
-            <span>{networkInfo && networkInfo.name}</span>
-          </NetworkButtonInner>
-        </NetworkButton>
-        {showSupportedNetworkModal && <SupportedNetworksModal closeModal={() => setShowSupportedNetworkModal(false)} />}
-      </>
+      {sourceNetwork && (
+        <>
+          <NetworkButton color="text" onClick={() => setShowSupportedNetworkModal(true)}>
+            <NetworkButtonInner>
+              {sourceNetwork.logoURI && <NetworkLogo src={sourceNetwork.logoURI} alt={sourceNetwork.name} />}
+              <span>{sourceNetwork.name}</span>
+            </NetworkButtonInner>
+          </NetworkButton>
+          {showSupportedNetworkModal && (
+            <SupportedNetworksModal closeModal={() => setShowSupportedNetworkModal(false)} />
+          )}
+        </>
+      )}
       {account ? (
         <>
           <ButtonWrap>
