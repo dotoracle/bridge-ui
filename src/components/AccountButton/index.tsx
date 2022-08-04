@@ -8,6 +8,7 @@ import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import SupportedNetworksModal from 'components/SupportedNetworksModal'
 import BridgeAppContext from 'context/BridgeAppContext'
 import Web3 from 'web3'
+import { formatNumber } from 'utils'
 
 const NetworkLogo = styled.img`
   width: 24px;
@@ -122,7 +123,7 @@ function AccountButton(): JSX.Element {
         <>
           <ButtonWrap>
             <TokenBalance>
-              {tokenBalance > 0 ? tokenBalance.toFixed(4) : 0} {networkInfo?.nativeCurrency.symbol}
+              {formatNumber(tokenBalance)} {networkInfo?.nativeCurrency.symbol}
             </TokenBalance>
             <StyledButton fill onClick={() => setShowAccountModal(true)}>
               <EuiTextAlign textAlign="left">{accountEllipsis}</EuiTextAlign>

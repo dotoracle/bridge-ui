@@ -155,7 +155,7 @@ function TokenRow(props: ITokenRow): JSX.Element {
           {isLoadingBalance ? (
             <EuiLoadingContent lines={1} />
           ) : (
-            <Balance description={formatNumber(Number(tokenBalance.toFixed(4)))} textWrap="truncate" color="subdued" />
+            <Balance description={formatNumber(tokenBalance)} textWrap="truncate" color="subdued" />
           )}
         </>
       ) : (

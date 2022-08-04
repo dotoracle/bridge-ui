@@ -4,6 +4,7 @@ import styled from 'styled-components/macro'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import BridgeAppContext from 'context/BridgeAppContext'
 import Web3 from 'web3'
+import { formatNumber } from 'utils'
 
 const AmountInputWrapper = styled.div`
   width: 100%;
@@ -88,13 +89,13 @@ function AmountInput(): JSX.Element {
         onChange={onChange}
         append={<Button onClick={onMax}>Max</Button>}
       />
-      {selectedToken && (
+      {selectedToken && account && (
         <Description>
           {isLoadingBalance ? (
             <EuiLoadingContent lines={1} />
           ) : (
             <span>
-              Available: {tokenBalance ? tokenBalance.toFixed(4) : 0} {selectedToken.symbol}
+              Available: {formatNumber(tokenBalance)} {selectedToken.symbol}
             </span>
           )}
         </Description>

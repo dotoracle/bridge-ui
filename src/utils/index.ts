@@ -92,10 +92,10 @@ export const getTokensFromConfig = async (
   return tokens
 }
 
-export const formatNumber = (number: number): string => {
+export const formatNumber = (number: number | string): string => {
   const seps = number.toString().split('.')
   seps[0] = seps[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  return seps.join('.')
+  return Number(number) % 1 === 0 ? seps[0] : seps.join('.')
 }
 
 export const fromWei = (number: string | number, decimals?: number): BigNumber => {
