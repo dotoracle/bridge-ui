@@ -17,7 +17,7 @@ import { AppBoxWrap, ArrowImage, FormRow, FormWrap, NetworkItem, Reminder, Style
 import { fromWei } from 'utils'
 
 function AppBox(): JSX.Element {
-  const { account, chainId } = useActiveWeb3React()
+  const { account: web3Account, chainId: web3ChainId } = useActiveWeb3React()
   const [receipient, setReceipient] = useState('')
   const {
     selectedToken,
@@ -25,11 +25,16 @@ function AppBox(): JSX.Element {
     targetNetwork: targetNetworkContext,
     setSourceNetwork,
     setTargetNetwork,
+    ledgerAddress,
   } = useContext(BridgeAppContext)
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetworkContext?.chainId : web3ChainId
 
   const [minBridge, setMinBridge] = useState('0')
 
   const sourceNetworkHook = useNetworkInfo(chainId)
+
   const sourceNetwork = sourceNetworkContext ? sourceNetworkContext : sourceNetworkHook
 
   const otherNetworks = useOtherNetworks(sourceNetwork, account, chainId)

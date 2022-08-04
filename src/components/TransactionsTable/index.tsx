@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import {
   EuiInMemoryTable,
@@ -43,9 +43,15 @@ import UnknownSVG from 'assets/images/unknown.svg'
 import NetworkInfo from './NetworkInfo'
 import { ConnectorNames, injected } from 'connectors'
 import { connectorLocalStorageKey, NATIVE_TOKEN_ADDERSS } from '../../constants'
+import BridgeAppContext from 'context/BridgeAppContext'
 
 function TransactionsTable(): JSX.Element {
-  const { account, chainId: currentChainId, deactivate, activate } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId, deactivate, activate } = useActiveWeb3React()
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const currentChainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const bridgeAddress = useBridgeAddress(currentChainId)

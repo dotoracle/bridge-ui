@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { toHex } from 'web3-utils'
 import { useActiveWeb3React } from './useWeb3'
@@ -6,6 +6,7 @@ import useTokenAllowance from './useTokenAllowance'
 import { useTokenContract } from './useContract'
 import Token from '../type/Token'
 import { NATIVE_TOKEN_ADDERSS } from '../constants'
+import BridgeAppContext from 'context/BridgeAppContext'
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -20,7 +21,9 @@ export const useApproveCallback = (
   spender?: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): [ApprovalState, (infinity?: boolean) => Promise<any>] => {
-  const { account } = useActiveWeb3React()
+  const { account: web3Account } = useActiveWeb3React()
+  const { ledgerAddress } = useContext(BridgeAppContext)
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {

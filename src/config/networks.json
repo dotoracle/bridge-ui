@@ -25,6 +25,7 @@
     "txUrl": "/tx/",
     "rpcURL": "https://bsc-dataseed1.binance.org/",
     "isTestnet": false,
+    "notEVM": false,
     "bridge": "0x328A523B71545ddE8CD12a685318F2777D68798D",
     "nativeCurrency": {
       "name": "BNB",
@@ -114,6 +115,7 @@
     "txUrl": "/tx/",
     "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545",
     "isTestnet": true,
+    "notEVM": false,
     "bridge": "0x9927e816cCF2964a18AB0444A22B91cCe8a1f29D",
     "nativeCurrency": {
       "name": "BNB",

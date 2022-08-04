@@ -104,7 +104,10 @@ function AccountButton(): JSX.Element {
     <>
       {sourceNetwork && (
         <>
-          <NetworkButton color="text" onClick={() => setShowSupportedNetworkModal(true)}>
+          <NetworkButton
+            color="text"
+            onClick={() => (ledgerAddress !== '' ? null : setShowSupportedNetworkModal(true))}
+          >
             <NetworkButtonInner>
               {sourceNetwork.logoURI && <NetworkLogo src={sourceNetwork.logoURI} alt={sourceNetwork.name} />}
               <span>{sourceNetwork.name}</span>

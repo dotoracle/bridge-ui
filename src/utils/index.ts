@@ -21,7 +21,10 @@ export const getContract = (address: string, abi: AbiItem, web3: Web3): Contract
   }
 }
 
-export const getTokensFromConfig = async (account: string | null | undefined, chainId: number): Promise<Token[]> => {
+export const getTokensFromConfig = async (
+  account: string | null | undefined,
+  chainId: number | undefined,
+): Promise<Token[]> => {
   const tokens: Token[] = []
 
   try {

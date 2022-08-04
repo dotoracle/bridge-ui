@@ -1,4 +1,5 @@
-import { useMemo, useState, useEffect } from 'react'
+import BridgeAppContext from 'context/BridgeAppContext'
+import { useMemo, useState, useEffect, useContext } from 'react'
 // import { getTokensFromConfig } from 'utils'
 import { Contract } from 'web3-eth-contract'
 import Token from '../type/Token'
@@ -58,7 +59,11 @@ export const useToken = (tokenAddress?: string): Token | undefined => {
 }
 
 export const useIsUserAddedToken = (token: Token): boolean => {
-  const { account, chainId } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId } = useActiveWeb3React()
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
 
   const data = localStorage.getItem(`tokens_${account}_${chainId}`)
 

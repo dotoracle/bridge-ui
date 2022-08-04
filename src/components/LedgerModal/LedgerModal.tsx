@@ -83,7 +83,7 @@ interface ILedgerWarningModal {
 
 function LedgerModal(props: ILedgerWarningModal): JSX.Element {
   const { closeModal } = props
-  const { sourceNetwork, ledgerAddress, setLedgerAddress } = useContext(BridgeAppContext)
+  const { sourceNetwork, setLedgerAddress } = useContext(BridgeAppContext)
 
   const [step, setStep] = useState(1)
   const [seltectId, setSelectedId] = useState(0)
@@ -139,7 +139,6 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
       for (let i = currentIndex; i < currentIndex + 5; i++) {
         const currentPath = path.replace('x', i.toString())
         const account = await appEth.getAddress(currentPath)
-        console.log(account)
         _list.push(account.address)
       }
 

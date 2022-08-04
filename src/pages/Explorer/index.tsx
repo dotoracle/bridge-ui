@@ -1,7 +1,8 @@
 import Container from 'components/Container'
+import BridgeAppContext from 'context/BridgeAppContext'
 import { useActiveWeb3React, useNetworkInfo } from 'hooks'
 import { useTxnHistory } from 'hooks'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Title, TitleShadow, TitleWrapper } from 'styled'
 import Transaction from 'type/Transaction'
 import { parseResponseToTransactionsAllChain } from 'utils'
@@ -9,7 +10,10 @@ import HistoryTable from './HistoryTable'
 import { BoxWrap } from './styled'
 
 function Explorer(): JSX.Element {
-  const { chainId } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { chainId: web3ChainId } = useActiveWeb3React()
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const currentNetwork = useNetworkInfo(chainId)
   const { data: response, error } = useTxnHistory()
   const [transactions, setTranstractions] = useState<Transaction[]>([])

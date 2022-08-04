@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import Web3 from 'web3'
 import { Contract } from 'web3-eth-contract'
 import { useActiveWeb3React } from './useWeb3'
@@ -7,10 +7,17 @@ import { getContract } from '../utils'
 // ABI
 import ERC20_ABI from '../constants/abi/ERC20.abi.json'
 import BRIDGE_ABI from '../constants/abi/GenericBridge.abi.json'
+import BridgeAppContext from 'context/BridgeAppContext'
+import { useNetworkInfo } from './useNetwork'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useContract = (address?: string, abi?: any) => {
-  const { library, account } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { library: web3Library, account: web3Account, chainId: web3ChainId } = useActiveWeb3React()
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+  const networkInfo = useNetworkInfo(chainId)
+  const library = ledgerAddress !== '' ? new Web3.providers.HttpProvider(networkInfo?.rpcURL ?? '') : web3Library
 
   return useMemo(() => {
     if (!address || !abi) return null

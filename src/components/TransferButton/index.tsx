@@ -22,6 +22,7 @@ import { CasperSignerConnector } from '@dotoracle/web3-react-caspersigner-connec
 import { isAddress } from 'web3-utils'
 import UnknownSVG from 'assets/images/unknown.svg'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
+import Web3 from 'web3'
 
 interface TransferButtonProps {
   receipient: string
@@ -30,11 +31,16 @@ interface TransferButtonProps {
 
 function TransferButton(props: TransferButtonProps): JSX.Element {
   const { receipient, onRefresh } = props
-  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
-  const { account, chainId, library, connector } = useActiveWeb3React()
+  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, ledgerAddress } =
+    useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId, library: web3Library, connector } = useActiveWeb3React()
   const [isValidAddress, setIsValidAddress] = useState(false)
 
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const networkInfo = useNetworkInfo(chainId)
+  const library = ledgerAddress !== '' ? new Web3.providers.HttpProvider(networkInfo?.rpcURL ?? '') : web3Library
 
   const [isLoadingBalance, setIsLoadingBalance] = useState(false)
   const [tokenBalance, setTokenBalance] = useState(0)

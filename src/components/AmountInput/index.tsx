@@ -3,6 +3,7 @@ import { EuiFieldNumber, EuiButton, EuiLoadingContent } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
 import BridgeAppContext from 'context/BridgeAppContext'
+import Web3 from 'web3'
 
 const AmountInputWrapper = styled.div`
   width: 100%;
@@ -34,9 +35,14 @@ const Description = styled.p`
 `
 
 function AmountInput(): JSX.Element {
-  const { selectedToken, tokenAmount, setTokenAmount } = useContext(BridgeAppContext)
-  const { account, chainId, library } = useActiveWeb3React()
+  const { selectedToken, tokenAmount, setTokenAmount, sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId, library: web3Library } = useActiveWeb3React()
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const networkInfo = useNetworkInfo(chainId)
+  const library = ledgerAddress !== '' ? new Web3.providers.HttpProvider(networkInfo?.rpcURL ?? '') : web3Library
 
   const [isLoadingBalance, setIsLoadingBalance] = useState(false)
   const [tokenBalance, setTokenBalance] = useState(0)

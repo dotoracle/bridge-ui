@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo, useEffect } from 'react'
+import { useCallback, useState, useMemo, useEffect, useContext } from 'react'
 import {
   EuiOutsideClickDetector,
   EuiModal,
@@ -19,6 +19,7 @@ import { getTokensFromConfig } from '../../utils'
 import TokenList from './TokenList'
 import ImportRow from './ImportRow'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
+import BridgeAppContext from 'context/BridgeAppContext'
 
 const BreakLine = styled.div`
   margin-top: 15px;
@@ -44,22 +45,27 @@ interface ITokenSearchModalProps {
 
 function SearchModal(props: ITokenSearchModalProps): JSX.Element {
   const { showNativeToken, closeModal } = props
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
 
-  const { library, chainId, account } = useActiveWeb3React()
+  const { library: web3Library, chainId: web3ChainId, account: web3Account } = useActiveWeb3React()
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
+
   const [tokenList, setTokenList] = useState<Token[]>([])
   const [isFetching, setFetching] = useState(false)
 
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
-  // const searchToken = useToken(networkId, isAddress(debouncedQuery) ? debouncedQuery : undefined)
+  // const searchToken = useToken(chainId, isAddress(debouncedQuery) ? debouncedQuery : undefined)
   const searchToken = useToken(isAddress(debouncedQuery) ? debouncedQuery : undefined)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setFetching(true)
-        let _tokenList = await getTokensFromConfig(account, networkId)
+        let _tokenList = await getTokensFromConfig(account, chainId)
 
         if (!showNativeToken) {
           _tokenList = _tokenList.filter(t => t.address !== NATIVE_TOKEN_ADDERSS)
@@ -73,7 +79,7 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
     }
 
     fetchData()
-  }, [library, chainId, account])
+  }, [web3Library, chainId, account])
 
   const filteredTokens: Token[] = useMemo(() => {
     return filterTokens(tokenList, debouncedQuery)
@@ -112,12 +118,12 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
     }
 
     setSearchQuery('')
-    setTokenList(await getTokensFromConfig(account, networkId))
+    setTokenList(await getTokensFromConfig(account, chainId))
   }
 
   const handleRemoveCustomToken = async () => {
     setSearchQuery('')
-    setTokenList(await getTokensFromConfig(account, networkId))
+    setTokenList(await getTokensFromConfig(account, chainId))
   }
 
   return (

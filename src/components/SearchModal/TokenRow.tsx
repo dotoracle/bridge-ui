@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useContext } from 'react'
 import { EuiExpression, EuiButtonIcon, EuiIcon, EuiLoadingContent } from '@elastic/eui'
 import styled from 'styled-components/macro'
 import Token from '../../type/Token'
 import UnknownSVG from '../../assets/images/unknown.svg'
 import { useActiveWeb3React, useIsUserAddedToken, useNetworkInfo, useTokenBalanceCallback } from '../../hooks'
 import { formatNumber } from '../../utils'
+import BridgeAppContext from 'context/BridgeAppContext'
+import Web3 from 'web3'
 
 const Row = styled.div`
   position: relative;
@@ -75,8 +77,15 @@ interface ITokenRow {
 
 function TokenRow(props: ITokenRow): JSX.Element {
   const { token, isSelected, onSelect, onRemoveCustomToken } = props
-  const { account, chainId, library } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId, library: web3Library } = useActiveWeb3React()
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const networkInfo = useNetworkInfo(chainId)
+  const library = ledgerAddress !== '' ? new Web3.providers.HttpProvider(networkInfo?.rpcURL ?? '') : web3Library
+
   const isAdded = useIsUserAddedToken(token)
   const currentNetwork = useNetworkInfo(chainId)
 

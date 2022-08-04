@@ -19,7 +19,7 @@ interface ITokenListProps {
 
 function TokenList(props: ITokenListProps): JSX.Element {
   const { tokenList, onSelectToken, onRemoveCustomToken } = props
-  const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
+  const { selectedToken, setSelectedToken, setTokenAmount } = useContext(BridgeAppContext)
 
   return (
     <>
@@ -34,12 +34,14 @@ function TokenList(props: ITokenListProps): JSX.Element {
                 onSelect={() => {
                   if (token) {
                     onSelectToken(token)
+                    setTokenAmount(0)
                     setSelectedToken(token)
                   }
                 }}
                 onRemoveCustomToken={() => {
                   if (token) {
                     onRemoveCustomToken(token)
+                    setTokenAmount(0)
                     setSelectedToken(undefined)
                   }
                 }}

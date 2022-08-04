@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {
   EuiBasicTableColumn,
   EuiButtonIcon,
@@ -26,6 +26,7 @@ import Transaction from 'type/Transaction'
 import UnknownSVG from 'assets/images/unknown.svg'
 import { ExplorerTableWrap } from './styled'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
+import BridgeAppContext from 'context/BridgeAppContext'
 
 interface HistoryTableProps {
   transactions: Transaction[]
@@ -33,7 +34,10 @@ interface HistoryTableProps {
 
 function HistoryTable(props: HistoryTableProps): JSX.Element {
   const { transactions } = props
-  const { chainId: currentChainId } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { chainId: web3ChainId } = useActiveWeb3React()
+  const currentChainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const currentNetwork = useNetworkInfo(currentChainId)
 
   const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState<any>({})

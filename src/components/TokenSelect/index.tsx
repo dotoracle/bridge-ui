@@ -49,9 +49,13 @@ interface ITokenSelect {
 
 function TokenSelect(props: ITokenSelect): JSX.Element {
   const { showNativeToken } = props
-  const { account, chainId } = useActiveWeb3React()
-  const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
-  const { selectedToken, setSelectedToken } = useContext(BridgeAppContext)
+  const { selectedToken, sourceNetwork, setSelectedToken, ledgerAddress } = useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId } = useActiveWeb3React()
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
+  // const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const closeModal = () => setIsModalVisible(false)
@@ -59,7 +63,7 @@ function TokenSelect(props: ITokenSelect): JSX.Element {
 
   useEffect(() => {
     const fetchData = async () => {
-      const tokens = await getTokensFromConfig(account, networkId)
+      const tokens = await getTokensFromConfig(account, chainId)
 
       if (tokens.length > 0) {
         const nativeToken = tokens.find(t => t.address === NATIVE_TOKEN_ADDERSS)
@@ -68,7 +72,7 @@ function TokenSelect(props: ITokenSelect): JSX.Element {
     }
 
     fetchData()
-  }, [networkId])
+  }, [chainId])
 
   return (
     <TokenSelectWrapper>
