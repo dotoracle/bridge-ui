@@ -49,8 +49,6 @@ export const useTokenBalanceCallback = (
         _balance = _balanceBN.toNumber()
       }
     } catch (error) {
-      console.log(error)
-      console.log(networkInfo)
       _balance = 0
     }
     return _balance
