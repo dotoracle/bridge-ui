@@ -83,7 +83,7 @@ interface ILedgerWarningModal {
 
 function LedgerModal(props: ILedgerWarningModal): JSX.Element {
   const { closeModal } = props
-  const { sourceNetwork } = useContext(BridgeAppContext)
+  const { sourceNetwork, ledgerAddress, setLedgerAddress } = useContext(BridgeAppContext)
 
   const [step, setStep] = useState(1)
   const [seltectId, setSelectedId] = useState(0)
@@ -139,6 +139,7 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
       for (let i = currentIndex; i < currentIndex + 5; i++) {
         const currentPath = path.replace('x', i.toString())
         const account = await appEth.getAddress(currentPath)
+        console.log(account)
         _list.push(account.address)
       }
 
@@ -164,7 +165,8 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
     setSelectedAddress(address)
   }
 
-  const onClick = () => {
+  const onCofirm = () => {
+    setLedgerAddress(selectedAddress)
     closeModal()
   }
 
@@ -265,7 +267,7 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
                     Load more...
                   </EuiButton>
                 )}
-                <EuiButton fill isDisabled={selectedAddress == ''} isLoading={isLoading} onClick={onClick}>
+                <EuiButton fill isDisabled={selectedAddress == ''} isLoading={isLoading} onClick={onCofirm}>
                   Confirm
                 </EuiButton>
               </>

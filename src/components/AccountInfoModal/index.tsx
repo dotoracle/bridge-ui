@@ -11,7 +11,9 @@ import {
 import styled from 'styled-components/macro'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hooks'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import BridgeAppContext from 'context/BridgeAppContext'
+import Web3 from 'web3'
 
 interface IAccountInfoModal {
   closeModal: () => void
@@ -24,9 +26,14 @@ const AccountAddress = styled.h2`
 
 function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
   const { closeModal } = props
+  const { account: web3Account, deactivate, chainId: web3ChainId, library: web3Library } = useActiveWeb3React()
+  const { ledgerAddress, setLedgerAddress, sourceNetwork } = useContext(BridgeAppContext)
 
-  const { account, deactivate, chainId, library } = useActiveWeb3React()
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const networkInfo = useNetworkInfo(chainId)
+  const library = ledgerAddress !== '' ? new Web3.providers.HttpProvider(networkInfo?.rpcURL ?? '') : web3Library
 
   const [isLoadingBalance, setIsLoadingBalance] = useState(false)
   const [tokenBalance, setTokenBalance] = useState(0)
@@ -49,6 +56,14 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
   useEffect(() => {
     loadTokenBalance()
   }, [account, chainId])
+
+  const onLogout = () => {
+    if (ledgerAddress != '') {
+      setLedgerAddress('')
+    } else {
+      deactivate()
+    }
+  }
 
   return (
     <>
@@ -81,7 +96,7 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
             >
               View in Explorer
             </EuiButton>
-            <EuiButton onClick={deactivate}>Logout</EuiButton>
+            <EuiButton onClick={onLogout}>Logout</EuiButton>
             <EuiButton onClick={closeModal}>Close</EuiButton>
           </EuiModalFooter>
         </EuiModal>

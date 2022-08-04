@@ -27,6 +27,7 @@ function App(): JSX.Element {
   const [tokenAmount, setTokenAmount] = useState(0)
   const [sourceNetwork, setSourceNetwork] = useState<Network>()
   const [targetNetwork, setTargetNetwork] = useState<Network>()
+  const [ledgerAddress, setLedgerAddress] = useState('')
 
   return (
     <Web3ReactManager>
@@ -40,6 +41,8 @@ function App(): JSX.Element {
           setSourceNetwork,
           targetNetwork,
           setTargetNetwork,
+          ledgerAddress,
+          setLedgerAddress,
         }}
       >
         <GlobalStyle />

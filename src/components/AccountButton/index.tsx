@@ -7,6 +7,7 @@ import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hoo
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import SupportedNetworksModal from 'components/SupportedNetworksModal'
 import BridgeAppContext from 'context/BridgeAppContext'
+import Web3 from 'web3'
 
 const NetworkLogo = styled.img`
   width: 24px;
@@ -65,8 +66,12 @@ const StyledButton = styled(EuiButton)`
 `
 
 function AccountButton(): JSX.Element {
-  const { account, chainId, library } = useActiveWeb3React()
-  const { sourceNetwork } = useContext(BridgeAppContext)
+  const { account: web3Account, chainId: web3ChainId, library: web3Library } = useActiveWeb3React()
+  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+
+  const account = ledgerAddress !== '' ? ledgerAddress : web3Account
+  const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
+
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : ''
 
   const [showWalletModal, setShowWalletModal] = useState(false)
@@ -74,6 +79,7 @@ function AccountButton(): JSX.Element {
   const [showSupportedNetworkModal, setShowSupportedNetworkModal] = useState(false)
 
   const networkInfo = useNetworkInfo(chainId)
+  const library = ledgerAddress !== '' ? new Web3.providers.HttpProvider(networkInfo?.rpcURL ?? '') : web3Library
 
   const [tokenBalance, setTokenBalance] = useState(0)
   const tokenBalanceCallback = useTokenBalanceCallback(

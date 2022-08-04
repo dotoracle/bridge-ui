@@ -12,6 +12,8 @@ type BridgeAppContextType = {
   setSourceNetwork: (value: Network) => void
   targetNetwork: Network | undefined
   setTargetNetwork: (value: Network) => void
+  ledgerAddress: string
+  setLedgerAddress: (value: string) => void
 }
 
 const BridgeAppContext = createContext<BridgeAppContextType>({
@@ -23,5 +25,7 @@ const BridgeAppContext = createContext<BridgeAppContextType>({
   setSourceNetwork: () => {},
   targetNetwork: undefined,
   setTargetNetwork: () => {},
+  ledgerAddress: '',
+  setLedgerAddress: () => {},
 })
 export default BridgeAppContext
