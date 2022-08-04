@@ -253,7 +253,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
                   <NetworkLogo src={originNetwork.logoURI ? originNetwork.logoURI : UnknownSVG}></NetworkLogo>
                   {originNetwork.name}
                 </strong>
-                , you will receive DotOralce Wrapped {originNetwork.nativeCurrency.symbol} on
+                , you will receive DotOracle Wrapped {originNetwork.nativeCurrency.symbol} on
                 <strong>
                   <NetworkLogo src={targetNetwork.logoURI ? targetNetwork.logoURI : UnknownSVG}></NetworkLogo>
                   {targetNetwork.name}
