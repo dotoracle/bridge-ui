@@ -19,6 +19,7 @@ import styled from 'styled-components/macro'
 import ToastMessage from 'components/ToastMessage'
 import { toast } from 'react-toastify'
 import { useNetworkInfo } from 'hooks'
+import { Keys } from 'casper-js-sdk'
 
 const StyledOl = styled.ol`
   line-height: 3;
@@ -113,7 +114,7 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
         setDisableButton(false)
         break
       case 3:
-        setPath("44'/506'/0'/0/x")
+        setPath("m/44'/506'/0'/0/x")
         setDisableButton(false)
         break
       default:
@@ -163,7 +164,9 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
             _list.push({ address: account.address, path: currentPath })
           } else if (_ledgerApp instanceof CasperApp) {
             const account = await _ledgerApp.getAddressAndPubKey(currentPath)
-            _list.push({ address: account.Address.toString(), path: currentPath })
+            const { publicKey } = account
+            const accountHash = Keys.Secp256K1.accountHex(publicKey)
+            _list.push({ address: accountHash, path: currentPath })
           }
         }
 
@@ -175,7 +178,8 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
           setAddressList([{ address: account.address, path }])
         } else if (_ledgerApp instanceof CasperApp) {
           const account = await _ledgerApp.getAddressAndPubKey(path)
-          setAddressList([{ address: account.Address.toString(), path }])
+          const accountHash = Keys.Secp256K1.accountHex(account.publicKey)
+          setAddressList([{ address: accountHash, path }])
         }
         setCurrentIndex(0)
       }
@@ -186,6 +190,7 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
           toastId: 'onLoadAddresses',
         },
       )
+      console.error(error)
       closeModal()
     } finally {
       if (!loadingButton) {
@@ -243,7 +248,7 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
                     iconType={pathType == 3 ? 'check' : ''}
                     onClick={() => onSelectedPath(3)}
                   >
-                    44'/506'/0'/0/x
+                    m/44'/506'/0'/0/x
                   </StyledButton>
                 ) : (
                   <>
