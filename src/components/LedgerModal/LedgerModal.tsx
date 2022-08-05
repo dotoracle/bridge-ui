@@ -83,20 +83,21 @@ interface ILedgerWarningModal {
 
 function LedgerModal(props: ILedgerWarningModal): JSX.Element {
   const { closeModal } = props
-  const { sourceNetwork, setLedgerAddress } = useContext(BridgeAppContext)
+  const { sourceNetwork, setLedgerAddress, setLedgerPath, setAppEth } = useContext(BridgeAppContext)
 
   const [step, setStep] = useState(1)
-  const [seltectId, setSelectedId] = useState(0)
+  const [pathType, setPathType] = useState(0)
   const [path, setPath] = useState('')
   const [disableButton, setDisableButton] = useState(true)
   const [isLoading, setLoading] = useState(false)
   const [isButtonLoading, setButtonLoading] = useState(false)
-  const [addressList, setAddressList] = useState<string[]>([])
-  const [selectedAddress, setSelectedAddress] = useState('')
+  const [accountList, setAddressList] = useState<{ address: string; path: string }[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [selectedAddress, setSelectedAddress] = useState('')
+  const [selectedPath, setSelectedPath] = useState('')
 
   const onSelectedPath = (id: number) => {
-    setSelectedId(id)
+    setPathType(id)
 
     switch (id) {
       case 1:
@@ -114,6 +115,7 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onPathChanged = (e: any) => {
     const { value } = e.currentTarget
     setDisableButton(value === '')
@@ -131,23 +133,24 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
       setButtonLoading(true)
       const transport = await TransportWebUSB.create()
       const appEth = new AppEth(transport)
+      setAppEth(appEth)
       setStep(3)
 
-      const _list = addressList
+      const _list = accountList
 
       // Load first 5 wallets
       if (path.includes('x')) {
         for (let i = currentIndex; i < currentIndex + 5; i++) {
           const currentPath = path.replace('x', i.toString())
-          const account = await appEth.getAddress(currentPath)
-          _list.push(account.address)
+          const account = await appEth.getAddress(currentPath, false)
+          _list.push({ address: account.address, path: currentPath })
         }
 
         setAddressList(_list)
         setCurrentIndex(currentIndex + 5)
       } else {
         const account = await appEth.getAddress(path)
-        setAddressList([account.address])
+        setAddressList([{ address: account.address, path }])
         setCurrentIndex(0)
       }
     } catch (error) {
@@ -166,12 +169,14 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
     }
   }
 
-  const onSelectAddress = (address: string) => {
-    setSelectedAddress(address)
+  const onSelectAccount = (account: { address: string; path: string }) => {
+    setSelectedAddress(account.address)
+    setSelectedPath(account.path)
   }
 
   const onCofirm = () => {
     setLedgerAddress(selectedAddress)
+    setLedgerPath(selectedPath)
     closeModal()
   }
 
@@ -203,8 +208,8 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
                 <StyledButton
                   fullWidth
                   color="ghost"
-                  className={seltectId == 1 ? 'is-selected' : ''}
-                  iconType={seltectId == 1 ? 'check' : ''}
+                  className={pathType == 1 ? 'is-selected' : ''}
+                  iconType={pathType == 1 ? 'check' : ''}
                   onClick={() => onSelectedPath(1)}
                 >
                   44'/60'/x'/0/0
@@ -212,8 +217,8 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
                 <StyledButton
                   fullWidth
                   color="ghost"
-                  className={seltectId == 2 ? 'is-selected' : ''}
-                  iconType={seltectId == 2 ? 'check' : ''}
+                  className={pathType == 2 ? 'is-selected' : ''}
+                  iconType={pathType == 2 ? 'check' : ''}
                   onClick={() => onSelectedPath(2)}
                 >
                   44'/60'/0'/x
@@ -227,20 +232,21 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
                   <EuiLoadingSpinner size="l" />
                 ) : (
                   <>
-                    {addressList.length > 0 && (
+                    {accountList.length > 0 && (
                       <>
                         <WalletList>
                           <div className="eui-yScroll">
-                            {addressList.map(address => (
+                            {accountList.map(account => (
                               <StyledButton
-                                key={address}
+                                key={account.address}
                                 fullWidth
-                                className={selectedAddress == address ? 'is-wallet-selected' : ''}
+                                className={selectedAddress == account.address ? 'is-wallet-selected' : ''}
                                 color="ghost"
-                                iconType={selectedAddress == address ? 'check' : ''}
-                                onClick={() => onSelectAddress(address)}
+                                iconType={selectedAddress == account.address ? 'check' : ''}
+                                onClick={() => onSelectAccount(account)}
                               >
-                                {address.substring(0, 8)}...{address.substring(address.length - 6)}
+                                {account.address.substring(0, 8)}...
+                                {account.address.substring(account.address.length - 6)}
                               </StyledButton>
                             ))}
                           </div>

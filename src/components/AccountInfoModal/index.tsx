@@ -14,6 +14,7 @@ import { useActiveWeb3React, useNetworkInfo, useTokenBalanceCallback } from 'hoo
 import { useContext, useEffect, useState } from 'react'
 import BridgeAppContext from 'context/BridgeAppContext'
 import Web3 from 'web3'
+import { formatNumber } from 'utils'
 
 interface IAccountInfoModal {
   closeModal: () => void
@@ -81,7 +82,8 @@ function AccountInfoModal(props: IAccountInfoModal): JSX.Element {
               <EuiLoadingContent lines={1} />
             ) : (
               <p>
-                Balance: {tokenBalance > 0 ? tokenBalance.toFixed(4) : 0} {networkInfo?.nativeCurrency.symbol}
+                Balance: {tokenBalance > 0 ? formatNumber(tokenBalance.toFixed(4)) : 0}{' '}
+                {networkInfo?.nativeCurrency.symbol}
               </p>
             )}
           </EuiModalBody>

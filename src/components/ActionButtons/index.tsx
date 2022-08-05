@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { EuiConfirmModal, EuiFieldText, EuiFormRow } from '@elastic/eui'
 import { toast } from 'react-toastify'
 import styled from 'styled-components/macro'
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 import { toHex } from 'web3-utils'
 import BridgeAppContext from 'context/BridgeAppContext'
 import ToastMessage from '../ToastMessage'
@@ -21,6 +22,9 @@ import UnknownSVG from 'assets/images/unknown.svg'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import Web3 from 'web3'
 import { CLPublicKey } from 'casper-js-sdk'
+import { ethers, Contract } from 'ethers'
+import BRIDGE_ABI from '../../constants/abi/GenericBridge.abi.json'
+import { BigNumber } from '@ethersproject/bignumber'
 
 const TokenAmount = styled.span`
   color: ${props => props.theme.primary};
@@ -43,8 +47,16 @@ const ApproveWrap = styled.div`
 `
 
 function ActionButtons(): JSX.Element {
-  const { selectedToken, sourceNetwork, targetNetwork, tokenAmount, setTokenAmount, ledgerAddress } =
-    useContext(BridgeAppContext)
+  const {
+    selectedToken,
+    sourceNetwork,
+    targetNetwork,
+    tokenAmount,
+    setTokenAmount,
+    ledgerAddress,
+    ledgerPath,
+    appEth,
+  } = useContext(BridgeAppContext)
   const { account: web3Account, chainId: web3ChainId, library: web3Library } = useActiveWeb3React()
 
   const account = ledgerAddress !== '' ? ledgerAddress : web3Account
@@ -154,21 +166,61 @@ function ActionButtons(): JSX.Element {
           value = amountInWei.toNumber()
         }
 
-        const web3 = new Web3()
+        const web3 = new Web3(library)
         let encoded = web3.eth.abi.encodeParameters(['string'], [account?.toLowerCase()])
 
         if (targetNetwork.notEVM) {
           encoded = web3.eth.abi.encodeParameters(['string'], [accountHash.toLowerCase()])
         }
-        console.log(bridgeContract)
 
-        const receipt = await bridgeContract.methods
-          .requestBridge(selectedToken.address, encoded, amountInWei.toString(10), targetNetwork.chainId)
-          .send({
-            chaindId: toHex(sourceNetwork.chainId),
-            from: account,
-            value: value.toString(),
-          })
+        let receipt
+        if (ledgerAddress != '') {
+          const provider = new ethers.providers.JsonRpcProvider(networkInfo?.rpcURL)
+          const bridgeContractEth = new Contract(bridgeAddress, BRIDGE_ABI, provider)
+          const { data } = await bridgeContractEth.populateTransaction['requestBridge(address,bytes,uint256,uint256)'](
+            selectedToken.address,
+            encoded,
+            amountInWei.toString(10),
+            targetNetwork.chainId,
+          )
+
+          const unsignedTx = {
+            to: bridgeAddress,
+            gasPrice: (await provider.getGasPrice())._hex,
+            gasLimit: ethers.utils.hexlify(100000),
+            value: BigNumber.from(value.toString()),
+            nonce: await provider.getTransactionCount(account ?? '', 'latest'),
+            chainId: networkInfo?.chainId,
+            data,
+          }
+
+          const transport = await TransportWebUSB.openConnected()
+
+          if (transport != null && appEth) {
+            const serializedTx = ethers.utils.serializeTransaction(unsignedTx).slice(2)
+
+            const _signature = await appEth.signTransaction(ledgerPath, serializedTx)
+            const signature = {
+              r: '0x' + _signature.r,
+              s: '0x' + _signature.s,
+              v: parseInt('0x' + _signature.v),
+              from: account,
+            }
+            const signedTx = ethers.utils.serializeTransaction(unsignedTx, signature)
+            const { hash } = await provider.sendTransaction(signedTx)
+            receipt = {
+              transactionHash: hash,
+            }
+          }
+        } else {
+          receipt = await bridgeContract.methods
+            .requestBridge(selectedToken.address, encoded, amountInWei.toString(10), targetNetwork.chainId)
+            .send({
+              chainId: toHex(sourceNetwork.chainId),
+              from: account,
+              value: value.toString(),
+            })
+        }
 
         if (receipt) {
           toast.success(

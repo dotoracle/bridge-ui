@@ -2,6 +2,7 @@
 import { createContext } from 'react'
 import Token from '../type/Token'
 import Network from '../type/Network'
+import AppEth from '@ledgerhq/hw-app-eth'
 
 type BridgeAppContextType = {
   selectedToken: Token | undefined
@@ -14,6 +15,10 @@ type BridgeAppContextType = {
   setTargetNetwork: (value: Network) => void
   ledgerAddress: string
   setLedgerAddress: (value: string) => void
+  ledgerPath: string
+  setLedgerPath: (value: string) => void
+  appEth: AppEth | undefined
+  setAppEth: (value: AppEth) => void
 }
 
 const BridgeAppContext = createContext<BridgeAppContextType>({
@@ -27,5 +32,9 @@ const BridgeAppContext = createContext<BridgeAppContextType>({
   setTargetNetwork: () => {},
   ledgerAddress: '',
   setLedgerAddress: () => {},
+  ledgerPath: '',
+  setLedgerPath: () => {},
+  appEth: undefined,
+  setAppEth: () => {},
 })
 export default BridgeAppContext

@@ -89,6 +89,7 @@ function NetworkList(props: INetworkListProps): JSX.Element {
           toastId: 'setupNetwork',
         })
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // we only care if the error is something _other_ than the user rejected the tx
       if (error?.code !== 4001) {

@@ -13,6 +13,7 @@ import '@elastic/eui/dist/eui_theme_dark.css'
 import './assets/fonts/stylesheet.css'
 import Home from 'pages/Home'
 import Explorer from 'pages/Explorer'
+import AppEth from '@ledgerhq/hw-app-eth'
 
 const PageContainer = styled.div`
   min-height: calc(100vh - 160px);
@@ -28,6 +29,8 @@ function App(): JSX.Element {
   const [sourceNetwork, setSourceNetwork] = useState<Network>()
   const [targetNetwork, setTargetNetwork] = useState<Network>()
   const [ledgerAddress, setLedgerAddress] = useState('')
+  const [ledgerPath, setLedgerPath] = useState('')
+  const [appEth, setAppEth] = useState<AppEth>()
 
   return (
     <Web3ReactManager>
@@ -43,6 +46,10 @@ function App(): JSX.Element {
           setTargetNetwork,
           ledgerAddress,
           setLedgerAddress,
+          ledgerPath,
+          setLedgerPath,
+          appEth,
+          setAppEth,
         }}
       >
         <GlobalStyle />
