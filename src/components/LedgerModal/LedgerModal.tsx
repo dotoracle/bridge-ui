@@ -11,12 +11,14 @@ import {
   EuiOutsideClickDetector,
 } from '@elastic/eui'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
-import AppEth from '@ledgerhq/hw-app-eth'
+import EthApp from '@ledgerhq/hw-app-eth'
+import CasperApp from '@zondax/ledger-casper'
 import BridgeAppContext from 'context/BridgeAppContext'
 import { useContext, useState } from 'react'
 import styled from 'styled-components/macro'
 import ToastMessage from 'components/ToastMessage'
 import { toast } from 'react-toastify'
+import { useNetworkInfo } from 'hooks'
 
 const StyledOl = styled.ol`
   line-height: 3;
@@ -83,7 +85,9 @@ interface ILedgerWarningModal {
 
 function LedgerModal(props: ILedgerWarningModal): JSX.Element {
   const { closeModal } = props
-  const { sourceNetwork, setLedgerAddress, setLedgerPath, setAppEth } = useContext(BridgeAppContext)
+  const { sourceNetwork, setLedgerAddress, setLedgerPath, setLedgerApp } = useContext(BridgeAppContext)
+
+  const networkInfo = useNetworkInfo(sourceNetwork?.chainId)
 
   const [step, setStep] = useState(1)
   const [pathType, setPathType] = useState(0)
@@ -106,6 +110,10 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
         break
       case 2:
         setPath("44'/60'/0'/x")
+        setDisableButton(false)
+        break
+      case 3:
+        setPath("44'/506'/0'/0/x")
         setDisableButton(false)
         break
       default:
@@ -132,8 +140,15 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
       }
       setButtonLoading(true)
       const transport = await TransportWebUSB.create()
-      const appEth = new AppEth(transport)
-      setAppEth(appEth)
+
+      // is Casper
+      let _ledgerApp
+      if (sourceNetwork?.notEVM) {
+        _ledgerApp = new CasperApp(transport)
+      } else {
+        _ledgerApp = new EthApp(transport)
+      }
+      setLedgerApp(_ledgerApp)
       setStep(3)
 
       const _list = accountList
@@ -142,15 +157,26 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
       if (path.includes('x')) {
         for (let i = currentIndex; i < currentIndex + 5; i++) {
           const currentPath = path.replace('x', i.toString())
-          const account = await appEth.getAddress(currentPath, false)
-          _list.push({ address: account.address, path: currentPath })
+
+          if (_ledgerApp instanceof EthApp) {
+            const account = await _ledgerApp.getAddress(currentPath, false)
+            _list.push({ address: account.address, path: currentPath })
+          } else if (_ledgerApp instanceof CasperApp) {
+            const account = await _ledgerApp.getAddressAndPubKey(currentPath)
+            _list.push({ address: account.Address.toString(), path: currentPath })
+          }
         }
 
         setAddressList(_list)
         setCurrentIndex(currentIndex + 5)
       } else {
-        const account = await appEth.getAddress(path)
-        setAddressList([{ address: account.address, path }])
+        if (_ledgerApp instanceof EthApp) {
+          const account = await _ledgerApp.getAddress(path)
+          setAddressList([{ address: account.address, path }])
+        } else if (_ledgerApp instanceof CasperApp) {
+          const account = await _ledgerApp.getAddressAndPubKey(path)
+          setAddressList([{ address: account.Address.toString(), path }])
+        }
         setCurrentIndex(0)
       }
     } catch (error) {
@@ -199,30 +225,48 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
               <StyledOl>
                 <li>1. Ledger Live app is closed</li>
                 <li>2. The device is plugged in via USB, NOT bluetooth</li>
-                <li>3. The device is unlocked and in the {sourceNetwork?.name} app</li>
-                <li>4. "Blind Signing" is enabled in the {sourceNetwork?.name} app</li>
+                <li>
+                  3. The device is unlocked and in the {sourceNetwork?.notEVM ? sourceNetwork?.name : 'Ethereum'} app
+                </li>
+                <li>
+                  4. "Blind Signing" is enabled in the {sourceNetwork?.notEVM ? sourceNetwork?.name : 'Ethereum'} app
+                </li>
               </StyledOl>
             )}
             {step == 2 && (
               <>
-                <StyledButton
-                  fullWidth
-                  color="ghost"
-                  className={pathType == 1 ? 'is-selected' : ''}
-                  iconType={pathType == 1 ? 'check' : ''}
-                  onClick={() => onSelectedPath(1)}
-                >
-                  44'/60'/x'/0/0
-                </StyledButton>
-                <StyledButton
-                  fullWidth
-                  color="ghost"
-                  className={pathType == 2 ? 'is-selected' : ''}
-                  iconType={pathType == 2 ? 'check' : ''}
-                  onClick={() => onSelectedPath(2)}
-                >
-                  44'/60'/0'/x
-                </StyledButton>
+                {networkInfo?.notEVM ? (
+                  <StyledButton
+                    fullWidth
+                    color="ghost"
+                    className={pathType == 3 ? 'is-selected' : ''}
+                    iconType={pathType == 3 ? 'check' : ''}
+                    onClick={() => onSelectedPath(3)}
+                  >
+                    44'/506'/0'/0/x
+                  </StyledButton>
+                ) : (
+                  <>
+                    <StyledButton
+                      fullWidth
+                      color="ghost"
+                      className={pathType == 1 ? 'is-selected' : ''}
+                      iconType={pathType == 1 ? 'check' : ''}
+                      onClick={() => onSelectedPath(1)}
+                    >
+                      44'/60'/x'/0/0
+                    </StyledButton>
+                    <StyledButton
+                      fullWidth
+                      color="ghost"
+                      className={pathType == 2 ? 'is-selected' : ''}
+                      iconType={pathType == 2 ? 'check' : ''}
+                      onClick={() => onSelectedPath(2)}
+                    >
+                      44'/60'/0'/x
+                    </StyledButton>
+                  </>
+                )}
                 <HDPathInput placeholder="Custom path" onFocus={() => onSelectedPath(0)} onChange={onPathChanged} />
               </>
             )}

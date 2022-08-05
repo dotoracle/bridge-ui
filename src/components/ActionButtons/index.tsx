@@ -25,6 +25,7 @@ import { CLPublicKey } from 'casper-js-sdk'
 import { ethers, Contract } from 'ethers'
 import BRIDGE_ABI from '../../constants/abi/GenericBridge.abi.json'
 import { BigNumber } from '@ethersproject/bignumber'
+import EthApp from '@ledgerhq/hw-app-eth'
 
 const TokenAmount = styled.span`
   color: ${props => props.theme.primary};
@@ -55,7 +56,7 @@ function ActionButtons(): JSX.Element {
     setTokenAmount,
     ledgerAddress,
     ledgerPath,
-    appEth,
+    ledgerApp,
   } = useContext(BridgeAppContext)
   const { account: web3Account, chainId: web3ChainId, library: web3Library } = useActiveWeb3React()
 
@@ -196,10 +197,10 @@ function ActionButtons(): JSX.Element {
 
           const transport = await TransportWebUSB.openConnected()
 
-          if (transport != null && appEth) {
+          if (transport != null && ledgerApp && ledgerApp instanceof EthApp) {
             const serializedTx = ethers.utils.serializeTransaction(unsignedTx).slice(2)
 
-            const _signature = await appEth.signTransaction(ledgerPath, serializedTx)
+            const _signature = await ledgerApp.signTransaction(ledgerPath, serializedTx)
             const signature = {
               r: '0x' + _signature.r,
               s: '0x' + _signature.s,

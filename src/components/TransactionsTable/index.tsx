@@ -49,9 +49,10 @@ import { ethers, Contract } from 'ethers'
 import BRIDGE_ABI from '../../constants/abi/GenericBridge.abi.json'
 import { BigNumber } from '@ethersproject/bignumber'
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
+import EthApp from '@ledgerhq/hw-app-eth'
 
 function TransactionsTable(): JSX.Element {
-  const { sourceNetwork, ledgerAddress, appEth, ledgerPath } = useContext(BridgeAppContext)
+  const { sourceNetwork, ledgerAddress, ledgerApp, ledgerPath } = useContext(BridgeAppContext)
   const { account: web3Account, chainId: web3ChainId, deactivate, activate } = useActiveWeb3React()
 
   const account = ledgerAddress !== '' ? ledgerAddress : web3Account
@@ -451,10 +452,10 @@ function TransactionsTable(): JSX.Element {
                 data,
               }
               const transport = await TransportWebUSB.openConnected()
-              if (transport != null && appEth) {
+              if (transport != null && ledgerApp && ledgerApp instanceof EthApp) {
                 const serializedTx = ethers.utils.serializeTransaction(unsignedTx).slice(2)
 
-                const _signature = await appEth.signTransaction(ledgerPath, serializedTx)
+                const _signature = await ledgerApp.signTransaction(ledgerPath, serializedTx)
                 const signature = {
                   r: '0x' + _signature.r,
                   s: '0x' + _signature.s,

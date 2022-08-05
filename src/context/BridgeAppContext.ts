@@ -2,7 +2,8 @@
 import { createContext } from 'react'
 import Token from '../type/Token'
 import Network from '../type/Network'
-import AppEth from '@ledgerhq/hw-app-eth'
+import EthApp from '@ledgerhq/hw-app-eth'
+import CasperApp from '@zondax/ledger-casper'
 
 type BridgeAppContextType = {
   selectedToken: Token | undefined
@@ -17,8 +18,8 @@ type BridgeAppContextType = {
   setLedgerAddress: (value: string) => void
   ledgerPath: string
   setLedgerPath: (value: string) => void
-  appEth: AppEth | undefined
-  setAppEth: (value: AppEth) => void
+  ledgerApp: EthApp | CasperApp | undefined
+  setLedgerApp: (value: EthApp | CasperApp) => void
 }
 
 const BridgeAppContext = createContext<BridgeAppContextType>({
@@ -34,7 +35,7 @@ const BridgeAppContext = createContext<BridgeAppContextType>({
   setLedgerAddress: () => {},
   ledgerPath: '',
   setLedgerPath: () => {},
-  appEth: undefined,
-  setAppEth: () => {},
+  ledgerApp: undefined,
+  setLedgerApp: () => {},
 })
 export default BridgeAppContext
