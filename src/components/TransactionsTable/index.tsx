@@ -45,9 +45,13 @@ import NetworkInfo from './NetworkInfo'
 import { ConnectorNames, injected } from 'connectors'
 import { connectorLocalStorageKey, NATIVE_TOKEN_ADDERSS } from '../../constants'
 import BridgeAppContext from 'context/BridgeAppContext'
+import { ethers, Contract } from 'ethers'
+import BRIDGE_ABI from '../../constants/abi/GenericBridge.abi.json'
+import { BigNumber } from '@ethersproject/bignumber'
+import TransportWebUSB from '@ledgerhq/hw-transport-webusb'
 
 function TransactionsTable(): JSX.Element {
-  const { sourceNetwork, ledgerAddress } = useContext(BridgeAppContext)
+  const { sourceNetwork, ledgerAddress, appEth, ledgerPath } = useContext(BridgeAppContext)
   const { account: web3Account, chainId: web3ChainId, deactivate, activate } = useActiveWeb3React()
 
   const account = ledgerAddress !== '' ? ledgerAddress : web3Account
@@ -428,12 +432,49 @@ function TransactionsTable(): JSX.Element {
           if (bridgeContract) {
             changeButtonText(button, 'Confirming...')
 
-            const receipt = await bridgeContract.methods
-              .claimToken(originToken, account, amount, chainIdData, requestHash, r, s, v, name, symbol, decimals)
-              .send({
-                chainId: toHex(item.toChainId),
-                from: account,
-              })
+            let receipt
+
+            if (ledgerAddress != '') {
+              const provider = new ethers.providers.JsonRpcProvider(currentNetwork?.rpcURL)
+              const bridgeContractEth = new Contract(bridgeAddress, BRIDGE_ABI, provider)
+              const { data } = await bridgeContractEth.populateTransaction[
+                'claimToken(address,address,uint256,uint256[],bytes32,bytes32[],bytes32[],uint8[],string,string,uint8)'
+              ](originToken, account, amount, chainIdData, requestHash, r, s, v, name, symbol, decimals)
+
+              const unsignedTx = {
+                to: bridgeAddress,
+                gasPrice: (await provider.getGasPrice())._hex,
+                gasLimit: ethers.utils.hexlify(500000),
+                value: BigNumber.from(0),
+                nonce: await provider.getTransactionCount(account ?? '', 'latest'),
+                chainId: item.toChainId,
+                data,
+              }
+              const transport = await TransportWebUSB.openConnected()
+              if (transport != null && appEth) {
+                const serializedTx = ethers.utils.serializeTransaction(unsignedTx).slice(2)
+
+                const _signature = await appEth.signTransaction(ledgerPath, serializedTx)
+                const signature = {
+                  r: '0x' + _signature.r,
+                  s: '0x' + _signature.s,
+                  v: parseInt('0x' + _signature.v),
+                  from: account,
+                }
+                const signedTx = ethers.utils.serializeTransaction(unsignedTx, signature)
+                const { hash } = await provider.sendTransaction(signedTx)
+                receipt = {
+                  transactionHash: hash,
+                }
+              }
+            } else {
+              receipt = await bridgeContract.methods
+                .claimToken(originToken, account, amount, chainIdData, requestHash, r, s, v, name, symbol, decimals)
+                .send({
+                  chainId: toHex(item.toChainId),
+                  from: account,
+                })
+            }
 
             if (receipt && currentNetwork) {
               toast.success(

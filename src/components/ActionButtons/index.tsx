@@ -187,7 +187,7 @@ function ActionButtons(): JSX.Element {
           const unsignedTx = {
             to: bridgeAddress,
             gasPrice: (await provider.getGasPrice())._hex,
-            gasLimit: ethers.utils.hexlify(100000),
+            gasLimit: ethers.utils.hexlify(500000),
             value: BigNumber.from(value.toString()),
             nonce: await provider.getTransactionCount(account ?? '', 'latest'),
             chainId: networkInfo?.chainId,
