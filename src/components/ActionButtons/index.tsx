@@ -160,6 +160,7 @@ function ActionButtons(): JSX.Element {
         if (targetNetwork.notEVM) {
           encoded = web3.eth.abi.encodeParameters(['string'], [accountHash.toLowerCase()])
         }
+        console.log(bridgeContract)
 
         const receipt = await bridgeContract.methods
           .requestBridge(selectedToken.address, encoded, amountInWei.toString(10), targetNetwork.chainId)

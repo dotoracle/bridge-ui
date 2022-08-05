@@ -123,7 +123,7 @@ function AccountButton(): JSX.Element {
         <>
           <ButtonWrap>
             <TokenBalance>
-              {formatNumber(tokenBalance)} {networkInfo?.nativeCurrency.symbol}
+              {tokenBalance ? formatNumber(tokenBalance.toFixed(4)) : '0'} {networkInfo?.nativeCurrency.symbol}
             </TokenBalance>
             <StyledButton fill onClick={() => setShowAccountModal(true)}>
               <EuiTextAlign textAlign="left">{accountEllipsis}</EuiTextAlign>

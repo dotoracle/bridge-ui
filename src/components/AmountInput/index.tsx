@@ -95,7 +95,7 @@ function AmountInput(): JSX.Element {
             <EuiLoadingContent lines={1} />
           ) : (
             <span>
-              Available: {formatNumber(tokenBalance)} {selectedToken.symbol}
+              Available: {tokenBalance ? formatNumber(tokenBalance.toFixed(4)) : '0'} {selectedToken.symbol}
             </span>
           )}
         </Description>

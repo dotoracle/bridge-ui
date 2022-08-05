@@ -51,8 +51,6 @@ function SearchModal(props: ITokenSearchModalProps): JSX.Element {
   const account = ledgerAddress !== '' ? ledgerAddress : web3Account
   const chainId = ledgerAddress !== '' ? sourceNetwork?.chainId : web3ChainId
 
-  const networkId = chainId ? chainId : Number(process.env.REACT_APP_CHAIN_ID)
-
   const [tokenList, setTokenList] = useState<Token[]>([])
   const [isFetching, setFetching] = useState(false)
 

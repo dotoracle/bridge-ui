@@ -136,14 +136,20 @@ function LedgerModal(props: ILedgerWarningModal): JSX.Element {
       const _list = addressList
 
       // Load first 5 wallets
-      for (let i = currentIndex; i < currentIndex + 5; i++) {
-        const currentPath = path.replace('x', i.toString())
-        const account = await appEth.getAddress(currentPath)
-        _list.push(account.address)
-      }
+      if (path.includes('x')) {
+        for (let i = currentIndex; i < currentIndex + 5; i++) {
+          const currentPath = path.replace('x', i.toString())
+          const account = await appEth.getAddress(currentPath)
+          _list.push(account.address)
+        }
 
-      setAddressList(_list)
-      setCurrentIndex(currentIndex + 5)
+        setAddressList(_list)
+        setCurrentIndex(currentIndex + 5)
+      } else {
+        const account = await appEth.getAddress(path)
+        setAddressList([account.address])
+        setCurrentIndex(0)
+      }
     } catch (error) {
       toast.error(
         <ToastMessage color="danger" headerText="Error" bodyText="Unable to connect your hardware wallet" />,

@@ -25,6 +25,8 @@ interface INetworkListProps {
 function NetworkList(props: INetworkListProps): JSX.Element {
   const { networkList, onSelectNetwork } = props
   const {
+    setSelectedToken,
+    setTokenAmount,
     setSourceNetwork,
     setTargetNetwork,
     sourceNetwork,
@@ -38,6 +40,8 @@ function NetworkList(props: INetworkListProps): JSX.Element {
         setTargetNetwork(sourceNetwork)
       }
       setSourceNetwork(network)
+      setSelectedToken(undefined)
+      setTokenAmount(0)
 
       if (!account) {
         return

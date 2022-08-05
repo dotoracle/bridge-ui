@@ -76,7 +76,7 @@ export const getTokensFromConfig = async (
             name: t.name,
             address: network.notEVM ? t.contractHash ?? '' : t.address,
             originContractAddress: t.originContractAddress ?? '',
-            originChainId: t.originChainId ?? Number(process.env.REACT_APP_CHAIN_ID),
+            originChainId: t.originChainId ?? chainId,
             contractHash: t.contractHash ?? '',
             symbol: t.symbol,
             decimals: t.decimals,
@@ -92,7 +92,11 @@ export const getTokensFromConfig = async (
   return tokens
 }
 
-export const formatNumber = (number: number | string): string => {
+export const formatNumber = (number: number | string | undefined): string => {
+  if (!number) {
+    return '0'
+  }
+
   const seps = number.toString().split('.')
   seps[0] = seps[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   return Number(number) % 1 === 0 ? seps[0] : seps.join('.')
