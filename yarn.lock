@@ -5336,7 +5336,7 @@ caseless@~0.12.0:
 "casper-erc20-js-client@file:./packages/erc20-client":
   version "0.1.0"
   dependencies:
-    casper-js-client-helper "file:../../../../Users/hka/Library/Caches/Yarn/v6/npm-casper-erc20-js-client-0.1.0-d6cbb314-29f8-4052-a4ef-f47894841057-1659698580658/node_modules/client-helper"
+    casper-js-client-helper "file:../../../../Users/hka/Library/Caches/Yarn/v6/npm-casper-erc20-js-client-0.1.0-49394b65-1303-49db-9a6d-08d617a8c0ba-1659833237010/node_modules/client-helper"
     casper-js-sdk "2.8.0"
 
 "casper-js-client-helper@file:./packages/client-helper", "casper-js-client-helper@file:packages/client-helper":

@@ -197,7 +197,7 @@ function ActionButtons(): JSX.Element {
 
           const transport = await TransportWebUSB.openConnected()
 
-          if (transport != null && ledgerApp && ledgerApp instanceof EthApp) {
+          if (transport != null && ledgerAddress != '' && ledgerPath != '' && ledgerApp instanceof EthApp) {
             const serializedTx = ethers.utils.serializeTransaction(unsignedTx).slice(2)
 
             const _signature = await ledgerApp.signTransaction(ledgerPath, serializedTx)

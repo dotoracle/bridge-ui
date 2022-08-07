@@ -200,7 +200,11 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
             <span>Casper Signer</span>
             <WalletLogo src={CasperPNG} alt="Casper Signer" />
           </WalletButton>
-          <WalletButton isLoading={isLoadingLedger} onClick={() => onConnectWallet(ConnectorNames.Ledger)}>
+          <WalletButton
+            isDisabled={sourceNetwork?.notEVM}
+            isLoading={isLoadingLedger}
+            onClick={() => onConnectWallet(ConnectorNames.Ledger)}
+          >
             <span>Ledger Wallet</span>
             <WalletLogo src={LedgerPNG} alt="Ledger Wallet" />
           </WalletButton>
