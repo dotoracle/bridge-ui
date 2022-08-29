@@ -17,7 +17,7 @@ import {
   useTokenBalanceCallback,
 } from 'hooks'
 import { StyledButton, UnlockButton } from './styled'
-import { toWei } from 'utils'
+import { fromWei, toWei } from 'utils'
 import UnknownSVG from 'assets/images/unknown.svg'
 import { NATIVE_TOKEN_ADDERSS } from '../../constants'
 import Web3 from 'web3'
@@ -108,6 +108,28 @@ function ActionButtons(): JSX.Element {
   useEffect(() => {
     loadTokenBalance()
   }, [account, chainId, selectedToken])
+
+  const [minBridge, setMinBridge] = useState(0)
+  const [disableButton, setDisableButton] = useState(true)
+  const [buttonText, setButtonText] = useState(`Transfer ${selectedToken?.symbol} to bridge`)
+
+  useEffect(() => {
+    if (selectedToken) {
+      const _minBridge = selectedToken ? fromWei(selectedToken.minBridge ?? '0', selectedToken.decimals).toNumber() : 0
+      setMinBridge(_minBridge)
+    }
+
+    if (tokenAmount <= 0 || tokenAmount < minBridge) {
+      setButtonText(`Minimum Bridge Amount: ${minBridge} ${selectedToken?.symbol}`)
+      setDisableButton(true)
+    } else if (tokenAmount > tokenBalance) {
+      setButtonText('Insufficient balance')
+      setDisableButton(true)
+    } else {
+      setButtonText(`Transfer ${selectedToken?.symbol} to bridge`)
+      setDisableButton(false)
+    }
+  }, [selectedToken, tokenAmount, minBridge])
 
   const approveToken = async (infinity?: boolean) => {
     try {
@@ -300,18 +322,16 @@ function ActionButtons(): JSX.Element {
     <>
       {account ? (
         <>
-          {selectedToken && tokenAmount > 0 ? (
+          {selectedToken ? (
             <>
               {!needApprove || approval === ApprovalState.APPROVED ? (
                 <StyledButton
                   fill
                   isLoading={isLoading || isLoadingBalance}
-                  isDisabled={tokenAmount <= 0 || tokenAmount > tokenBalance}
+                  isDisabled={disableButton}
                   onClick={onOpenConfirmModal}
                 >
-                  {tokenAmount > 0 && tokenAmount <= tokenBalance
-                    ? `Transfer ${selectedToken.symbol} to bridge`
-                    : 'Insufficient balance'}
+                  {buttonText}
                 </StyledButton>
               ) : (
                 <ApproveWrap>

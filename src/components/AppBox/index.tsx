@@ -150,7 +150,7 @@ function AppBox(): JSX.Element {
                 </li>
               )}
               <li>Estimated Time of Crosschain Arrival: 3-10 mins</li>
-              {!targetNetwork.notEVM && (
+              {sourceNetwork?.notEVM && !targetNetwork.notEVM && (
                 <li>
                   There is no minimum cross-chain transfer amount to {targetNetwork.name}, you should always claim your
                   tokens to {targetNetwork.name}
