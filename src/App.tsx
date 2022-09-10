@@ -24,6 +24,13 @@ const PageContainer = styled.div`
   padding-top: 3rem;
   padding-bottom: 3rem;
 `
+const Notification = styled.div`
+  padding: 1rem;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  background-color: #6d0000;
+`
 function App(): JSX.Element {
   const [selectedToken, setSelectedToken] = useState<Token>()
   const [tokenAmount, setTokenAmount] = useState(0)
@@ -55,6 +62,15 @@ function App(): JSX.Element {
       >
         <GlobalStyle />
         <Router>
+          <Notification>
+            <p>
+              For security of the assets locked in DotOracle during the Merge of Ethereum, which is expected to happen
+              around 13rd Sept, <br />
+              DotOracle Team have discussed with the bridge validators to pause the bridge on 12nd, which means the
+              validators will not validate bridge transactions around the Merge days.
+            </p>
+            <p>The bridge will resume to work after The Merge.</p>
+          </Notification>
           <Header />
           <PageContainer>
             <Routes>
