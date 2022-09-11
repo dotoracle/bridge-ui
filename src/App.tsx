@@ -66,7 +66,7 @@ function App(): JSX.Element {
             <p>
               For security of the assets locked in DotOracle during the Merge of Ethereum, which is expected to happen
               around 12th September, <br />
-              DotOracle Team have discussed with the bridge validators to pause the bridge on 12nd, which means the
+              DotOracle Team have discussed with the bridge validators to pause the bridge on 12th, which means the
               validators will not validate bridge transactions around the Merge days.
             </p>
             <p>The bridge will resume to work after The Merge.</p>
