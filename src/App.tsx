@@ -62,7 +62,7 @@ function App(): JSX.Element {
       >
         <GlobalStyle />
         <Router>
-          <Notification>
+          {/* <Notification>
             <p>
               For security of the assets locked in DotOracle during the Merge of Ethereum, which is expected to happen
               around 12th September, <br />
@@ -70,7 +70,7 @@ function App(): JSX.Element {
               validators will not validate bridge transactions around the Merge days.
             </p>
             <p>The bridge will resume to work after The Merge.</p>
-          </Notification>
+          </Notification> */}
           <Header />
           <PageContainer>
             <Routes>
