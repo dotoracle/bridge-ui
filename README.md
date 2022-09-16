@@ -176,12 +176,12 @@ To request bridge on EVM Chain, you need to call the ```requestBridge``` method 
   You will get a signature that looks like this
    ```json
     {
-      r: "0xrr",
-      s: "0xss",
-      v: "0xvv",
-      name: "BUSD",
-      symbol: "BUSD",
-      decimals: "18"
+      "r": "0xaa",
+      "s": "0xbb",
+      "v": "0xcc",
+      "name": "BUSD",
+      "symbol": "BUSD",
+      "decimals": "18"
     }
    ```
 
