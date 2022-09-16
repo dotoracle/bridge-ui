@@ -141,7 +141,7 @@ To request bridge on EVM Chain, you need to call the ```requestBridge``` method 
 
 1. This is JSON describing the transaction history, you can easily get all informations of a transaction.
    ```json
-    transactions": [
+    "transactions": [
       {
         "_id": "631983cb526fa6fc80aff3b9",
         "fromChainId": 96945816564243,
