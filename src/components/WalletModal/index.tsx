@@ -21,6 +21,7 @@ import OXKJPED from '../../assets/images/okx-wallet.jpeg'
 import TorusPNG from '../../assets/images/torus.png'
 import CasperPNG from '../../assets/images/casper.png'
 import LedgerPNG from '../../assets/images/ledger-wallet.png'
+import PontemWalletPNG from 'assets/images/pontem-wallet.png'
 import LedgerModal from 'components/LedgerModal/LedgerModal'
 import BridgeAppContext from 'context/BridgeAppContext'
 import { setupNetwork } from 'utils'
@@ -82,6 +83,7 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
   const [isLoadingTorus, setIsLoadingTorus] = useState(false)
   const [isLoadingCasper, setIsLoadingCasper] = useState(false)
   const [isLoadingLedger, setIsLoadingLedger] = useState(false)
+  const [isLoadingPontem, setIsLoadingPontem] = useState(false)
   const [showLedgerModal, setShowLedgerModal] = useState(false)
 
   const onConnectWallet = async (connectorID: ConnectorNames) => {
@@ -208,6 +210,14 @@ function WalletModal(props: IWalletModalProps): JSX.Element {
             <span>Ledger Wallet</span>
             <WalletLogo src={LedgerPNG} alt="Ledger Wallet" />
           </WalletButton>
+          {/* <WalletButton
+            isDisabled={sourceNetwork?.notEVM}
+            isLoading={isLoadingPontem}
+            onClick={() => onConnectWallet(ConnectorNames.PontemWallet)}
+          >
+            <span>Pontem Wallet</span>
+            <WalletLogo src={PontemWalletPNG} alt="Pontem Wallet" />
+          </WalletButton> */}
         </EuiModalBody>
       </EuiModal>
       <EuiWindowEvent event="keydown" handler={onEscKeydown} />
