@@ -112,7 +112,7 @@ function TransferButton(props: TransferButtonProps): JSX.Element {
           const casperClient = new CasperClient(networkInfo.rpcURL)
 
           // Sign transcation using casper-signer.
-          const signature = await window.casperlabsHelper.sign(json, account, account)
+          const signature = await window.casperlabsHelper.sign(json, account)
           const deployObject = DeployUtil.deployFromJson(signature)
 
           if (deployObject.val instanceof DeployUtil.Deploy) {

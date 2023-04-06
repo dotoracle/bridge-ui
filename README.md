@@ -111,7 +111,7 @@ To request bridge on EVM Chain, you need to call the ```requestBridge``` method 
     const casperClient = new CasperClient(networkInfo.rpcURL)
 
     // Sign transaction using casper-signer.
-    const signature = await window.casperlabsHelper.sign(json, account, account)
+    const signature = await window.casperlabsHelper.sign(json, account)
     const deployObject = DeployUtil.deployFromJson(signature)
 
     if (deployObject.val instanceof DeployUtil.Deploy) {
